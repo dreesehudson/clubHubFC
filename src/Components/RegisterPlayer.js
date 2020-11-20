@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import {
     Col, Row, Container, Button, Form, FormGroup, Label, Input, Jumbotron
@@ -12,12 +13,63 @@ import {
 } from "react-router-dom";
 
 
-function Registration() {
+function RegisterPlayer() {
 
-    const [teams, setTeams] = useState([{ name: "Galaxy", color: "Yellow", practice: "Monday" },
-    { name: "Sounders", color: "Green", practice: "Tuesday" },
-    { name: "Louisville City", color: "Purple", practice: "Wednesday" }]);
+    const [teams, setTeams] = useState([{ id: 1, name: "Galaxy", color: "Yellow", practice: "Monday" },
+    { id: 2, name: "Sounders", color: "Green", practice: "Tuesday" },
+    { id: 3, name: "Louisville City", color: "Purple", practice: "Wednesday" },
+    { id: 4, name: "Crew", color: "Black", practice: "Thursday" },
+    { id: 5, name: "Liverpool", color: "Red", practice: "Friday" }]);
 
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [team_id, setTeamID] = useState("");
+    const [user_obj, setUserObj] = useState({user_id: 1});
+
+
+
+    // useEffect(() => {
+    //     const url = 'http://localhost:8000/getTeams'
+    //     const method = 'get'
+    //     const headers = {
+    //       'Content-Type': 'application/json;charset=UTF-8',
+    //       'Access-Control-Allow-Origin': '*'
+    //     }
+    //     const body="";
+    //     const data="";
+
+    //     axios({
+    //       url,
+    //       method,
+    //       headers,
+    //       body,
+    //       data
+    //     })
+    //       .then(res => console.log(res))
+    //       .catch(err => console.log('error: ', err))
+    //   })
+    function handleSubmit(event) {
+        console.log('Player Submitted');
+        event.preventDefault();
+        const url = 'http://localhost:8000/PlayerRegistration'
+        const method = 'post'
+        const headers = {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Access-Control-Allow-Origin': '*'
+        }
+        const body = { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.user_id }
+        const data = { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.user_id }
+        console.log({ body });
+        axios({
+            url,
+            method,
+            headers,
+            body,
+            data
+        })
+            .then(res => console.log(res))
+            .catch(err => console.log('error: ', err))
+    }
 
     return (
         <>
@@ -29,11 +81,17 @@ function Registration() {
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Label for="first">First Name</Label>
-                                    <Input name="First Name" id="firstName" />
+                                    <Input name="First Name" id="firstName"
+                                        onChange={e => setFirstName(e.target.value)}
+
+                                    />
                                 </Col>
                                 <Col className="col-6">
                                     <Label for="last">Last Name</Label>
-                                    <Input name="Last Name" id="LastName" />
+                                    <Input name="Last Name" id="lastName"
+                                        onChange={e => setLastName(e.target.value)}
+
+                                    />
                                 </Col>
                             </Row>
 
@@ -52,7 +110,7 @@ function Registration() {
                                     <FormGroup className="form-check-inline" tag="fieldset">
                                         <FormGroup check>
                                             <Label check>
-                                                <Input checked type="radio" name="radio1" />{' '} Co-ed</Label>
+                                                <Input defaultChecked type="radio" name="radio1" />{' '} Co-ed</Label>
                                         </FormGroup>
                                         <FormGroup check>
                                             <Label check>
@@ -69,10 +127,13 @@ function Registration() {
                             <Row className="mt-3">
                                 <Label for="teamSelect">Team</Label>
                                 <Col className="col-6">
-                                    <Input type="select" name="select" id="teamSelect">
+                                    <Input type="select" name="select" id="teamSelect"
+                                        onChange={e => setTeamID(e.target.value)}
+                                    >
+                                            <option>Pick a team...</option>
                                         {/* dynamic list of teams */}
                                         {teams.map((item, idx) =>
-                                            <option className={item.color} key={idx}>{item.name}</option>
+                                            <option value={item.id} color={item.color} key={idx}>{item.name} - {item.color} - Practice: {item.practice}</option>
                                         )}
 
                                     </Input>
@@ -84,7 +145,7 @@ function Registration() {
 
                             <Row check className="mt-3 text-center">
                                 <Col >
-                                    <Button type="submit" className="btn btn-danger">Submit</Button>
+                                    <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
                                 </Col>
                             </Row>
                         </Form>
@@ -95,4 +156,4 @@ function Registration() {
     );
 }
 
-export default Registration;
+export default RegisterPlayer;
