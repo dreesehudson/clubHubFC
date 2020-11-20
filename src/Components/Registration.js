@@ -14,6 +14,11 @@ import {
 
 function Registration() {
 
+    const [teams, setTeams] = useState([{ name: "Galaxy", color: "Yellow", practice: "Monday" },
+    { name: "Sounders", color: "Green", practice: "Tuesday" },
+    { name: "Louisville City", color: "Purple", practice: "Wednesday" }]);
+
+
     return (
         <>
             <Router>
@@ -37,10 +42,10 @@ function Registration() {
                                     <Label for="exampleSelect">Age Group</Label>
                                     <Input type="select" name="select" id="exampleSelect">
                                         <option>Open</option>
-                                        <option disabled>U8</option>
-                                        <option disabled>U10</option>
-                                        <option disabled>U12</option>
-                                        <option disabled>U14</option>
+                                        <option disabled>K-1st</option>
+                                        <option disabled>2nd-3rd</option>
+                                        <option disabled>4th-5th</option>
+                                        <option disabled>Middle School</option>
                                     </Input>
                                 </Col>
                                 <Col className="col-6">
@@ -65,8 +70,10 @@ function Registration() {
                                 <Label for="teamSelect">Team</Label>
                                 <Col className="col-6">
                                     <Input type="select" name="select" id="teamSelect">
-                                        <option>Galaxy</option>
                                         {/* dynamic list of teams */}
+                                        {teams.map((item, idx) =>
+                                            <option className={item.color} key={idx}>{item.name}</option>
+                                        )}
 
                                     </Input>
                                 </Col>
@@ -83,7 +90,7 @@ function Registration() {
                         </Form>
                     </Jumbotron>
                 </Container>
-            </Router>
+            </Router >
         </>
     );
 }
