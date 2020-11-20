@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 
 
-function App() {
+function Registration() {
 
     return (
         <>
@@ -88,4 +88,4 @@ function App() {
     );
 }
 
-export default App;
+export default Registration;
