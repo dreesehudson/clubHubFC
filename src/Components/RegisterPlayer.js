@@ -24,7 +24,7 @@ function RegisterPlayer() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [team_id, setTeamID] = useState("");
-    const [user_obj, setUserObj] = useState({user_id: 1});
+    const [user_obj, setUserObj] = useState({user_id: "1"});
 
 
 
