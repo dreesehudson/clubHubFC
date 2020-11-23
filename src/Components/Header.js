@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-// import wordmark from 'ßaotc_react/src/img/IA3_Wordmark_Black.png'
-//import  from './Components/'
+import rules from '../pdf/Fall-2020-Rules.pdf'
 import {
     Collapse,
     Navbar,
@@ -8,22 +7,22 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink
+    Button
 } from 'reactstrap';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
+    // BrowserRouter as Router,
+    // Switch,
+    // Route,
     Link
 } from "react-router-dom";
 
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
-
     const toggle = () => setIsOpen(!isOpen);
-
-
+    //function logOut() {
+    //  setBearer="";
+    //}
 
     return (
         <div>
@@ -40,6 +39,14 @@ const Header = () => {
                             <NavItem>
                                 <Link className="m-2 text-light" to='/playerRegistration'>Register</Link>
                             </NavItem>
+                            <NavItem>
+                                <a target="_blank" rel="noreferrer" className="m-2 text-light" href='https://www.iam3rd.org/wp-content/uploads/2020/08/Fall-2020-Rules.pdf'>Rules</a>
+                            </NavItem>
+                            if (userLoggedIn) {
+                                <NavItem>
+                                    <Button className="m-2 bg-dark" onClick="logOut">Log Out</Button>
+                                </NavItem>
+                            }
                         </Nav>
                     </Collapse>
                 </Navbar>

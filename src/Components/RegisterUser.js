@@ -3,15 +3,15 @@ import axios from 'axios';
 import { axiosHelper } from '../Utilities/axiosHelper.js';
 
 import {
-    Col, Row, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody,
+    Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
     ModalFooter
 } from 'reactstrap';
 
 import {
     BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
+    // Switch,
+    // Route,
+    // Link
 } from "react-router-dom";
 
 
@@ -21,31 +21,36 @@ function RegisterUser() {
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
+    const [userToken, setUserToken] = useState("");
+
+    function parseUserToken(authToken){
+        setUserToken(authToken.accessToken);
+    }
 
     function handleSubmit(event) {
         console.log('User Submitted');
         event.preventDefault();
-        axiosHelper('post', '/register', {'Content-Type': 'application/json;charset=UTF-8', 'Access-Control-Allow-Origin': '*'}, {}, "")
-        // const url = 'http://localhost:8000/register'
-        // const method = 'post'
-        // const headers = {
-        //   'Content-Type': 'application/json;charset=UTF-8',
-        //   'Access-Control-Allow-Origin': '*'
-        // }
-        // const body = { name: userName, email: userEmail, password: userPassword }
-        // const data = { name: userName, email: userEmail, password: userPassword }
-        // console.log({ body });
-        // axios({
-        //   url,
-        //   method,
-        //   headers,
-        //   body,
-        //   data
-        // })
-        //   .then(res => console.log(res))
-        //   .catch(err => console.log('error: ', err))
+        // axiosHelper('post', '/register', {'Content-Type': 'application/json;charset=UTF-8', 'Access-Control-Allow-Origin': '*'}, {}, console.log)
+        const url = 'http://localhost:8000/register'
+        const method = 'post'
+        const headers = {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Access-Control-Allow-Origin': '*'
+        }
+        const body = { name: userName, email: userEmail, password: userPassword }
+        const data = { name: userName, email: userEmail, password: userPassword }
+        console.log({ body });
+        axios({
+          url,
+          method,
+          headers,
+          body,
+          data
+        })
+          .then(res => console.log(res.data))
+          .catch(err => console.log('error: ', err))
       }
-    
+    //send parseToken(res.data)
 
     return (
         <>
@@ -66,7 +71,6 @@ function RegisterUser() {
                                 <Input className='mb-2' type="password" name="password" id="userPassword" placeholder=""
                                     onChange={e => setUserPassword(e.target.value)}
                                 />
-
                             </Col>
                         </Row>
                     </ModalBody>

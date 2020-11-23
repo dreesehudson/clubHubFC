@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { axiosHelper } from '../Utilities/axiosHelper.js'
+import axiosHelper from '../Utilities/axiosHelper.js'
 import {
     Col, Row, Container, Button, Form, FormGroup, Label, Input, Jumbotron
 } from 'reactstrap';
@@ -57,7 +57,7 @@ function RegisterPlayer() {
                 'Access-Control-Allow-Origin': '*'
             },
             { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.user_id },
-            "");
+            );
     }
 
     return (
@@ -69,13 +69,13 @@ function RegisterPlayer() {
                         <Form className="mt-5">
                             <Row className="mt-3">
                                 <Col className="col-6">
-                                    <Label for="first">First Name</Label>
+                                    <Label for="firstName">First Name</Label>
                                     <Input name="First Name" id="firstName"
                                         onChange={e => setFirstName(e.target.value)}
                                     />
                                 </Col>
                                 <Col className="col-6">
-                                    <Label for="last">Last Name</Label>
+                                    <Label for="lastName">Last Name</Label>
                                     <Input name="Last Name" id="lastName"
                                         onChange={e => setLastName(e.target.value)}
                                     />
@@ -86,10 +86,10 @@ function RegisterPlayer() {
                                     <Label for="exampleSelect">Age Group</Label>
                                     <Input type="select" name="select" id="exampleSelect">
                                         <option>Open</option>
-                                        <option disabled>K-1st</option>
-                                        <option disabled>2nd-3rd</option>
-                                        <option disabled>4th-5th</option>
-                                        <option disabled>Middle School</option>
+                                        <option>K-1st</option>
+                                        <option>2nd-3rd</option>
+                                        <option>4th-5th</option>
+                                        <option>Middle School</option>
                                     </Input>
                                 </Col>
                                 <Col className="col-6">

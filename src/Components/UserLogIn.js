@@ -65,7 +65,6 @@ function UserLogIn({bearer, setBearer}) {
                                 <Input className='mb-2' type="password" name="password" id="userPassword"
                                     onChange={e => setUserPassword(e.target.value)}
                                 />
-
                             </Col>
                         </Row>
                     </ModalBody>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AppContext = React.createContext({});
+const appContext = React.createContext({});
 
-export const AppProvider = AppContext.Provider;
-export default AppContext;
+export const AppProvider = appContext.Provider;
+export default appContext;

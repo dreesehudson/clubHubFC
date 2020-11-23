@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Header from './Components/Header.js';
 import RegisterPlayer from './Components/RegisterPlayer.js';
 import FrontPage from './Components/FrontPage.js';
-import FooterBar from './Components/FooterBar.js';
-import { AppProvider } from './Utilities/AppContext.js'
+import Footer from './Components/Footer.js';
+import appContext, { AppProvider } from './Utilities/AppContext'
 import './App.css';
 
 import {
@@ -16,14 +16,14 @@ import {
 
 
 function App() {
-
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  
+  const initialContext = useContext(appContext);
+  const [bearer, setBearer] = useState("");
 
   return (
     <>
       <div className="App container-fluid">
-        <AppProvider>
+        <AppProvider value={initialContext}  >
           <Router>
             <Header />
             <Switch>
@@ -34,7 +34,7 @@ function App() {
                 <FrontPage />
               </Route>
             </Switch>
-            <FooterBar />
+            <Footer />
           </Router>
         </AppProvider>
       </div>
