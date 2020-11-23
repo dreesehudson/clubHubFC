@@ -32,7 +32,7 @@ function UserLogIn({bearer, setBearer}) {
         const data = { 
             grant_type: "password",
             client_id: 2,
-            client_secret: "swDPgWWgQF4qmwEPuVgukHvl9wA2pFc4wbVQP6tq",
+            client_secret: "PqPvySh7lgiQSAlH58Ag8xeapeCblT9MG5XtbTNN",
             password: userPassword,
             username: userEmail,
             scope: ""

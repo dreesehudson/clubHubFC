@@ -6,14 +6,14 @@ import {
     Link
 } from "react-router-dom";
 
-function Footer() {
+function FooterBar() {
     return (
-        <footer>
+        <footer className="bg-danger fixed-bottom">
             <div>
-
+                <p>Footer</p>
             </div>
         </footer>
     );
 }
 
-export default Footer;
+export default FooterBar;

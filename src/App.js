@@ -3,21 +3,9 @@ import React, { useState } from 'react';
 import Header from './Components/Header.js';
 import RegisterPlayer from './Components/RegisterPlayer.js';
 import FrontPage from './Components/FrontPage.js';
-import Footer from './Components/Footer.js';
-//import axios from 'axios';
+import FooterBar from './Components/FooterBar.js';
 import { AppProvider } from './Utilities/AppContext.js'
-
 import './App.css';
-
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink
-} from 'reactstrap';
 
 import {
   BrowserRouter as Router,
@@ -34,25 +22,10 @@ function App() {
 
   return (
     <>
-      <div className="App">
+      <div className="App container-fluid">
         <AppProvider>
           <Router>
-            {/* <Header /> */}
-            <Navbar color="danger" light expand="md">
-              <NavbarBrand href="/"><img src='../img/IA3_Wordmark_Black.png' alt='wordmark' /></NavbarBrand>
-              <NavbarToggler onClick={toggle} />
-              <Collapse isOpen={isOpen} navbar>
-                <Nav className="ml-auto" navbar>
-                  <NavItem>
-                    <Link to="/">Home</Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link to='/playerRegistration'>Register</Link>
-                  </NavItem>
-                </Nav>
-              </Collapse>
-            </Navbar>
-
+            <Header />
             <Switch>
               <Route path="/playerRegistration">
                 <RegisterPlayer />
@@ -61,9 +34,8 @@ function App() {
                 <FrontPage />
               </Route>
             </Switch>
-            <Footer />
+            <FooterBar />
           </Router>
-
         </AppProvider>
       </div>
     </>

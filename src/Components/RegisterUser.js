@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { axiosHelper } from '../Utilities/axiosHelper.js';
 
 import {
     Col, Row, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody,
@@ -11,7 +13,6 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import axios from 'axios';
 
 
 function RegisterUser() {
@@ -24,24 +25,25 @@ function RegisterUser() {
     function handleSubmit(event) {
         console.log('User Submitted');
         event.preventDefault();
-        const url = 'http://localhost:8000/register'
-        const method = 'post'
-        const headers = {
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Access-Control-Allow-Origin': '*'
-        }
-        const body = { name: userName, email: userEmail, password: userPassword }
-        const data = { name: userName, email: userEmail, password: userPassword }
-        console.log({ body });
-        axios({
-          url,
-          method,
-          headers,
-          body,
-          data
-        })
-          .then(res => console.log(res))
-          .catch(err => console.log('error: ', err))
+        axiosHelper('post', '/register', {'Content-Type': 'application/json;charset=UTF-8', 'Access-Control-Allow-Origin': '*'}, {}, "")
+        // const url = 'http://localhost:8000/register'
+        // const method = 'post'
+        // const headers = {
+        //   'Content-Type': 'application/json;charset=UTF-8',
+        //   'Access-Control-Allow-Origin': '*'
+        // }
+        // const body = { name: userName, email: userEmail, password: userPassword }
+        // const data = { name: userName, email: userEmail, password: userPassword }
+        // console.log({ body });
+        // axios({
+        //   url,
+        //   method,
+        //   headers,
+        //   body,
+        //   data
+        // })
+        //   .then(res => console.log(res))
+        //   .catch(err => console.log('error: ', err))
       }
     
 
