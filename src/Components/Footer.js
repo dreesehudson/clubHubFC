@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col } from 'reactstrap';
 import {
     BrowserRouter as Router,
     Switch,
@@ -8,10 +9,16 @@ import {
 
 function Footer() {
     return (
-        <footer>
-            <div>
-
-            </div>
+        <footer className="bg-danger fixed-bottom">
+            <Row>
+                <Col>
+                </Col>
+                <Col>
+                    <p>Footer</p>
+                </Col>
+                <Col>
+                </Col>
+            </Row>
         </footer>
     );
 }

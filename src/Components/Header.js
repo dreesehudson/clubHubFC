@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-// import Wordmark from 'aotc_react/src/img/IA3_Wordmark_Black.png'
-//import  from './Components/'
+import { useBearer } from '../utilities/BearerContext'
 import {
     Collapse,
     Navbar,
@@ -8,44 +7,42 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink
+    Button
 } from 'reactstrap';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
-import Wordmark from '../img/IA3_Wordmark_Black.png'
 
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
-
     const toggle = () => setIsOpen(!isOpen);
+    const {bearer, logOut} = useBearer();
 
 
-    
     return (
         <div>
-            <header>
+            <header className="fixed-top">
+                {/* <Header /> */}
                 <Navbar color="danger" light expand="md">
-                    <NavbarBrand href="/"><img src='../img/IA3_Wordmark_Black.png' alt='wordmark'/></NavbarBrand>
+                    <NavbarBrand href="/"><h1 className="display-5"><b>League Name</b></h1></NavbarBrand>
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/">Home</NavLink>
+                                <Button className="m-2 btn-dark text-light" to="/">Home</Button>
                             </NavItem>
                             <NavItem>
-                                <NavLink>About Us</NavLink>
+                                <Button className="m-2 btn-dark text-light" to="/about">About</Button>
                             </NavItem>
+                            {bearer &&
+                                <NavItem>
+                                    <Button className="m-2 btn-dark text-light" to='/playerRegistration'>Register</Button>
+                                </NavItem>}
                             <NavItem>
-                                <NavLink>Sports</NavLink>
+                                <Button target="_blank" rel="noreferrer" className="m-2 btn-dark" href='https://www.iam3rd.org/wp-content/uploads/2020/08/Fall-2020-Rules.pdf'>Rules</Button>
                             </NavItem>
-                            <NavItem>
-                                <NavLink>Contact</NavLink>
-                            </NavItem>
+                            
+                            {bearer && <NavItem>
+                                <Button className="m-2 btn-dark text-light" onClick={logOut}>Log Out</Button>
+                            </NavItem>}
                         </Nav>
                     </Collapse>
                 </Navbar>
