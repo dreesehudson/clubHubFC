@@ -9,7 +9,7 @@ import {
 
 function Footer() {
     return (
-        <footer className="bg-danger fixed-bottom">
+        <footer className="bg-danger mt-5 fixed-bottom">
             <Row>
                 <Col>
                 </Col>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import {
     Col, Row, Container, Button, Form, FormGroup, Label, Input, Jumbotron
@@ -11,13 +12,14 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import BearerContext from '../utilities/BearerContext';
 
 
 function RegisterPlayer() {
 
-    const [teams, setTeams] = useState([{"id": 1, "color": "Yellow", "practice":"Monday", "name":"Test"}]);
-    const [ageGroup, setAgeGroup] = useState("");
-    const [gender, setGender] = useState("");
+    const [teams, setTeams] = useState([{ "id": 1, "color": "Yellow", "practice": "Monday", "name": "Test" }]);
+    // const [ageGroup, setAgeGroup] = useState("");
+    // const [gender, setGender] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [team_id, setTeamID] = useState("");
@@ -38,10 +40,11 @@ function RegisterPlayer() {
             '/PlayerRegistration',
             {
                 'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': { useBearer }
             },
             { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.user_id },
-            );
+        );
     }
 
     return (
@@ -50,22 +53,22 @@ function RegisterPlayer() {
                 <Container className="App text-left">
                     <Jumbotron className="mt-5">
                         <h2 className="display-4" >New Player Sign-Up</h2>
-                        <Form className="mt-5">
-                            <Row className="mt-3">
-                                <Col className="col-6">
+                        <Form>
+                            <Row>
+                                <Col className="col-md-6 col-12 mt-3">
                                     <Label for="firstName">First Name</Label>
                                     <Input name="First Name" id="firstName"
                                         onChange={e => setFirstName(e.target.value)}
                                     />
                                 </Col>
-                                <Col className="col-6">
+                                <Col className="col-md-6 col-12 mt-3">
                                     <Label for="lastName">Last Name</Label>
                                     <Input name="Last Name" id="lastName"
                                         onChange={e => setLastName(e.target.value)}
                                     />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            {/* <Row className="mt-3">
                                 <Col className="col-6">
                                     <Label for="exampleSelect">Age Group</Label>
                                     <Input type="select" name="select" id="exampleSelect">
@@ -84,11 +87,11 @@ function RegisterPlayer() {
                                         <option >Girls</option>
                                     </Input>
                                 </Col>
-                            </Row>
+                            </Row> */}
 
-                            <Row className="mt-3">
-                                <Label for="teamSelect">Team</Label>
-                                <Col className="col-6">
+                            <Row>
+                                <Col className="col-md-6 col-12 mt-3">
+                                    <Label for="teamSelect">Team</Label>
                                     <Input type="select" name="select" id="teamSelect"
                                         onChange={e => setTeamID(e.target.value)}
                                     >
@@ -100,8 +103,6 @@ function RegisterPlayer() {
                                             <option value={item.id} color={item.color} key={idx}>{item.name} - {item.color} - Practice: {item.practice}</option>
                                         )}
                                     </Input>
-                                </Col>
-                                <Col className="col-6">
                                 </Col>
                             </Row>
                             <Row check className="mt-3 text-center">
