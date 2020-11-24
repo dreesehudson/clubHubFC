@@ -7,13 +7,13 @@ const TeamSelector = (props) => {
   const toggle = () => setOpen(!dropdownOpen);
 
   return (
-    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle caret>
+    <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
+      <DropdownToggle className="mt-5" caret>
         Select A Team
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>Available Teams</DropdownItem>
-        {/* Map through teams assoctiated with this user */}
+        {/* Map through teams associated with this user */}
         <DropdownItem>Another Action</DropdownItem>
         <DropdownItem divider />
         <DropdownItem>Another Action</DropdownItem>

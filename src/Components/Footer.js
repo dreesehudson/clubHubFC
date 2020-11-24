@@ -1,11 +1,5 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
 
 function Footer() {
     return (

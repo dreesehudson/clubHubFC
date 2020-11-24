@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
-    Collapse, Jumbotron, Button, CardBody, Card, Table,
-    ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+    Collapse, Jumbotron, Button, CardBody, Card, Table
 } from 'reactstrap';
 import BearerContext from '../utilities/BearerContext';
 
@@ -11,7 +10,7 @@ function Dashboard() {
 
     return (
         <>
-            <Jumbotron className="mt-5 text-left">
+            <Jumbotron className="mt-3 text-left">
                 <h1 className="display-4">Team Name</h1>
                 <p className="ml-4 lead">Coach Smith</p>
                 <Button className="mt-3" color="primary" onClick={toggle} style={{ marginBottom: '1rem' }}>Schedule</Button>
@@ -21,29 +20,48 @@ function Dashboard() {
                             <Table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
+                                        {/* <th scope="col">Number</th> */}
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Home</th>
+                                        <th scope="col"></th>
+                                        <th scope="col">Away</th>
+                                        <th scope="col">Time</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
+                                        <td>Match</td>
+                                        <td>11/24/20</td>
+                                        <td>Galaxy</td>
+                                        <td>vs.</td>
+                                        <td>United</td>
+                                        <td>12:00 PM</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
+                                        <td>Practice</td>
+                                        <td>11/27/20</td>
+                                        <td>Galaxy</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>12:00 PM</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
+                                        <td>Match</td>
+                                        <td>11/30/20</td>
+                                        <td>Galaxy</td>
+                                        <td>vs.</td>
+                                        <td>United</td>
+                                        <td>12:00 PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Match</td>
+                                        <td>12/4/20</td>
+                                        <td>Galaxy</td>
+                                        <td>vs.</td>
+                                        <td>United</td>
+                                        <td>12:00 PM</td>
                                     </tr>
                                 </tbody>
                             </Table>

@@ -29,6 +29,7 @@ function BearerHelper() {
 
     useEffect(()=>{
         const lsBearer = window.localStorage.getItem('bearer')
+        console.log(lsBearer);
         if(lsBearer){
             setBearer(lsBearer)
         }

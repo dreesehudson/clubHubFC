@@ -19,7 +19,7 @@ const Header = () => {
 
     return (
         <>
-            <Navbar className="mb-3" color="danger" light expand="md">
+            <Navbar className="mb-3 fixed-top" color="danger" light expand="md">
                 <NavbarBrand href="/"><h1><b>League Name</b></h1></NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
