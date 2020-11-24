@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 
-import Header from './Components/Header.js';
-import RegisterPlayer from './Components/RegisterPlayer.js';
-import FrontPage from './Components/FrontPage.js';
-import Footer from './Components/Footer.js';
-import appContext, { AppProvider } from './Utilities/AppContext'
+import Header from './Components/Header';
+import RegisterPlayer from './Components/RegisterPlayer';
+import FrontPage from './Components/FrontPage';
+import Footer from './Components/Footer';
+import { AppProvider } from './utilities/BearerContext'
 import './App.css';
 
 import {
@@ -17,13 +17,9 @@ import {
 
 function App() {
   
-  const initialContext = useContext(appContext);
-  const [bearer, setBearer] = useState("");
-
   return (
-    <>
       <div className="App container-fluid">
-        <AppProvider value={initialContext}  >
+        <AppProvider >
           <Router>
             <Header />
             <Switch>
@@ -38,7 +34,6 @@ function App() {
           </Router>
         </AppProvider>
       </div>
-    </>
   );
 }
 

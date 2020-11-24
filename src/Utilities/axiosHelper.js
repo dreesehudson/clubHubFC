@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-export default function axiosHelper(method, url, headers, data, fun) {
+export function axiosHelper(method, url, headers, data, fun) {
     const API_URL = 'http://localhost:8000';
     return axios(
         {
@@ -11,7 +11,7 @@ export default function axiosHelper(method, url, headers, data, fun) {
             data
         }
     )
-    .then(res => fun(res.data))
+    .then(fun)
     .catch(e => console.log(e));
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import axiosHelper from '../Utilities/axiosHelper.js'
+import { axiosHelper } from '../utilities/axiosHelper'
 import {
     Col, Row, Container, Button, Form, FormGroup, Label, Input, Jumbotron
 } from 'reactstrap';
@@ -23,29 +23,13 @@ function RegisterPlayer() {
     const [team_id, setTeamID] = useState("");
     const [user_obj, setUserObj] = useState({ user_id: "1" });
 
-    useEffect(() => {
-        // axiosHelper('get', '/getTeams', {
-        //          'Content-Type': 'application/json;charset=UTF-8',
-        //          'Access-Control-Allow-Origin': '*' }, {}, setTeams());
-        // const url = 'http://localhost:8000/getTeams'
-        // const method = 'get'
-        // const headers = {
-        //     'Content-Type': 'application/json;charset=UTF-8',
-        //     'Access-Control-Allow-Origin': '*'
-        // }
-        // const body = "";
-        // const data = "";
-
-        // axios({
-        //     url,
-        //     method,
-        //     headers,
-        //     body,
-        //     data
-        // })
-        //     .then(res => console.log(res))
-        //     .catch(err => console.log('error: ', err))
-    }, []);
+    // useEffect(() => {
+    //     const headers = {
+    //         'Content-Type': 'application/json;charset=UTF-8',
+    //         'Access-Control-Allow-Origin': '*'
+    //     }
+    //     //axiosHelper('get', '/getTeams', headers, setTeams());
+    // }
 
     function handleSubmit(event) {
         event.preventDefault();

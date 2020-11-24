@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { axiosHelper } from '../Utilities/axiosHelper.js';
+import { axiosHelper } from '../utilities/axiosHelper';
 
 import {
     Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
@@ -21,11 +21,8 @@ function RegisterUser() {
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
-    const [userToken, setUserToken] = useState("");
 
-    function parseUserToken(authToken){
-        setUserToken(authToken.accessToken);
-    }
+
 
     function handleSubmit(event) {
         console.log('User Submitted');
@@ -39,7 +36,6 @@ function RegisterUser() {
         }
         const body = { name: userName, email: userEmail, password: userPassword }
         const data = { name: userName, email: userEmail, password: userPassword }
-        console.log({ body });
         axios({
           url,
           method,
@@ -50,12 +46,11 @@ function RegisterUser() {
           .then(res => console.log(res.data))
           .catch(err => console.log('error: ', err))
       }
-    //send parseToken(res.data)
 
     return (
         <>
             <Router>
-                <Button className="mt-3 ml-2" color="danger" onClick={toggle}>Sign Up</Button>
+                <Button className="btn-lg mt-3 ml-2" color="danger" onClick={toggle}>Sign Up</Button>
                 <Modal isOpen={modal} toggle={toggle}>
                     <ModalHeader toggle={toggle}>Register New User Account</ModalHeader>
                     <ModalBody>
