@@ -6,6 +6,7 @@ import Dashboard from './Dashboard'
 import shield from '../img/shield.png'
 import { Row } from 'reactstrap'
 import { useBearer } from '../utilities/BearerContext'
+import { useAdmin } from '../utilities/AdminContext'
 
 // import {
 //     BrowserRouter as Router,

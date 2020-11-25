@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useBearer } from '../utilities/BearerContext'
+import { useAdmin } from '../utilities/AdminContext'
 import { useUser } from '../utilities/UserContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import {
@@ -20,7 +21,7 @@ import axios from 'axios';
 
 function UserLogIn() {
     const { saveBearer } = useBearer();
-    const { saveUser } = useUser();
+    //const { saveUser } = useUser();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
     const [email, setUserEmail] = useState("");

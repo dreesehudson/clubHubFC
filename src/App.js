@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Admin from './Components/Admin'
 import Header from './Components/Header';
 import RegisterPlayer from './Components/RegisterPlayer';
 import FrontPage from './Components/FrontPage';
@@ -24,6 +24,9 @@ function App() {
             <Switch>
               <Route path="/playerRegistration">
                 <RegisterPlayer />
+              </Route>
+              <Route path="/admin">
+                <Admin />
               </Route>
               <Route exact path="/">
                 <FrontPage />

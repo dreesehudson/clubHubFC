@@ -1,23 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import { Col, Row, Container, Button, Form, Label, Input, Jumbotron } from 'reactstrap';
 import UserLogIn from './UserLogIn';
 import RegisterUser from './RegisterUser';
-
 function RegisterPlayer() {
 
-    const [teams, setTeams] = useState([
-        { "id": 1, "color": "Yellow", "practice": "Monday", "name": "Galaxy" },
-        { "id": 2, "color": "Green", "practice": "Tuesday", "name": "Sounders" },
-        { "id": 3, "color": "Blue", "practice": "Wednesday", "name": "Revolution" },
-    ]);
+    const [teams, setTeams] = useState([]);
     // const [ageGroup, setAgeGroup] = useState("");
     // const [gender, setGender] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [team_id, setTeamID] = useState("");
-    const [user_obj, setUserObj] = useState({ user_id: "1" });
+    const [user_obj, setUserObj] = useState({user_id:'1'});
     const { bearer } = useBearer();
 
     function handleSubmit(event) {
@@ -31,18 +26,62 @@ function RegisterPlayer() {
                 'Authorization': 'Bearer ' + bearer
             },
             { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.user_id },
+            //TO DO: add element to page to tell user that player has been added.
         );
     }
+
+    const storeTeams = (response) => {
+        setTeams(response.data)
+        console.log(response.data)
+    }
+
+    // const storeID = (response) => {
+    //     //setUserObj(response.data)
+    //     console.log(response.data)
+    // }
+
+
+
+    useEffect(() => {
+            //axios call to get index of all teams
+            axiosHelper(
+                'get',
+                '/getTeams',
+                {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': 'Bearer ' + bearer
+                },
+                {},
+                storeTeams
+            )
+
+            //axios call to get index of all teams
+            // axiosHelper(
+            //     'get',
+            //     '/getCurrentUser',
+            //     {
+            //         'Content-Type': 'application/json;charset=UTF-8',
+            //         'Access-Control-Allow-Origin': '*',
+            //         'Authorization': 'Bearer ' + bearer
+            //     },
+            //     {},
+            //     storeID
+            // )
+
+            
+            //console.log(teams);
+        }, [bearer]);
 
     return (
         <>
 
-            {!bearer && 
-            <>
-                <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
-                <UserLogIn className="mt-5"/>
-                <RegisterUser className="mt-5" />
-            </>
+            {!bearer &&
+                <>
+                    <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
+                    <UserLogIn className="mt-5" />
+                    <RegisterUser className="mt-5" />
+                </>
             }
             {bearer &&
                 <Container className="App text-left">
@@ -94,7 +133,7 @@ function RegisterPlayer() {
                                             THIS LOADS BEFORE AXIOS RETURNS WITH TEAM ARRAY
                                         */}
                                         {teams.map((item, idx) =>
-                                            <option value={item.id} color={item.color} key={idx}>{item.name} - {item.color} - Practice: {item.practice}</option>
+                                            <option value={item.id} color={item.color} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
                                         )}
                                     </Input>
                                 </Col>

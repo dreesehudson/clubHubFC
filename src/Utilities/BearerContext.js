@@ -17,6 +17,7 @@ export const useBearer = () => useContext(BearerContext);
 
 function BearerHelper() {
     const [bearer, setBearer] = useState("");
+    
     function saveBearer(newBearer){
         setBearer(newBearer)
         window.localStorage.setItem('bearer', newBearer)
@@ -29,11 +30,12 @@ function BearerHelper() {
 
     useEffect(()=>{
         const lsBearer = window.localStorage.getItem('bearer')
-        console.log(lsBearer);
+        //console.log(lsBearer);
         if(lsBearer){
             setBearer(lsBearer)
         }
     }, [])
+    
     return {
         bearer, saveBearer, logOut
     };
