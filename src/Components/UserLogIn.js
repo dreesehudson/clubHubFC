@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useBearer } from '../utilities/BearerContext'
+import { useAdmin } from '../utilities/AdminContext'
+import { useUser } from '../utilities/UserContext'
+import { axiosHelper } from '../utilities/axiosHelper'
 import {
     Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
     ModalFooter
@@ -17,14 +20,15 @@ import axios from 'axios';
 
 
 function UserLogIn() {
-    const {saveBearer} = useBearer();
+    const { saveBearer } = useBearer();
+    //const { saveUser } = useUser();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
     const [email, setUserEmail] = useState("");
     const [password, setUserPassword] = useState("");
 
     function handleSubmit(event) {
-        const url = 'http://localhost:8000/v1/oauth/token'
+        const url = "http://localhost:8000/v1/oauth/token"
         const method = 'post'
         const headers = {
             'Content-Type': 'application/json;charset=UTF-8',
@@ -33,11 +37,14 @@ function UserLogIn() {
         const data = {
             grant_type: "password",
             client_id: 2,
-            client_secret: "PqPvySh7lgiQSAlH58Ag8xeapeCblT9MG5XtbTNN",
+            client_secret: "2ZSVMlwsAc4ogHGrkZ1c4A5ZewKNXgVXmi6gHrbm",
             password: password,
             username: email,
             scope: ""
         };
+        
+        //axiosHelper('post', '/v1/oath/token', headers, data, saveBearer);
+        
         axios({
             url,
             method,
@@ -46,6 +53,8 @@ function UserLogIn() {
         })
             .then(res => saveBearer(res.data.access_token))
             .catch(err => console.log('error: ', err));
+
+        //saveUser(email)
     }
 
     return (

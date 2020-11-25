@@ -1,21 +1,33 @@
-import React, { useContext } from 'react';
-import { Jumbotron, Button } from 'reactstrap';
-import BearerContext from '../utilities/BearerContext';
-
+import React, { useState, useEffect } from 'react';
+import {
+    Jumbotron
+} from 'reactstrap';
+import { useBearer } from '../utilities/BearerContext'
+import { useAdmin } from '../utilities/AdminContext'
+import Schedule from '../Components/Schedule'
+import Chat from '../Components/Chat'
 
 function Dashboard() {
+
+    // useEffect(() => {
+    //     effect
+    //     return () => {
+    //         cleanup
+    //     }
+    // }, [input])
+
+
     return (
-        <div>
-            <Jumbotron className="text-left">
-                <h1 className="display-4">Hello Name</h1>
-                <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
+        <>
+            <Jumbotron className="mt-3 text-left">
+                <h1 className="display-4">Team Name</h1>
+                <p className="ml-4 lead">Coach Smith</p>
+                <Schedule/>
+                {/* <Chat/> */}
                 <hr className="my-2" />
-                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                <p className="lead">
-                    <Button color="primary">Learn More</Button>
-                </p>
+
             </Jumbotron>
-        </div>
+        </>
     );
     //register link to add another child
     //schedule accordion

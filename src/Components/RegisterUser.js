@@ -32,7 +32,8 @@ function RegisterUser() {
         const method = 'post'
         const headers = {
           'Content-Type': 'application/json;charset=UTF-8',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': {}
         }
         const body = { name: userName, email: userEmail, password: userPassword }
         const data = { name: userName, email: userEmail, password: userPassword }
