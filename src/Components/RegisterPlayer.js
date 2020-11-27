@@ -4,6 +4,7 @@ import { axiosHelper } from '../utilities/axiosHelper'
 import { Col, Row, Container, Button, Form, Label, Input, Jumbotron } from 'reactstrap';
 import UserLogIn from './UserLogIn';
 import RegisterUser from './RegisterUser';
+
 function RegisterPlayer() {
 
     const [teams, setTeams] = useState([]);
@@ -55,22 +56,6 @@ function RegisterPlayer() {
                 {},
                 storeTeams
             )
-
-            //axios call to get index of all teams
-            // axiosHelper(
-            //     'get',
-            //     '/getCurrentUser',
-            //     {
-            //         'Content-Type': 'application/json;charset=UTF-8',
-            //         'Access-Control-Allow-Origin': '*',
-            //         'Authorization': 'Bearer ' + bearer
-            //     },
-            //     {},
-            //     storeID
-            // )
-
-            
-            //console.log(teams);
         }, [bearer]);
 
     return (
@@ -129,9 +114,6 @@ function RegisterPlayer() {
                                         onChange={e => setTeamID(e.target.value)}
                                     >
                                         <option>Pick a team...</option>
-                                        {/* dynamic list of teams 
-                                            THIS LOADS BEFORE AXIOS RETURNS WITH TEAM ARRAY
-                                        */}
                                         {teams.map((item, idx) =>
                                             <option value={item.id} color={item.color} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
                                         )}

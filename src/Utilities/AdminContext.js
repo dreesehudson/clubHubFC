@@ -16,27 +16,22 @@ export default AdminContext;
 export const useAdmin = () => useContext(AdminContext);
 
 function AdminHelper() {
-    const [adminMode, setAdminMode] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+    //const [adminMode, setAdminMode] = useState("");
 
-    function saveAdminMode(newAdminMode){
-        setAdminMode(newAdminMode)
-        window.localStorage.setItem('adminMode', newAdminMode)
-    }
-
-    function toggleAdminMode(){
-        setAdminMode(!adminMode);
-        console.log(adminMode);
-        saveAdminMode(adminMode);
+    function saveIsAdmin(newIsAdmin){
+        setIsAdmin(newIsAdmin)
+        window.sessionStorage.setItem('isAdmin', newIsAdmin)
     }
 
     useEffect(() => {
-        const lsAdminMode = window.localStorage.getItem('adminMode')
-        if(lsAdminMode){
-            setAdminMode(lsAdminMode)
+        const ssAdmin = window.sessionStorage.getItem('admin')
+        if(ssAdmin){
+            setIsAdmin(ssAdmin)
         }
     }, [])
     return {
-        adminMode, saveAdminMode, toggleAdminMode
+        isAdmin, saveIsAdmin
     };
 
 }

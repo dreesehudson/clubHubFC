@@ -8,35 +8,37 @@ import { AppProvider } from './utilities/BearerContext'
 import './App.css';
 
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
+    BrowserRouter as Router,
+    Switch,
+    Route,
 } from "react-router-dom";
 
 
 function App() {
-  
-  return (
-      <div className="App container-fluid">
-        <AppProvider >
-          <Router>
-            <Header />
-            <Switch>
-              <Route path="/playerRegistration">
-                <RegisterPlayer />
-              </Route>
-              <Route path="/admin">
-                <Admin />
-              </Route>
-              <Route exact path="/">
-                <FrontPage />
-              </Route>
-            </Switch>
-            <Footer />
-          </Router>
-        </AppProvider>
-      </div>
-  );
+
+    return (
+        <div className="App container-fluid">
+            <AppProvider >
+                <Router>
+                    <Header />
+
+                    <Switch>
+                        <Route path="/playerRegistration">
+                            <RegisterPlayer />
+                        </Route>
+                        <Route path="/admin">
+                            <Admin />
+                        </Route>
+                        <Route exact path="/">
+                            <FrontPage />
+                        </Route>
+                    </Switch>
+
+                    <Footer />
+                </Router>
+            </AppProvider>
+        </div>
+    );
 }
 
 export default App;

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useBearer } from '../utilities/BearerContext'
-import { useAdmin } from '../utilities/AdminContext'
-import { useUser } from '../utilities/UserContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import {
     Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
@@ -10,9 +8,6 @@ import {
 
 import {
     BrowserRouter as Router,
-    // Switch,
-    // Route,
-    // Link
 } from "react-router-dom";
 import axios from 'axios';
 
@@ -37,24 +32,25 @@ function UserLogIn() {
         const data = {
             grant_type: "password",
             client_id: 2,
-            client_secret: "2ZSVMlwsAc4ogHGrkZ1c4A5ZewKNXgVXmi6gHrbm",
+            client_secret: "UK1NM2cI4ahsm3a11378jX2t3UepkkdSrl8qHW7X",
             password: password,
             username: email,
             scope: ""
         };
         
-        //axiosHelper('post', '/v1/oath/token', headers, data, saveBearer);
+        //axiosHelper('post', '/v1/oath/token', headers, data, res => saveBearer(res.data.access_token));
         
         axios({
-            url,
             method,
+            url,
             data,
             headers
         })
             .then(res => saveBearer(res.data.access_token))
             .catch(err => console.log('error: ', err));
 
-        //saveUser(email)
+        //once axios call completes get User Info
+        //if userIsAdmin then set session storage key to true.
     }
 
     return (
