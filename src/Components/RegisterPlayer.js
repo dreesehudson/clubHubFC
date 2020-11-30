@@ -13,7 +13,7 @@ function RegisterPlayer() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [team_id, setTeamID] = useState("");
-    const [user_obj, setUserObj] = useState({user_id:'1'});
+    const [user_obj, setUserObj] = useState({ user_id: '1' });
     const { bearer } = useBearer();
 
     function handleSubmit(event) {
@@ -44,31 +44,23 @@ function RegisterPlayer() {
 
 
     useEffect(() => {
-            //axios call to get index of all teams
-            axiosHelper(
-                'get',
-                '/getTeams',
-                {
-                    'Content-Type': 'application/json;charset=UTF-8',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': 'Bearer ' + bearer
-                },
-                {},
-                storeTeams
-            )
-        }, [bearer]);
+        //axios call to get index of all teams
+        axiosHelper(
+            'get',
+            '/getTeams',
+            {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Bearer ' + bearer
+            },
+            {},
+            storeTeams
+        )
+    }, [bearer]);
 
     return (
         <>
-
-            {!bearer &&
-                <>
-                    <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
-                    <UserLogIn className="mt-5" />
-                    <RegisterUser className="mt-5" />
-                </>
-            }
-            {bearer &&
+            {bearer ?
                 <Container className="App text-left">
                     <Jumbotron className="mt-5">
                         <h2 className="display-4" >New Player Sign-Up</h2>
@@ -87,26 +79,6 @@ function RegisterPlayer() {
                                     />
                                 </Col>
                             </Row>
-                            {/* <Row className="mt-3">
-                                <Col className="col-6">
-                                    <Label for="exampleSelect">Age Group</Label>
-                                    <Input type="select" name="select" id="exampleSelect">
-                                        <option>Open</option>
-                                        <option>K-1st</option>
-                                        <option>2nd-3rd</option>
-                                        <option>4th-5th</option>
-                                        <option>Middle School</option>
-                                    </Input>
-                                </Col>
-                                <Col className="col-6">
-                                    <Label for="exampleSelect">Gender</Label>
-                                    <Input type="select" name="select" id="exampleSelect">
-                                        <option>Choose One</option>
-                                        <option >Boys</option>
-                                        <option >Girls</option>
-                                    </Input>
-                                </Col>
-                            </Row> */}
                             <Row>
                                 <Col className="col-md-6 col-12 mt-3">
                                     <Label for="teamSelect">Team</Label>
@@ -128,6 +100,12 @@ function RegisterPlayer() {
                         </Form>
                     </Jumbotron>
                 </Container>
+                :
+                <>
+                    <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
+                    <UserLogIn className="mt-5" />
+                    <RegisterUser className="mt-5" />
+                </>
             }
         </>
     );

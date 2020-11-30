@@ -4,10 +4,11 @@ import {
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
 import Schedule from '../Components/Schedule'
-//import Chat from '../Components/Chat'
+import axios from 'axios';
 
 function Dashboard() {
-
+    const { bearer } = useBearer();
+    const [user, setUser] = useState({}) 
     // useEffect(() => {
     //     effect
     //     return () => {
@@ -15,13 +16,29 @@ function Dashboard() {
     //     }
     // }, [input])
 
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:8000/api/user',
+            data: { },
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${bearer}`
+            }
+        }
+        )
+            .then(res => setUser(res.data))
+            .catch(err => console.log('error: ', err));
+
+    }, [bearer]);
 
     return (
         <>
             <Jumbotron className="mt-3 text-left">
                 <h1 className="display-4">Team Name</h1>
                 <p className="ml-4 lead">Coach Smith</p>
-                <Schedule/>
+                <p>Parent: {user.email}</p>
+                <Schedule />
                 {/* <Chat/> */}
                 <hr className="my-2" />
 

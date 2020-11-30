@@ -13,8 +13,6 @@ const Admin = (props) => {
     const [teamName, setTeamName] = useState("");
     const [coach, setCoach] = useState("");
     const [color, setColor] = useState("");
-    const [ageGroup, setAgeGroup] = useState("");
-    const [gender, setGender] = useState("");
     const [practiceNight, setPracticeNight] = useState("");
     const [teams, setTeams] = useState([]);
     const [players, setPlayers] = useState([]);
@@ -88,8 +86,8 @@ const Admin = (props) => {
                 'Authorization': 'Bearer ' + bearer
             },
             {
-                name: teamName, coach: coach, color: color, age_group: ageGroup,
-                gender: gender, practice_night: practiceNight
+                name: teamName, coach: coach, color: color,
+                practice_night: practiceNight
             },
             //TO DO: add element to page to tell user that player has been added.
         );
@@ -97,6 +95,7 @@ const Admin = (props) => {
 
     useEffect(() => {
         //axios call to get index of all teams
+        
         axiosHelper(
             'get',
             '/getTeams',
@@ -141,21 +140,6 @@ const Admin = (props) => {
             {},
             storeSchedules
         )
-
-        // axiosHelper(
-        //     'get',
-        //     '/getCurrentUser',
-        //     {
-        //         'Content-Type': 'application/json;charset=UTF-8',
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Authorization': 'Bearer ' + bearer
-        //     },
-        //     {},
-        //     storeID
-        // )
-
-
-        //console.log(teams);
     }, [bearer]);
 
     return (
@@ -204,9 +188,9 @@ const Admin = (props) => {
                                                 <th scope="row">{item.id}</th>
                                                 <td>{item.first_name}</td>
                                                 <td>{item.last_name}</td>
-                                                <td>{item.ref_team_id}</td>
-                                                <td>{item.ref_user_id}</td>
-                                                <td></td>
+                                                <td>{item.team.name}</td>
+                                                <td>{item.user.name}</td>
+                                                <td>{item.user.email}</td>
                                                 <th><Button className="btn-warning">Edit</Button></th>
                                                 <th><Button className="btn-danger">Delete</Button></th>
                                             </tr>
@@ -253,29 +237,6 @@ const Admin = (props) => {
                                             </Row>
                                             <Row>
                                                 <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="ageGroup">Age Group</Label>
-                                                    <Input type="select" name="select" id="ageGroupSelect">
-                                                        <option>Choose One...</option>
-                                                        <option>K-1st</option>
-                                                        <option>2nd-3rd</option>
-                                                        <option>4th-5th</option>
-                                                        <option>Middle School</option>
-                                                        <option>Academy</option>
-                                                        <option>Professional</option>
-                                                    </Input>
-                                                </Col>
-                                                <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="gender">Gender</Label>
-                                                    <Input type="select" name="gender" id="genderSelect">
-                                                        <option>Choose One...</option>
-                                                        <option>Co-Ed</option>
-                                                        <option>Boys</option>
-                                                        <option>Girls</option>
-                                                    </Input>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col className="col-md-6 col-12 mt-3">
                                                     <Label for="practiceNight">Age Group</Label>
                                                     <Input type="select" name="practiceNight" id="practiceNightSelect">
                                                         <option>Choose One...</option>
@@ -312,11 +273,7 @@ const Admin = (props) => {
                                         <th>Name</th>
                                         <th>Coach</th>
                                         <th>Color</th>
-                                        <th>Age</th>
-                                        <th>Gender</th>
                                         <th>Practice Night</th>
-                                        <th>Current Players</th>
-                                        <th>Max Players</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -329,11 +286,7 @@ const Admin = (props) => {
                                                 <td>{item.name}</td>
                                                 <td>{item.coach}</td>
                                                 <td>{item.color}</td>
-                                                <td>{item.age_group}</td>
-                                                <td>{item.gender}</td>
                                                 <td>{item.practice_night}</td>
-                                                <td>{item.curr_roster_size}</td>
-                                                <td>{item.max_roster_size}</td>
                                                 <td><Button className="btn-warning">Edit</Button></td>
                                                 <td><Button className="btn-danger">Delete</Button></td>
                                             </tr>
