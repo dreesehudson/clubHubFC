@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import {
@@ -11,18 +11,15 @@ import {
 } from "react-router-dom";
 import axios from 'axios';
 
-
-
-
 function UserLogIn() {
     const { saveBearer } = useBearer();
-    //const { saveUser } = useUser();
+ 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-    const [email, setUserEmail] = useState("");
-    const [password, setUserPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    function handleSubmit(event) {
+    function HandleSubmit(event, bearer) {
         const url = "http://localhost:8000/v1/oauth/token"
         const method = 'post'
         const headers = {
@@ -50,7 +47,18 @@ function UserLogIn() {
             .catch(err => console.log('error: ', err));
 
         //once axios call completes get User Info
-        //if userIsAdmin then set session storage key to true.
+
+        useEffect(() => {
+            axios({
+                method: 'get',
+                url:'http://localhose:8000/getUserByEmail/',
+                data: email,
+                headers:''
+            }
+            )
+            .then(res => console.log(res.data.access_token))
+            .catch(err => console.log('error: ', err));
+        }, [bearer]);
     }
 
     return (
@@ -64,17 +72,17 @@ function UserLogIn() {
                             <Col>
                                 <Label className='mt-4'>Email</Label>
                                 <Input className='mb-2' type="email" name="email" id="email"
-                                    onChange={e => setUserEmail(e.target.value)}
+                                    onChange={e => setEmail(e.target.value)}
                                 />
                                 <Label className='mt-4'>Password</Label>
                                 <Input className='mb-2' type="password" name="password" id="password"
-                                    onChange={e => setUserPassword(e.target.value)}
+                                    onChange={e => setPassword(e.target.value)}
                                 />
                             </Col>
                         </Row>
                     </ModalBody>
                     <ModalFooter>
-                        <Button type="submit" color="danger" onClick={handleSubmit}>Log In</Button>{' '}
+                        <Button type="submit" color="danger" onClick={HandleSubmit}>Log In</Button>{' '}
                         <Button color="secondary" onClick={toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>

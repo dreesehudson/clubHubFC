@@ -3,9 +3,8 @@ import {
     Jumbotron
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
-import { useAdmin } from '../utilities/AdminContext'
 import Schedule from '../Components/Schedule'
-import Chat from '../Components/Chat'
+//import Chat from '../Components/Chat'
 
 function Dashboard() {
 
