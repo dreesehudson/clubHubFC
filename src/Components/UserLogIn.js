@@ -5,7 +5,6 @@ import {
     Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
     ModalFooter
 } from 'reactstrap';
-import { axiosHelper } from '../utilities/axiosHelper';
 
 function UserLogIn() {
     const { saveBearer } = useBearer();
@@ -38,22 +37,6 @@ function UserLogIn() {
                 console.log(res.data)
             })
             .catch(err => console.log('error: ', err));
-        // axiosHelper({
-        //     url: '/v1/oauth/token',
-        //     method: 'post',
-        //     data: {
-        //         grant_type: "password",
-        //         client_id: 2,
-        //         client_secret: "N0ZOVXYovxStYb7JWWTu8ctr6K0vkfaeJU0oYqPU",
-        //         password: password,
-        //         username: email,
-        //         scope: ""
-        //     },
-        //     saveBearer
-        // })
-
-
-
     }
 
 
