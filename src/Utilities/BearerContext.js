@@ -8,7 +8,6 @@ export const AppProvider = (props) => {
         <BearerContext.Provider value={initialContext}>
             {props.children}
         </BearerContext.Provider>
-
     )
 }
 

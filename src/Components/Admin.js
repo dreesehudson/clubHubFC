@@ -3,21 +3,29 @@ import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import {
     TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col,
-    Modal, ModalHeader, ModalBody, ModalFooter, Label, Input, Form
+    Modal, ModalHeader, ModalBody, Label, Input, Form
 } from 'reactstrap';
 import classnames from 'classnames';
 import Switch from './Switch'
+import axios from 'axios'
 
 const Admin = (props) => {
+    const [user, setUser] = useState({});
     const [activeTab, setActiveTab] = useState('1');
     const [teamName, setTeamName] = useState("");
-    const [coach, setCoach] = useState("");
     const [color, setColor] = useState("");
     const [practiceNight, setPracticeNight] = useState("");
     const [teams, setTeams] = useState([]);
     const [players, setPlayers] = useState([]);
     const [users, setUsers] = useState([]);
     const [schedules, setSchedules] = useState([]);
+    const { bearer } = useBearer();
+    const [modal, setModal] = useState(false);
+    const {
+        className
+    } = props;
+    const toggleModal = () => setModal(!modal);
+    const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
     const [tabs, setTabs] = useState([{
         'name': 'Players',
         'num': '1'
@@ -38,42 +46,43 @@ const Admin = (props) => {
         'name': 'Settings',
         'num': '5'
     }]);
-
-    const { bearer } = useBearer();
-
-    const [modal, setModal] = useState(false);
-
-    const {
-        className
-    } = props;
-
-    const toggleModal = () => setModal(!modal);
-
-    const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
-
     const toggle = tab => {
         if (activeTab !== tab) setActiveTab(tab);
     }
-
     const storeTeams = (response) => {
         setTeams(response.data)
         console.log(response.data)
     }
-
     const storePlayers = (response) => {
         setPlayers(response.data)
         console.log(response.data)
     }
-
     const storeUsers = (response) => {
         setUsers(response.data)
         console.log(response.data)
     }
-
     const storeSchedules = (response) => {
         console.log(response.data[0].date)
         setSchedules(response.data)
     }
+
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:8000/api/user',
+            data: {},
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${bearer}`
+            }
+        })
+            .then(res => {
+                setUser(res.data)
+                console.log(user)
+            })
+            .catch(err => console.log('error: ', err));
+
+    }, [bearer])
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -86,7 +95,7 @@ const Admin = (props) => {
                 'Authorization': 'Bearer ' + bearer
             },
             {
-                name: teamName, coach: coach, color: color,
+                name: teamName, color: color,
                 practice_night: practiceNight
             },
             //TO DO: add element to page to tell user that player has been added.
@@ -95,7 +104,7 @@ const Admin = (props) => {
 
     useEffect(() => {
         //axios call to get index of all teams
-        
+
         axiosHelper(
             'get',
             '/getTeams',
@@ -144,8 +153,6 @@ const Admin = (props) => {
 
     return (
         <div className="mt-5 pt-5">
-
-
             <Nav tabs>
                 {tabs.map((item, idx) => {
                     return (
@@ -206,62 +213,47 @@ const Admin = (props) => {
                 <TabPane tabId="2">
                     <Row>
                         <Col sm="12">
-                            <div>
-                                <Button color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
-                                <Modal isOpen={modal} toggle={toggleModal} className={className}>
-                                    <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
-                                    <ModalBody>
-                                        <Form>
-                                            <Row>
-                                                <Col className="col-12 mt-3">
-                                                    <Label for="teamName">Team Name</Label>
-                                                    <Input name="Team Name" id="teamName"
-                                                        onChange={e => setTeamName(e.target.value)}
-                                                    />
-                                                </Col>
+                            <Button color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
+                            <Modal isOpen={modal} toggle={toggleModal} className={className}>
+                                <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
+                                <ModalBody>
+                                    <Form>
+                                        <Row>
+                                            <Col className="col-12 mt-3">
+                                                <Label for="teamName">Team Name</Label>
+                                                <Input name="Team Name" id="teamName"
+                                                    onChange={e => setTeamName(e.target.value)}
+                                                />
+                                            </Col>
 
-                                            </Row>
-                                            <Row>
-                                                <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="coach">Coach</Label>
-                                                    <Input name="coach" id="coach"
-                                                        onChange={e => setCoach(e.target.value)}
-                                                    />
-                                                </Col>
-                                                <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="color">Color</Label>
-                                                    <Input name="color" id="color"
-                                                        onChange={e => setColor(e.target.value)}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="practiceNight">Age Group</Label>
-                                                    <Input type="select" name="practiceNight" id="practiceNightSelect">
-                                                        <option>Choose One...</option>
-                                                        <option>Monday</option>
-                                                        <option>Tuesday</option>
-                                                        <option>Wednesday</option>
-                                                        <option>Thursday</option>
-                                                        <option>Friday</option>
-                                                    </Input>
-                                                </Col>
-                                            </Row>
-
-                                            <Row check className="mt-3 text-center">
-                                                <Col >
-                                                    <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
-                                                </Col>
-                                            </Row>
-                                        </Form>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="danger" onClick={toggleModal}>Submit</Button>{' '}
-                                        <Button color="secondary" onClick={toggleModal}>Cancel</Button>
-                                    </ModalFooter>
-                                </Modal>
-                            </div>
+                                        </Row>
+                                        <Row>
+                                            <Col className="col-md-6 col-12 mt-3">
+                                                <Label for="color">Color</Label>
+                                                <Input name="color" id="color"
+                                                    onChange={e => setColor(e.target.value)}
+                                                />
+                                            </Col>
+                                            <Col className="col-md-6 col-12 mt-3">
+                                                <Label for="practiceNight">Practice Night</Label>
+                                                <Input type="select" name="practiceNight" id="practiceNightSelect">
+                                                    <option>Choose One...</option>
+                                                    <option>Monday</option>
+                                                    <option>Tuesday</option>
+                                                    <option>Wednesday</option>
+                                                    <option>Thursday</option>
+                                                    <option>Friday</option>
+                                                </Input>
+                                            </Col>
+                                        </Row>
+                                        <Row check className="mt-3 text-center">
+                                            <Col >
+                                                <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
+                                            </Col>
+                                        </Row>
+                                    </Form>
+                                </ModalBody>
+                            </Modal>
                         </Col>
                     </Row>
                     <Row>
