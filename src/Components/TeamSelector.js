@@ -5,7 +5,8 @@ import axios from 'axios';
 
 const TeamSelector = (props) => {
   const [dropdownOpen, setOpen] = useState(false);
-  const { bearer, setUser, user } = useBearer();
+  const [user, setUser] = useState({});
+  const { bearer/*, setUser, user*/ } = useBearer();
   const toggle = () => setOpen(!dropdownOpen);
 
   useEffect(() => {
@@ -21,27 +22,25 @@ const TeamSelector = (props) => {
     )
       .then(res => {
         setUser(res.data)
-        console.log(res.data)
       })
       .catch(err => console.log('error: ', err));
 
-  }, [bearer]);
-
-
+  }, []);
 
   return (
     <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
       <DropdownToggle className="mt-5" caret>
-        Select A Team
+        Select Your Player
       </DropdownToggle>
       <DropdownMenu>
-        {/* {user.players.map((item, idx) => {
+        {(Object.keys(user).length > 0) &&
+        user.players.map((item, idx) => {
           return (
             <DropdownItem key={idx}>
-              {item.id}
+              {item.first_name} {item.last_name}
             </DropdownItem>
           )
-        })} */}
+        })}
       </DropdownMenu>
     </ButtonDropdown>
   );

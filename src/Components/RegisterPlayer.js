@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import { Col, Row, Container, Button, Form, Label, Input, Jumbotron } from 'reactstrap';
-import UserLogIn from './UserLogIn';
-import RegisterUser from './RegisterUser';
+import Anonymous from './Anonymous';
 
 function RegisterPlayer() {
 
@@ -36,7 +35,7 @@ function RegisterPlayer() {
                 //'Authorization': 'Bearer ' + bearer
             },
             {},
-            )
+        )
             .then(res => {
                 console.log(res.data);
                 storeTeams(res.data)
@@ -131,12 +130,10 @@ function RegisterPlayer() {
                     </Jumbotron>
                 </Container>}
             { !bearer &&
-                <>
+                <div className="mt-5 pt-5">
                     <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
-                    <UserLogIn className="mt-5" />
-                    <RegisterUser className="mt-5" />
-                </>
-
+                    <Anonymous />
+                </div>
             }
         </>
     );

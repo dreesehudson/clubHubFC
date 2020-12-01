@@ -8,7 +8,6 @@ export const AppProvider = (props) => {
         <BearerContext.Provider value={initialContext}>
             {props.children}
         </BearerContext.Provider>
-
     )
 }
 
@@ -18,7 +17,6 @@ export const useBearer = () => useContext(BearerContext);
 
 function BearerHelper() {
     const [bearer, setBearer] = useState("");
-    const [user, setUser] = useState("");
     
     function saveBearer(newBearer){
         setBearer(newBearer)
@@ -39,7 +37,7 @@ function BearerHelper() {
     }, [])
     
     return {
-        bearer, saveBearer, logOut, user, setUser
+        bearer, saveBearer, logOut
     };
 
 }

@@ -22,12 +22,14 @@ function Dashboard() {
         })
             .then(res => {
                 setUser(res.data)
-                console.log(res)
+                //console.log(res)
             })
             .catch(err => console.log('error: ', err));
 
-            console.log(user);
+            //console.log(user);
     }, [bearer]);
+
+    console.log(user);
 
     return (
         <>
@@ -36,9 +38,8 @@ function Dashboard() {
 
             <Jumbotron className="mt-3 text-left">
                 <h1 className="display-4">Team Name</h1>
-                <p className="ml-4 lead">Coach Smith</p>
                 <p>Parent: {user.email}</p>
-                <p>Parent: {user.isAdmin}</p>
+                <p>isAdmin: {user.isAdmin}</p>
                 <Schedule />
                 <hr className="my-2" />
             </Jumbotron>
