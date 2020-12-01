@@ -7,14 +7,69 @@ import RegisterUser from './RegisterUser';
 
 function RegisterPlayer() {
 
+    // const [loading, setLoading] = useState(true);
     const [teams, setTeams] = useState([]);
-    // const [ageGroup, setAgeGroup] = useState("");
-    // const [gender, setGender] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [team_id, setTeamID] = useState("");
-    const [user_obj, setUserObj] = useState({ user_id: '1' });
+    const [user_obj, setUserObj] = useState({});
     const { bearer } = useBearer();
+
+
+    const storeTeams = (response) => {
+        setTeams(response)
+        console.log(response)
+    }
+    const storeUser = (response) => {
+        setUserObj(response.data)
+        console.log(response.data)
+    }
+
+    useEffect(() => {
+        //axios call to get index of all teams
+        axiosHelper(
+            'get',
+            '/getTeams',
+            {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': '*',
+                //'Authorization': 'Bearer ' + bearer
+            },
+            {},
+            )
+            .then(res => {
+                console.log(res.data);
+                storeTeams(res.data)
+            })
+            .catch(err => {
+                console.log('error: ', err)
+            });
+    }, [bearer]);
+
+    useEffect(() => {
+        axiosHelper(
+            'get',
+            '/api/user',
+            {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${bearer}`
+            },
+            {},
+        )
+            .then(res => {
+                console.log(res);
+                if (res.data) {
+                    storeUser(res);
+                }
+                //setLoading(false);
+            })
+            .catch(err => {
+                console.log('error: ', err)
+                //setLoading(false);
+
+            });
+
+    }, [bearer]);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -26,41 +81,14 @@ function RegisterPlayer() {
                 'Access-Control-Allow-Origin': '*',
                 'Authorization': 'Bearer ' + bearer
             },
-            { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.user_id },
+            { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
             //TO DO: add element to page to tell user that player has been added.
         );
     }
 
-    const storeTeams = (response) => {
-        setTeams(response.data)
-        console.log(response.data)
-    }
-
-    // const storeID = (response) => {
-    //     //setUserObj(response.data)
-    //     console.log(response.data)
-    // }
-
-
-
-    useEffect(() => {
-        //axios call to get index of all teams
-        axiosHelper(
-            'get',
-            '/getTeams',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeTeams
-        )
-    }, [bearer]);
-
     return (
         <>
-            {bearer ?
+            {bearer &&
                 <Container className="App text-left">
                     <Jumbotron className="mt-5">
                         <h2 className="display-4" >New Player Sign-Up</h2>
@@ -86,9 +114,11 @@ function RegisterPlayer() {
                                         onChange={e => setTeamID(e.target.value)}
                                     >
                                         <option>Pick a team...</option>
-                                        {teams.map((item, idx) =>
-                                            <option value={item.id} color={item.color} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
-                                        )}
+                                        {teams.map((item, idx) => {
+                                            return (
+                                                <option value={item.id} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
+                                            )
+                                        })}
                                     </Input>
                                 </Col>
                             </Row>
@@ -99,13 +129,14 @@ function RegisterPlayer() {
                             </Row>
                         </Form>
                     </Jumbotron>
-                </Container>
-                :
+                </Container>}
+            { !bearer &&
                 <>
                     <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
                     <UserLogIn className="mt-5" />
                     <RegisterUser className="mt-5" />
                 </>
+
             }
         </>
     );

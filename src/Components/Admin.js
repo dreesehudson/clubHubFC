@@ -257,7 +257,7 @@ const Admin = (props) => {
                                         </Form>
                                     </ModalBody>
                                     <ModalFooter>
-                                        <Button color="danger" onClick={toggleModal}>Submit</Button>{' '}
+                                        <Button color="danger" onClick={handleSubmit}>Submit</Button>{' '}
                                         <Button color="secondary" onClick={toggleModal}>Cancel</Button>
                                     </ModalFooter>
                                 </Modal>

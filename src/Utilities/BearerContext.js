@@ -18,6 +18,7 @@ export const useBearer = () => useContext(BearerContext);
 
 function BearerHelper() {
     const [bearer, setBearer] = useState("");
+    const [user, setUser] = useState("");
     
     function saveBearer(newBearer){
         setBearer(newBearer)
@@ -38,7 +39,7 @@ function BearerHelper() {
     }, [])
     
     return {
-        bearer, saveBearer, logOut
+        bearer, saveBearer, logOut, user, setUser
     };
 
 }

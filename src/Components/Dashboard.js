@@ -8,40 +8,39 @@ import axios from 'axios';
 
 function Dashboard() {
     const { bearer } = useBearer();
-    const [user, setUser] = useState({}) 
-    // useEffect(() => {
-    //     effect
-    //     return () => {
-    //         cleanup
-    //     }
-    // }, [input])
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         axios({
             method: 'get',
             url: 'http://localhost:8000/api/user',
-            data: { },
+            data: {},
             headers: {
                 "Accept": "application/json",
                 "Authorization": `Bearer ${bearer}`
             }
-        }
-        )
-            .then(res => setUser(res.data))
+        })
+            .then(res => {
+                setUser(res.data)
+                console.log(res)
+            })
             .catch(err => console.log('error: ', err));
 
+            console.log(user);
     }, [bearer]);
 
     return (
         <>
+            {/* if user.players.length = 0 then show instructions to register a player */}
+            {/* if user.players.length = 1 then show dashboard of players of team */}
+
             <Jumbotron className="mt-3 text-left">
                 <h1 className="display-4">Team Name</h1>
                 <p className="ml-4 lead">Coach Smith</p>
                 <p>Parent: {user.email}</p>
+                <p>Parent: {user.isAdmin}</p>
                 <Schedule />
-                {/* <Chat/> */}
                 <hr className="my-2" />
-
             </Jumbotron>
         </>
     );
