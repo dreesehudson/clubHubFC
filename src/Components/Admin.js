@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useBearer } from '../utilities/BearerContext'
+import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper'
 import {
     TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col,

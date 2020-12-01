@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import TeamSelector from './TeamSelector'
-import Anonymous from './Anonymous'
-import Dashboard from './Dashboard'
-import Admin from './Admin'
-import shield from '../img/shield.png'
-import { Row } from 'reactstrap'
-import { useBearer } from '../utilities/BearerContext'
+import TeamSelector from './TeamSelector';
+import Anonymous from './Anonymous';
+import Dashboard from './Dashboard';
+import Admin from './Admin';
+import shield from '../img/shield.png';
+import { Row } from 'reactstrap';
+import { useBearer } from '../utilities/BearerContext';
 import axios from 'axios';
 
 
