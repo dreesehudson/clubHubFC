@@ -7,7 +7,6 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import Switch from './Switch'
-import axios from 'axios'
 
 const Admin = (props) => {
     const [user, setUser] = useState({});
@@ -42,113 +41,71 @@ const Admin = (props) => {
         'name': 'Users',
         'num': '4'
     },
-    {
-        'name': 'Settings',
-        'num': '5'
-    }]);
+        // {
+        //     'name': 'Settings',
+        //     'num': '5'
+        // }
+    ]);
     const toggle = tab => {
         if (activeTab !== tab) setActiveTab(tab);
     }
-    const storeTeams = (response) => {
-        setTeams(response.data)
-        console.log(response.data)
+    const storeTeams = (data) => {
+        setTeams(data)
+        console.log(data)
     }
-    const storePlayers = (response) => {
-        setPlayers(response.data)
-        console.log(response.data)
+    const storePlayers = (data) => {
+        setPlayers(data)
+        console.log(data)
     }
-    const storeUsers = (response) => {
-        setUsers(response.data)
-        console.log(response.data)
+    const storeUsers = (data) => {
+        setUsers(data)
+        console.log(data)
     }
-    const storeSchedules = (response) => {
-        console.log(response.data[0].date)
-        setSchedules(response.data)
+    const storeSchedules = (data) => {
+        console.log(data[0].date)
+        setSchedules(data)
     }
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/api/user',
-            data: {},
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            }
+        axiosHelper({
+            url: '/api/user',
+            bearer,
+            fun: setUser
         })
-            .then(res => {
-                setUser(res.data)
-                console.log(user)
-            })
-            .catch(err => console.log('error: ', err));
-
     }, [bearer])
 
     function handleSubmit(event) {
         event.preventDefault();
         axiosHelper(
-            'post',
-            '/createTeam',
             {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {
-                name: teamName, color: color,
-                practice_night: practiceNight
-            },
-            //TO DO: add element to page to tell user that player has been added.
+                method: 'post',
+                url: '/createTeam',
+                data: {
+                    name: teamName, color: color,
+                    practice_night: practiceNight
+                },
+                bearer
+            }
         );
     }
 
     useEffect(() => {
-        //axios call to get index of all teams
-
-        axiosHelper(
-            'get',
-            '/getTeams',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeTeams
-        )
-        axiosHelper(
-            'get',
-            '/getPlayers',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storePlayers
-        )
-        axiosHelper(
-            'get',
-            '/getUsers',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeUsers
-        )
-        axiosHelper(
-            'get',
-            '/getSchedules',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeSchedules
-        )
+        axiosHelper({
+            url: '/getTeams',
+            fun: storeTeams
+        })
+        axiosHelper({
+            url: '/getPlayers',
+            fun: storePlayers
+        })
+        axiosHelper({
+            url: '/getUsers',
+            fun: storeUsers
+        })
+        axiosHelper({
+            url: '/getSchedules',
+            fun: storeSchedules
+        })
     }, [bearer]);
 
     return (
@@ -156,7 +113,6 @@ const Admin = (props) => {
             <Nav tabs>
                 {tabs.map((item, idx) => {
                     return (
-
                         <NavItem key={idx}>
                             <NavLink
                                 className={classnames({ active: activeTab === item.num })}
@@ -166,11 +122,8 @@ const Admin = (props) => {
                         </NavItem>
                     )
                 })}
-
             </Nav>
-
             <TabContent activeTab={activeTab}>
-
                 <TabPane tabId="1">
                     <Row>
                         <Col sm="12">
@@ -188,7 +141,6 @@ const Admin = (props) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/*map function*/}
                                     {players.map((item, idx) => {
                                         return (
                                             <tr key={idx}>
@@ -209,7 +161,6 @@ const Admin = (props) => {
                         </Col>
                     </Row>
                 </TabPane>
-
                 <TabPane tabId="2">
                     <Row>
                         <Col sm="12">
@@ -225,7 +176,6 @@ const Admin = (props) => {
                                                     onChange={e => setTeamName(e.target.value)}
                                                 />
                                             </Col>
-
                                         </Row>
                                         <Row>
                                             <Col className="col-md-6 col-12 mt-3">
@@ -236,13 +186,14 @@ const Admin = (props) => {
                                             </Col>
                                             <Col className="col-md-6 col-12 mt-3">
                                                 <Label for="practiceNight">Practice Night</Label>
-                                                <Input type="select" name="practiceNight" id="practiceNightSelect">
+                                                <Input type="select" name="practiceNight" id="practiceNightSelect"
+                                                    onChange={e => setPracticeNight(e.target.value)}>
                                                     <option>Choose One...</option>
-                                                    <option>Monday</option>
-                                                    <option>Tuesday</option>
-                                                    <option>Wednesday</option>
-                                                    <option>Thursday</option>
-                                                    <option>Friday</option>
+                                                    <option value='Monday'>Monday</option>
+                                                    <option value='Tuesday'>Tuesday</option>
+                                                    <option value='Wednesday'>Wednesday</option>
+                                                    <option value='Thursday'>Thursday</option>
+                                                    <option value='Friday'>Friday</option>
                                                 </Input>
                                             </Col>
                                         </Row>
@@ -290,7 +241,6 @@ const Admin = (props) => {
                         </Col>
                     </Row>
                 </TabPane>
-
                 <TabPane tabId="3">
                     <Row>
                         <Col sm="12">
@@ -324,12 +274,10 @@ const Admin = (props) => {
                                     )
                                 })
                                 }
-
                             </Table>
                         </Col>
                     </Row>
                 </TabPane>
-
                 <TabPane tabId="4">
                     <Row>
                         <Col sm="12">
@@ -361,15 +309,13 @@ const Admin = (props) => {
                         </Col>
                     </Row>
                 </TabPane>
-
-                <TabPane tabId="5">
+                {/* <TabPane tabId="5">
                     <Row>
                         <Col sm="12">
                             <Switch />
                         </Col>
                     </Row>
-                </TabPane>
-
+                </TabPane> */}
             </TabContent>
         </div>
     );

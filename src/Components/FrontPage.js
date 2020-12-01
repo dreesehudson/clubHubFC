@@ -6,7 +6,7 @@ import Admin from './Admin';
 import shield from '../img/shield.png';
 import { Row } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext';
-import axios from 'axios';
+import { axiosHelper } from '../utilities/axiosHelper';
 
 
 function FrontPage() {
@@ -14,22 +14,11 @@ function FrontPage() {
     const [user, setUser] = useState();
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/api/user',
-            data: {},
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            }
+        axiosHelper({
+            url: '/api/user',
+            bearer,
+            setUser
         })
-            .then(res => {
-                setUser(res.data)
-                //console.log(res)
-                console.log(user)
-            })
-            .catch(err => console.log('error: ', err));
-
     }, [bearer])
 
     return (
@@ -39,8 +28,6 @@ function FrontPage() {
                 <>
                     <TeamSelector />
                     <Dashboard className="mt-5" />
-
-
                 </>
                 :
                 <>

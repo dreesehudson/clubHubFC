@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
-import axios from 'axios';
+import { axiosHelper } from '../utilities/axiosHelper'
+
 
 const TeamSelector = (props) => {
   const [dropdownOpen, setOpen] = useState(false);
@@ -10,22 +11,12 @@ const TeamSelector = (props) => {
   const toggle = () => setOpen(!dropdownOpen);
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      url: 'http://localhost:8000/api/user',
-      data: {},
-      headers: {
-        "Accept": "application/json",
-        "Authorization": `Bearer ${bearer}`
-      }
-    }
-    )
-      .then(res => {
-        setUser(res.data)
-      })
-      .catch(err => console.log('error: ', err));
-
-  }, []);
+    axiosHelper({
+      url: '/api/user',
+      bearer,
+      setUser
+    })
+  }, [bearer]);
 
   return (
     <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>

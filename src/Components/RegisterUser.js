@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { axiosHelper } from '../utilities/axiosHelper';
 
 import {
     Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
@@ -13,29 +13,15 @@ function RegisterUser() {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
 
-
-
     function handleSubmit(event) {
         console.log('User Submitted');
         event.preventDefault();
-        const url = 'http://localhost:8000/register'
-        const method = 'post'
-        const headers = {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin': '*',
-            'Authorization': {}
-        }
-        const body = { name: userName, email: userEmail, password: userPassword }
-        const data = { name: userName, email: userEmail, password: userPassword }
-        axios({
-            url,
-            method,
-            headers,
-            body,
-            data
+
+        axiosHelper({
+            url: '/register',
+            method: 'post',
+            data: { name: userName, email: userEmail, password: userPassword }
         })
-            .then(res => console.log(res.data))
-            .catch(err => console.log('error: ', err))
     }
 
     return (

@@ -25,62 +25,30 @@ function RegisterPlayer() {
     }
 
     useEffect(() => {
-        //axios call to get index of all teams
         axiosHelper(
-            'get',
-            '/getTeams',
             {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                //'Authorization': 'Bearer ' + bearer
-            },
-            {},
+                url: '/getTeams',
+                fun: storeTeams
+            }
         )
-            .then(res => {
-                console.log(res.data);
-                storeTeams(res.data)
-            })
-            .catch(err => {
-                console.log('error: ', err)
-            });
-    }, [bearer]);
-
-    useEffect(() => {
         axiosHelper(
-            'get',
-            '/api/user',
             {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            },
-            {},
+                url: '/api/user',
+                fun: storeUser,
+                bearer
+            }
         )
-            .then(res => {
-                console.log(res);
-                if (res.data) {
-                    storeUser(res);
-                }
-                //setLoading(false);
-            })
-            .catch(err => {
-                console.log('error: ', err)
-                //setLoading(false);
-
-            });
-
     }, [bearer]);
 
     function handleSubmit(event) {
         event.preventDefault();
         axiosHelper(
-            'post',
-            '/PlayerRegistration',
             {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
+                method: 'post',
+                url: '/PlayerRegistration',
+                data: { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
+                bearer
+            }
             //TO DO: add element to page to tell user that player has been added.
         );
     }
