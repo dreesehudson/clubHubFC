@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useBearer } from '../utilities/BearerContext'
-import { useAdmin } from '../utilities/AdminContext'
 import {
     Collapse,
     Navbar,
@@ -17,7 +16,7 @@ const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const { bearer, logOut } = useBearer();
-    const { adminMode, toggleAdminMode } = useAdmin();
+    //const { adminMode, toggleAdminMode } = useAdmin();
 
     return (
         <>
@@ -28,13 +27,13 @@ const Header = () => {
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
-                        {!isAdmin &&
+                        {(bearer && !isAdmin) &&
                             <NavItem>
                                 <Button className="mx-2 my-1 btn-dark" href="/admin">Admin</Button>
                             </NavItem>}
-                        {!isAdmin &&
+                        {(bearer && !isAdmin) &&
                             <NavItem>
-                                <Button className="mx-2 my-1 btn-dark" onClick={toggleAdminMode} >Admin Mode</Button>
+                                <Button className="mx-2 my-1 btn-dark" /*onClick={toggleAdminMode}*/ >Admin Mode</Button>
                             </NavItem>}
                         <NavItem>
                             <Button className="mx-2 my-1 btn-dark text-light" href="/">Home</Button>
