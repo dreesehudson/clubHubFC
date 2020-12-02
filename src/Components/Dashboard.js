@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+    Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
-import Schedule from '../Components/Schedule'
 import { axiosHelper } from '../utilities/axiosHelper'
+import Schedule from '../Components/Schedule'
 
 function Dashboard() {
     const { bearer } = useBearer();
@@ -14,42 +14,67 @@ function Dashboard() {
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
 
-    useEffect(() => {
-        axiosHelper({
-            url: 'api/user',
-            bearer,
-            setUser
-        })
-    }, [bearer]);
+
+    const storeUser = (response) => {
+        setUser(response)
+        console.log(response)
+    }
+    const storePlayers = (response) => {
+        setPlayers(response)
+        console.log(response)
+    }
 
     useEffect(() => {
         axiosHelper({
-            url: 'http://localhost:8000/getPlayers/',
-            setPlayers
+            url: '/api/user',
+            fun: storeUser,
+            bearer
+        })
+    }, [bearer])
+
+    useEffect(() => {
+        axiosHelper({
+            url: '/getPlayers/',
+            storePlayers
         })
     }, [selectedPlayer]);
 
-    console.log(players);
-
     return (
         <>
-            {/* if user.players.length = 0 then show instructions to register a player */}
-            {/* if user.players.length = 1 then show dashboard of players of team */}
+            {/* HELP TO USE HIDDEN INPUT WITH DROPDOWN */}
+            <Input hidden value={setSelectedPlayer} />
+            <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
+                <DropdownToggle className="mt-5" caret>
+                    Select Your Player
+                </DropdownToggle>
+                <DropdownMenu>
+                    {(Object.keys(user).length > 0) &&
+                        user.players.map((item, idx) => {
+                            return (
+                                <DropdownItem key={idx}>
+                                    {item.first_name} {item.last_name}
+                                </DropdownItem>
+                            )
+                        })}
+                </DropdownMenu>
+            </ButtonDropdown>
 
             { selectedPlayer &&
                 <Jumbotron className="mt-3 text-left">
-                    <h1 className="display-4">Team Name</h1>
-                    <p>Parent: {user.email}</p>
-                    <p>isAdmin: {user.isAdmin}</p>
+                    <h1 className="display-4">Selected Player's Team</h1>
+                    {/* <p>Team Color: {selectedPlayer.team.color}</p>
+                    <p>Practice Night: {selectedPlayer.team.practice_night}</p> */}
+                    {/* <p>Parent: {user.email}</p>
+                    <p>isAdmin: {user.isAdmin}</p> */}
                     <Schedule />
                     <hr className="my-2" />
                 </Jumbotron>
             }
         </>
     );
-    //register link to add another child
-    //schedule accordion
-    //chat window
 };
 
 export default Dashboard;
+
+
+

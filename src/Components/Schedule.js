@@ -16,7 +16,7 @@ function Schedule() {
             <Collapse isOpen={isOpen}>
                 <Card>
                     <CardBody>
-                        <Table class="table table-hover">
+                        <Table className="table table-hover">
                             <thead>
                                 <tr>
                                     {/* <th scope="col">Number</th> */}

@@ -20,37 +20,33 @@ function RegisterPlayer() {
         console.log(response)
     }
     const storeUser = (response) => {
-        setUserObj(response.data)
-        console.log(response.data)
+        setUserObj(response)
+        console.log(response)
     }
 
     useEffect(() => {
-        axiosHelper(
-            {
-                url: '/getTeams',
-                fun: storeTeams
-            }
-        )
-        axiosHelper(
-            {
-                url: '/api/user',
-                fun: storeUser,
-                bearer
-            }
-        )
-    }, [bearer]);
+        axiosHelper({
+            url: '/api/user',
+            fun: storeUser,
+            bearer
+        })
+    }, [bearer])
+
+    useEffect(() => {
+        axiosHelper({
+            url: '/getTeams',
+            fun: storeTeams
+        })
+    }, [user_obj]);
 
     function handleSubmit(event) {
         event.preventDefault();
-        axiosHelper(
-            {
-                method: 'post',
-                url: '/PlayerRegistration',
-                data: { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
-                bearer
-            }
-            //TO DO: add element to page to tell user that player has been added.
-        );
+        axiosHelper({
+            method: 'post',
+            url: '/PlayerRegistration',
+            data: { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
+            bearer
+        });
     }
 
     return (

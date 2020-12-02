@@ -22,6 +22,8 @@ function RegisterUser() {
             method: 'post',
             data: { name: userName, email: userEmail, password: userPassword }
         })
+
+        toggle()
     }
 
     return (
@@ -32,7 +34,7 @@ function RegisterUser() {
                 <ModalBody>
                     <Row>
                         <Col>
-                            <Label>Name</Label>
+                            <Label>Full Name</Label>
                             <Input className='mb-2' id="userName" onChange={e => setUserName(e.target.value)} />
                             <Label className='mt-4'>Email</Label>
                             <Input className='mb-2' type="email" name="email" id="userEmail" placeholder=""

@@ -33,8 +33,8 @@ function UserLogIn() {
             },
         })
             .then(res => {
-                saveBearer(res.data)
-                console.log(res.data)
+                saveBearer(res.data.access_token)
+                toggle()
             })
             .catch(err => console.log('error: ', err));
     }

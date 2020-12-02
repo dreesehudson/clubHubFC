@@ -23,6 +23,7 @@ const Header = () => {
             bearer,
             setUser
         })
+        console.log(user)
     }, [bearer])
 
     return (

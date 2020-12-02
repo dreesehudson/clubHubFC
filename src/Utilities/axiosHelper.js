@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { useBearer } from '../utilities/BearerContext'
 
-
-export function axiosHelper({ method='get', url, data={}, fun, bearer="" }) {
+export function axiosHelper({ method = 'get', url, data = {}, fun, bearer }) {
     const API_URL = 'http://localhost:8000';
     return axios(
         {
@@ -15,12 +13,10 @@ export function axiosHelper({ method='get', url, data={}, fun, bearer="" }) {
                 'Authorization': 'Bearer ' + bearer
             },
             data
-        }
-    ).then(res => {
-        if (fun) {
-            fun(res.data)
-        }
-    })
+        }).then(res => {
+            if (fun) {
+                fun(res.data)
+            }
+        })
         .catch(err => console.log('error: ', err));
 }
-

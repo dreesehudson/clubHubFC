@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useBearer } from '../utilities/BearerContext';
-import { axiosHelper } from '../utilities/axiosHelper'
+import { axiosHelper } from '../utilities/axiosHelper';
 import {
     TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col,
     Modal, ModalHeader, ModalBody, Label, Input, Form
 } from 'reactstrap';
 import classnames from 'classnames';
-import Switch from './Switch'
+import Anonymous from './Anonymous';
 
 const Admin = (props) => {
     const [user, setUser] = useState({});
@@ -40,11 +40,7 @@ const Admin = (props) => {
     {
         'name': 'Users',
         'num': '4'
-    },
-        // {
-        //     'name': 'Settings',
-        //     'num': '5'
-        // }
+    }
     ]);
     const toggle = tab => {
         if (activeTab !== tab) setActiveTab(tab);
@@ -67,11 +63,13 @@ const Admin = (props) => {
     }
 
     useEffect(() => {
-        axiosHelper({
-            url: '/api/user',
-            bearer,
-            fun: setUser
-        })
+        if (bearer.length > 0) {
+            axiosHelper({
+                url: '/api/user',
+                bearer,
+                fun: setUser
+            })
+        }
     }, [bearer])
 
     function handleSubmit(event) {
@@ -86,7 +84,13 @@ const Admin = (props) => {
                 },
                 bearer
             }
-        );
+        )
+
+        axiosHelper({
+            url: '/getTeams',
+            fun: storeTeams
+        })
+        toggleModal();
     }
 
     useEffect(() => {
@@ -108,216 +112,224 @@ const Admin = (props) => {
         })
     }, [bearer]);
 
+    function deleteRow() {
+
+    }
+
+    function editRow() {
+
+    }
+
     return (
-        <div className="mt-5 pt-5">
-            <Nav tabs>
-                {tabs.map((item, idx) => {
-                    return (
-                        <NavItem key={idx}>
-                            <NavLink
-                                className={classnames({ active: activeTab === item.num })}
-                                onClick={() => { toggle(item.num); }}>
-                                {item.name}
-                            </NavLink>
-                        </NavItem>
-                    )
-                })}
-            </Nav>
-            <TabContent activeTab={activeTab}>
-                <TabPane tabId="1">
-                    <Row>
-                        <Col sm="12">
-                            <Table size="sm" hover>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Team</th>
-                                        <th>Parent Name</th>
-                                        <th>Parent Acct</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {players.map((item, idx) => {
-                                        return (
-                                            <tr key={idx}>
-                                                <th scope="row">{item.id}</th>
-                                                <td>{item.first_name}</td>
-                                                <td>{item.last_name}</td>
-                                                <td>{item.team.name}</td>
-                                                <td>{item.user.name}</td>
-                                                <td>{item.user.email}</td>
-                                                <th><Button className="btn-warning">Edit</Button></th>
-                                                <th><Button className="btn-danger">Delete</Button></th>
+        <>
+            { user.isAdmin ?
+                <div className="mt-5 pt-5">
+                    <Nav tabs>
+                        {tabs.map((item, idx) => {
+                            return (
+                                <NavItem key={idx}>
+                                    <NavLink
+                                        className={classnames({ active: activeTab === item.num })}
+                                        onClick={() => { toggle(item.num); }}>
+                                        {item.name}
+                                    </NavLink>
+                                </NavItem>
+                            )
+                        })}
+                    </Nav>
+                    <TabContent activeTab={activeTab}>
+                        <TabPane tabId="1">
+                            <Row>
+                                <Col sm="12">
+                                    <Table size="sm" hover>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Team</th>
+                                                <th>Parent Name</th>
+                                                <th>Parent Acct</th>
+                                                <th></th>
+                                                <th></th>
                                             </tr>
-                                        )
-                                    })
-                                    }
-                                </tbody>
-                            </Table>
-                        </Col>
-                    </Row>
-                </TabPane>
-                <TabPane tabId="2">
-                    <Row>
-                        <Col sm="12">
-                            <Button color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
-                            <Modal isOpen={modal} toggle={toggleModal} className={className}>
-                                <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
-                                <ModalBody>
-                                    <Form>
-                                        <Row>
-                                            <Col className="col-12 mt-3">
-                                                <Label for="teamName">Team Name</Label>
-                                                <Input name="Team Name" id="teamName"
-                                                    onChange={e => setTeamName(e.target.value)}
-                                                />
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col className="col-md-6 col-12 mt-3">
-                                                <Label for="color">Color</Label>
-                                                <Input name="color" id="color"
-                                                    onChange={e => setColor(e.target.value)}
-                                                />
-                                            </Col>
-                                            <Col className="col-md-6 col-12 mt-3">
-                                                <Label for="practiceNight">Practice Night</Label>
-                                                <Input type="select" name="practiceNight" id="practiceNightSelect"
-                                                    onChange={e => setPracticeNight(e.target.value)}>
-                                                    <option>Choose One...</option>
-                                                    <option value='Monday'>Monday</option>
-                                                    <option value='Tuesday'>Tuesday</option>
-                                                    <option value='Wednesday'>Wednesday</option>
-                                                    <option value='Thursday'>Thursday</option>
-                                                    <option value='Friday'>Friday</option>
-                                                </Input>
-                                            </Col>
-                                        </Row>
-                                        <Row check className="mt-3 text-center">
-                                            <Col >
-                                                <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
-                                            </Col>
-                                        </Row>
-                                    </Form>
-                                </ModalBody>
-                            </Modal>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm="12">
-                            <Table size="sm" hover>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Coach</th>
-                                        <th>Color</th>
-                                        <th>Practice Night</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {teams.map((item, idx) => {
-                                        return (
-                                            <tr key={idx}>
-                                                <th scope="row">{item.id}</th>
-                                                <td>{item.name}</td>
-                                                <td>{item.coach}</td>
-                                                <td>{item.color}</td>
-                                                <td>{item.practice_night}</td>
-                                                <td><Button className="btn-warning">Edit</Button></td>
-                                                <td><Button className="btn-danger">Delete</Button></td>
+                                        </thead>
+                                        <tbody>
+                                            {players.map((item, idx) => {
+                                                return (
+                                                    <tr key={idx}>
+                                                        <th scope="row">{item.id}</th>
+                                                        <td>{item.first_name}</td>
+                                                        <td>{item.last_name}</td>
+                                                        <td>{item.team.name}</td>
+                                                        <td>{item.user.name}</td>
+                                                        <td>{item.user.email}</td>
+                                                        <th><Button className="btn-warning">Edit</Button></th>
+                                                        <th><Button className="btn-danger">Delete</Button></th>
+                                                    </tr>
+                                                )
+                                            })
+                                            }
+                                        </tbody>
+                                    </Table>
+                                </Col>
+                            </Row>
+                        </TabPane>
+                        <TabPane tabId="2">
+                            <Row>
+                                <Col sm="12">
+                                    <Button color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
+                                    <Modal isOpen={modal} toggle={toggleModal} className={className}>
+                                        <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
+                                        <ModalBody>
+                                            <Form>
+                                                <Row>
+                                                    <Col className="col-12 mt-3">
+                                                        <Label for="teamName">Team Name</Label>
+                                                        <Input name="Team Name" id="teamName"
+                                                            onChange={e => setTeamName(e.target.value)}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col className="col-md-6 col-12 mt-3">
+                                                        <Label for="color">Color</Label>
+                                                        <Input name="color" id="color"
+                                                            onChange={e => setColor(e.target.value)}
+                                                        />
+                                                    </Col>
+                                                    <Col className="col-md-6 col-12 mt-3">
+                                                        <Label for="practiceNight">Practice Night</Label>
+                                                        <Input type="select" name="practiceNight" id="practiceNightSelect"
+                                                            onChange={e => setPracticeNight(e.target.value)}>
+                                                            <option>Choose One...</option>
+                                                            <option value='Monday'>Monday</option>
+                                                            <option value='Tuesday'>Tuesday</option>
+                                                            <option value='Wednesday'>Wednesday</option>
+                                                            <option value='Thursday'>Thursday</option>
+                                                            <option value='Friday'>Friday</option>
+                                                        </Input>
+                                                    </Col>
+                                                </Row>
+                                                <Row check className="mt-3 text-center">
+                                                    <Col >
+                                                        <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
+                                                    </Col>
+                                                </Row>
+                                            </Form>
+                                        </ModalBody>
+                                    </Modal>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm="12">
+                                    <Table size="sm" hover>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Color</th>
+                                                <th>Practice Night</th>
+                                                <th></th>
+                                                <th></th>
                                             </tr>
-                                        )
-                                    })
-                                    }
-                                </tbody>
-                            </Table>
-                        </Col>
-                    </Row>
-                </TabPane>
-                <TabPane tabId="3">
-                    <Row>
-                        <Col sm="12">
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Home Team</th>
-                                        <th></th>
-                                        <th>Away Team</th>
-                                        <th>Time</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                {schedules.map((item, idx) => {
-                                    return (
-                                        <tr key={idx}>
-                                            <th scope="row">{item.id}</th>
-                                            <td>{item.type}</td>
-                                            <td>{item.date}</td>
-                                            <td>{item.ref_home_team_id}</td>
-                                            <td>vs.</td>
-                                            <td>{item.ref_away_team_id}</td>
-                                            <td>{item.time}</td>
-                                            <td><Button className="btn-warning">Edit</Button></td>
-                                            <td><Button className="btn-danger">Delete</Button></td>
-                                        </tr>
-                                    )
-                                })
-                                }
-                            </Table>
-                        </Col>
-                    </Row>
-                </TabPane>
-                <TabPane tabId="4">
-                    <Row>
-                        <Col sm="12">
-                            <Table size="sm" hover>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Parent Name</th>
-                                        <th>Email</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {users.map((item, idx) => {
-                                        return (
-                                            <tr key={idx}>
-                                                <th scope="row">{item.id}</th>
-                                                <td>{item.name}</td>
-                                                <td>{item.email}</td>
-                                                <td><Button className="btn-warning">Edit</Button></td>
-                                                <td><Button className="btn-danger">Delete</Button></td>
+                                        </thead>
+                                        <tbody>
+                                            {teams.map((item, idx) => {
+                                                return (
+                                                    <tr key={idx}>
+                                                        <th scope="row">{item.id}</th>
+                                                        <td>{item.name}</td>
+                                                        <td>{item.color}</td>
+                                                        <td>{item.practice_night}</td>
+                                                        <td><Button className="btn-warning">Edit</Button></td>
+                                                        <td><Button className="btn-danger">Delete</Button></td>
+                                                    </tr>
+                                                )
+                                            })
+                                            }
+                                        </tbody>
+                                    </Table>
+                                </Col>
+                            </Row>
+                        </TabPane>
+                        <TabPane tabId="3">
+                            <Row>
+                                <Col sm="12">
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Type</th>
+                                                <th>Date</th>
+                                                <th>Home Team</th>
+                                                <th></th>
+                                                <th>Away Team</th>
+                                                <th>Time</th>
+                                                <th></th>
+                                                <th></th>
                                             </tr>
-                                        )
-                                    })
-                                    }
-                                </tbody>
-                            </Table>
-                        </Col>
-                    </Row>
-                </TabPane>
-                {/* <TabPane tabId="5">
-                    <Row>
-                        <Col sm="12">
-                            <Switch />
-                        </Col>
-                    </Row>
-                </TabPane> */}
-            </TabContent>
-        </div>
+                                        </thead>
+                                        {schedules.map((item, idx) => {
+                                            return (
+                                                <tr key={idx}>
+                                                    <th scope="row">{item.id}</th>
+                                                    <td>{item.type}</td>
+                                                    <td>{item.date}</td>
+                                                    <td>{item.ref_home_team_id}</td>
+                                                    <td>vs.</td>
+                                                    <td>{item.ref_away_team_id}</td>
+                                                    <td>{item.time}</td>
+                                                    <td><Button className="btn-warning">Edit</Button></td>
+                                                    <td><Button className="btn-danger">Delete</Button></td>
+                                                </tr>
+                                            )
+                                        })
+                                        }
+                                    </Table>
+                                </Col>
+                            </Row>
+                        </TabPane>
+                        <TabPane tabId="4">
+                            <Row>
+                                <Col sm="12">
+                                    <Table size="sm" hover>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Parent Name</th>
+                                                <th>Email</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {users.map((item, idx) => {
+                                                return (
+                                                    <tr key={idx}>
+                                                        <th scope="row">{item.id}</th>
+                                                        <td>{item.name}</td>
+                                                        <td>{item.email}</td>
+                                                        <td><Button className="btn-warning">Edit</Button></td>
+                                                        <td><Button className="btn-danger">Delete</Button></td>
+                                                    </tr>
+                                                )
+                                            })
+                                            }
+                                        </tbody>
+                                    </Table>
+                                </Col>
+                            </Row>
+                        </TabPane>
+                    </TabContent>
+                </div>
+                :
+                <>
+                    <Anonymous className="mt-5 pt-5" />
+                    <h1 className="mt-5">You must be an Administrator to access this page.</h1>
+                </>
+            }
+        </>
     );
 }
 
