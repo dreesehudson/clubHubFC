@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function axiosHelper({ method = 'get', url, data = {}, fun, bearer }) {
+export function axiosHelper({ method = 'get', url, data = {}, bearer, fun }) {
     const API_URL = 'http://localhost:8000';
     return axios(
         {

@@ -20,6 +20,8 @@ const Admin = (props) => {
     const [schedules, setSchedules] = useState([]);
     const { bearer } = useBearer();
     const [modal, setModal] = useState(false);
+    const [team_id, setTeamID] = useState("");
+
     const {
         className
     } = props;
@@ -106,24 +108,107 @@ const Admin = (props) => {
             url: '/getUsers',
             fun: storeUsers
         })
-        axiosHelper({
-            url: '/getSchedules',
-            fun: storeSchedules
-        })
+        // axiosHelper({
+        //     url: '/getSchedules',
+        //     fun: storeSchedules
+        // })
     }, [bearer]);
 
-    function deleteRow() {
-
+    function editPlayerRow(id) {
+        axiosHelper({
+            method: 'put',
+            url: `/editPlayer/${id}`,
+            fun: axiosHelper({
+                url: '/getPlayers',
+                storePlayers
+            })
+        })
     }
 
-    function editRow() {
+    function editTeamRow(id) {
+        axiosHelper({
+            method: 'put',
+            url: `/editTeam/${id}`,
+            fun: axiosHelper({
+                url: '/getTeams',
+                storeTeams
+            })
+        })
+    }
 
+    function editScheduleRow(id) {
+        axiosHelper({
+            method: 'put',
+            url: `/editSchedule/${id}`,
+            fun: axiosHelper({
+                url: '/getSchedules',
+                storeSchedules
+            })
+        })
+    }
+
+    function editUserRow(id) {
+        axiosHelper({
+            method: 'put',
+            url: `/editUser/${id}`,
+            fun: axiosHelper({
+                url: '/getUsers',
+                storeUsers
+            })
+        })
+    }
+
+    function deletePlayerRow(id) {
+        axiosHelper({
+            method: 'delete',
+            url: `/deletePlayer/${id}`,
+            bearer,
+        }).then(
+            axiosHelper({
+                url: '/getPlayers',
+                storePlayers,
+
+            })
+        )
+    }
+
+    function deleteTeamRow(id) {
+        axiosHelper({
+            method: 'delete',
+            url: `/deleteTeam/${id}`,
+            fun: axiosHelper({
+                url: '/getTeams',
+                fun: storeTeams
+            })
+        })
+    }
+
+    function deleteScheduleRow(id) {
+        axiosHelper({
+            method: 'delete',
+            url: `/deleteSchedule/${id}`,
+            fun: axiosHelper({
+                url: '/getSchedules',
+                fun: storeSchedules
+            })
+        })
+    }
+
+    function deleteUserRow(id) {
+        axiosHelper({
+            method: 'delete',
+            url: `/deleteUser/${id}`,
+            fun: axiosHelper({
+                url: '/getUsers',
+                fun: storeUsers
+            })
+        })
     }
 
     return (
         <>
             { user.isAdmin ?
-                <div className="mt-5 pt-5">
+                <div className="container-fluid mt-5 pt-5">
                     <Nav tabs>
                         {tabs.map((item, idx) => {
                             return (
@@ -157,16 +242,48 @@ const Admin = (props) => {
                                         <tbody>
                                             {players.map((item, idx) => {
                                                 return (
-                                                    <tr key={idx}>
-                                                        <th scope="row">{item.id}</th>
-                                                        <td>{item.first_name}</td>
-                                                        <td>{item.last_name}</td>
-                                                        <td>{item.team.name}</td>
-                                                        <td>{item.user.name}</td>
-                                                        <td>{item.user.email}</td>
-                                                        <th><Button className="btn-warning">Edit</Button></th>
-                                                        <th><Button className="btn-danger">Delete</Button></th>
-                                                    </tr>
+                                                    <>
+                                                        <tr key={idx}>
+                                                            <th scope="row">{item.id}</th>
+                                                            <td>{item.first_name}</td>
+                                                            <td>{item.last_name}</td>
+                                                            <td>{item.team.name}</td>
+                                                            <td>{item.user.name}</td>
+                                                            <td>{item.user.email}</td>
+                                                            <th><Button className="btn-warning"
+                                                            // onClick={swapToEditRow}
+                                                            >Edit</Button></th>
+                                                            <th><Button className="btn-danger"
+                                                                onClick={() => deletePlayerRow(item.id)}
+                                                            >Delete</Button></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">{item.id}</th>
+                                                            <td><Input defaultValue={item.first_name}></Input></td>
+                                                            <td><Input defaultValue={item.last_name}></Input></td>
+                                                            <td>
+                                                                <Input type="select" name="select" id="teamSelect"
+                                                                    onChange={e => setTeamID(e.target.value)}
+                                                                >
+                                                                    <option value={item.team.id}>{item.team.name} - {item.team.color} - Practice: {item.team.practice_night}</option>
+                                                                    {teams.map((item, idx) => {
+                                                                        return (
+                                                                            <option value={item.id} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
+                                                                        )
+                                                                    })}
+                                                                </Input>
+
+                                                            </td>
+                                                            <td>{item.user.name}</td>
+                                                            <td>{item.user.email}</td>
+                                                            <th><Button className="btn-success"
+                                                                onClick={() => editPlayerRow(item.id)}
+                                                            >Submit</Button></th>
+                                                            <th><Button className="btn-secondary"
+                                                            // onClick={()=>toggleToDisplay}
+                                                            >Cancel</Button></th>
+                                                        </tr>
+                                                    </>
                                                 )
                                             })
                                             }
@@ -237,14 +354,42 @@ const Admin = (props) => {
                                         <tbody>
                                             {teams.map((item, idx) => {
                                                 return (
-                                                    <tr key={idx}>
-                                                        <th scope="row">{item.id}</th>
-                                                        <td>{item.name}</td>
-                                                        <td>{item.color}</td>
-                                                        <td>{item.practice_night}</td>
-                                                        <td><Button className="btn-warning">Edit</Button></td>
-                                                        <td><Button className="btn-danger">Delete</Button></td>
-                                                    </tr>
+                                                    <>
+                                                        <tr key={idx}>
+                                                            <th scope="row">{item.id}</th>
+                                                            <td>{item.name}</td>
+                                                            <td>{item.color}</td>
+                                                            <td>{item.practice_night}</td>
+                                                            <td><Button className="btn-warning"
+                                                            // onClick={()=>swapToEditRow}
+                                                            >Edit</Button></td>
+
+                                                            <td><Button className="btn-danger"
+                                                                onClick={() => deleteTeamRow(item.id)}>Delete</Button></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">{item.id}</th>
+                                                            <td><Input value={item.name}></Input></td>
+                                                            <td><Input value={item.color}></Input></td>
+                                                            <td>
+                                                                <Input type="select" value={item.practice_night} name="practiceNight" id="practiceNightSelect"
+                                                                    onChange={e => setPracticeNight(e.target.value)}>
+                                                                    <option value='Monday'>Monday</option>
+                                                                    <option value='Tuesday'>Tuesday</option>
+                                                                    <option value='Wednesday'>Wednesday</option>
+                                                                    <option value='Thursday'>Thursday</option>
+                                                                    <option value='Friday'>Friday</option>
+                                                                </Input>
+
+                                                            </td>
+                                                            <th><Button className="btn-success"
+                                                                onClick={() => editTeamRow(item.id)}
+                                                            >Submit</Button></th>
+                                                            <th><Button className="btn-secondary"
+                                                            //onClick={toggleToDisplay}
+                                                            >Cancel</Button></th>
+                                                        </tr>
+                                                    </>
                                                 )
                                             })
                                             }
@@ -272,17 +417,63 @@ const Admin = (props) => {
                                         </thead>
                                         {schedules.map((item, idx) => {
                                             return (
-                                                <tr key={idx}>
-                                                    <th scope="row">{item.id}</th>
-                                                    <td>{item.type}</td>
-                                                    <td>{item.date}</td>
-                                                    <td>{item.ref_home_team_id}</td>
-                                                    <td>vs.</td>
-                                                    <td>{item.ref_away_team_id}</td>
-                                                    <td>{item.time}</td>
-                                                    <td><Button className="btn-warning">Edit</Button></td>
-                                                    <td><Button className="btn-danger">Delete</Button></td>
-                                                </tr>
+                                                <>
+                                                    <tr key={idx}>
+                                                        <th scope="row">{item.id}</th>
+                                                        <td>{item.type}</td>
+                                                        <td>{item.date}</td>
+                                                        <td>{item.ref_home_team_id}</td>
+                                                        <td>vs.</td>
+                                                        <td>{item.ref_away_team_id}</td>
+                                                        <td>{item.time}</td>
+                                                        <td><Button className="btn-warning"
+                                                        // onClick={()=>swapToEditRow}
+                                                        >Edit</Button></td>
+                                                        <td><Button className="btn-danger"
+                                                            onClick={() => deleteScheduleRow(item.id)}
+                                                        >Delete</Button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">{item.id}</th>
+                                                        <td>{item.type}</td>
+                                                        <td><Input value={item.date}></Input></td>
+                                                        <td>
+                                                            <Input type="select" name="select" id="teamSelect"
+                                                                onChange={e => setTeamID(e.target.value)}
+                                                            >
+                                                                <option>{item.team.name}</option>
+                                                                {teams.map((item, idx) => {
+                                                                    return (
+                                                                        <option value={item.id} key={idx}>{item.name}</option>
+                                                                    )
+                                                                })}
+                                                            </Input>
+
+                                                        </td>
+                                                        <td>vs.</td>
+                                                        <td>
+                                                            <Input type="select" name="select" id="teamSelect"
+                                                                onChange={e => setTeamID(e.target.value)}
+                                                            >
+                                                                <option>{item.team.name}</option>
+                                                                {teams.map((item, idx) => {
+                                                                    return (
+                                                                        <option value={item.id} key={idx}>{item.name}</option>
+                                                                    )
+                                                                })}
+                                                            </Input>
+
+                                                        </td>
+                                                        <td><Input value={item.time}></Input></td>
+
+                                                        <th><Button className="btn-success"
+                                                            onClick={() => editScheduleRow(item.id)}
+                                                        >Submit</Button></th>
+                                                        <th><Button className="btn-secondary"
+                                                        //onClick={switchToDisplayRow}
+                                                        >Cancel</Button></th>
+                                                    </tr>
+                                                </>
                                             )
                                         })
                                         }
@@ -306,13 +497,30 @@ const Admin = (props) => {
                                         <tbody>
                                             {users.map((item, idx) => {
                                                 return (
-                                                    <tr key={idx}>
-                                                        <th scope="row">{item.id}</th>
-                                                        <td>{item.name}</td>
-                                                        <td>{item.email}</td>
-                                                        <td><Button className="btn-warning">Edit</Button></td>
-                                                        <td><Button className="btn-danger">Delete</Button></td>
-                                                    </tr>
+                                                    <>
+                                                        <tr key={idx}>
+                                                            <th scope="row">{item.id}</th>
+                                                            <td>{item.name}</td>
+                                                            <td>{item.email}</td>
+                                                            <td><Button className="btn-warning"
+                                                            // onClick={swapToEditRow}
+                                                            >Edit</Button></td>
+                                                            <td><Button className="btn-danger"
+                                                                onClick={() => deleteUserRow(item.id)}
+                                                            >Delete</Button></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">{item.id}</th>
+                                                            <td><Input value={item.name}></Input></td>
+                                                            <td><Input value={item.email}></Input></td>
+                                                            <th><Button className="btn-success"
+                                                                onClick={() => editUserRow(item.id)}
+                                                            >Submit</Button></th>
+                                                            <th><Button className="btn-secondary"
+                                                            //onClick={swapToDisplayRow}
+                                                            >Cancel</Button></th>
+                                                        </tr>
+                                                    </>
                                                 )
                                             })
                                             }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input
+    Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Container, Input, Row, Col
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
@@ -42,34 +42,45 @@ function Dashboard() {
     return (
         <>
             {/* HELP TO USE HIDDEN INPUT WITH DROPDOWN */}
-            <Input hidden value={setSelectedPlayer} />
-            <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
-                <DropdownToggle className="mt-5" caret>
-                    Select Your Player
-                </DropdownToggle>
-                <DropdownMenu>
-                    {(Object.keys(user).length > 0) &&
-                        user.players.map((item, idx) => {
-                            return (
-                                <DropdownItem key={idx}>
-                                    {item.first_name} {item.last_name}
-                                </DropdownItem>
-                            )
-                        })}
-                </DropdownMenu>
-            </ButtonDropdown>
+            <Container>
+                <Row>
+                    <Col className="col-12">
+                        <Input hidden value={setSelectedPlayer} />
+                        <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
+                            <DropdownToggle className="mt-5" caret>
+                                Select Your Player
+                        </DropdownToggle>
+                            <DropdownMenu>
+                                {(Object.keys(user).length > 0) &&
+                                    user.players.map((item, idx) => {
+                                        return (
+                                            <DropdownItem key={idx}>
+                                                {item.first_name} {item.last_name}
+                                            </DropdownItem>
+                                        )
+                                    })}
+                            </DropdownMenu>
+                        </ButtonDropdown>
+                    </Col>
+                </Row>
 
-            { selectedPlayer &&
-                <Jumbotron className="mt-3 text-left">
-                    <h1 className="display-4">Selected Player's Team</h1>
-                    {/* <p>Team Color: {selectedPlayer.team.color}</p>
+                <Row>
+                    <Col className="col-12">
+                        {selectedPlayer &&
+                            <Jumbotron className="mt-3 text-left">
+                                <h1 className="display-4">Selected Player's Team</h1>
+                                {/* <p>Team Color: {selectedPlayer.team.color}</p>
                     <p>Practice Night: {selectedPlayer.team.practice_night}</p> */}
-                    {/* <p>Parent: {user.email}</p>
+                                {/* <p>Parent: {user.email}</p>
                     <p>isAdmin: {user.isAdmin}</p> */}
-                    <Schedule />
-                    <hr className="my-2" />
-                </Jumbotron>
-            }
+                                <Schedule />
+                                <hr className="my-2" />
+                            </Jumbotron>
+
+                        }
+                    </Col>
+                </Row>
+            </Container>
         </>
     );
 };
