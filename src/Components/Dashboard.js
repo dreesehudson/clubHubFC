@@ -19,6 +19,8 @@ function Dashboard() {
         setUser(response)
         console.log(response)
     }
+
+
     const storePlayers = (response) => {
         setPlayers(response)
         console.log(response)
@@ -32,24 +34,24 @@ function Dashboard() {
         })
     }, [bearer])
 
-    useEffect(() => {
+    const getPlayer = () => {
         axiosHelper({
-            url: '/getPlayers/',
-            storePlayers
+            url: `/player/{id}`,
+            fun: storePlayers,
+            bearer
         })
-    }, [selectedPlayer]);
+    }
 
     return (
         <>
-            {/* HELP TO USE HIDDEN INPUT WITH DROPDOWN */}
-            <Container>
-                <Row>
+            <Container className="mt-5">
+                {/* <Row>
                     <Col className="col-12">
-                        <Input hidden value={setSelectedPlayer} />
+                        <Input hidden value={} />
                         <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
                             <DropdownToggle className="mt-5" caret>
                                 Select Your Player
-                        </DropdownToggle>
+                            </DropdownToggle>
                             <DropdownMenu>
                                 {(Object.keys(user).length > 0) &&
                                     user.players.map((item, idx) => {
@@ -62,23 +64,20 @@ function Dashboard() {
                             </DropdownMenu>
                         </ButtonDropdown>
                     </Col>
-                </Row>
-
+                </Row> */}
                 <Row>
-                    <Col className="col-12">
-                        {selectedPlayer &&
-                            <Jumbotron className="mt-3 text-left">
-                                <h1 className="display-4">Selected Player's Team</h1>
-                                {/* <p>Team Color: {selectedPlayer.team.color}</p>
-                    <p>Practice Night: {selectedPlayer.team.practice_night}</p> */}
-                                {/* <p>Parent: {user.email}</p>
-                    <p>isAdmin: {user.isAdmin}</p> */}
-                                <Schedule />
-                                <hr className="my-2" />
-                            </Jumbotron>
-
-                        }
-                    </Col>
+                    {(Object.keys(user).length > 0) &&
+                        user.players.map((item, idx) => {
+                            return (
+                                <Col className="col-12 mt-3">
+                                    <Jumbotron className="mt-3 text-left">
+                                        <h1 className="display-4">{item.first_name} {item.last_name}</h1>
+                                        <Schedule />
+                                    </Jumbotron>
+                                </Col>
+                            )
+                        })
+                    }
                 </Row>
             </Container>
         </>

@@ -26,9 +26,6 @@ function App() {
                         <Route path="/playerRegistration">
                             <RegisterPlayer />
                         </Route>
-                        <Route path="/admin">
-                            <Admin />
-                        </Route>
                         <Route exact path="/">
                             <FrontPage />
                         </Route>

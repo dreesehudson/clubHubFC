@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { axiosHelper } from './axiosHelper';
 
 const BearerContext = React.createContext({});
 
@@ -26,6 +27,7 @@ function BearerHelper() {
     function logOut(){
         setBearer("");
         window.localStorage.removeItem('bearer');
+        axiosHelper({method:'post', url:'/logout', bearer})
     }
 
     useEffect(()=>{

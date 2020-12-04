@@ -17,11 +17,9 @@ function RegisterPlayer() {
 
     const storeTeams = (response) => {
         setTeams(response)
-        console.log(response)
     }
     const storeUser = (response) => {
         setUserObj(response)
-        console.log(response)
     }
 
     useEffect(() => {
@@ -47,11 +45,12 @@ function RegisterPlayer() {
             data: { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
             bearer
         });
+        window.location.href = '/';
     }
 
     return (
         <>
-            {bearer &&
+            {bearer ?
                 <Container className="App text-left">
                     <Jumbotron className="mt-5">
                         <h2 className="display-4" >New Player Sign-Up</h2>
@@ -92,12 +91,12 @@ function RegisterPlayer() {
                             </Row>
                         </Form>
                     </Jumbotron>
-                </Container>}
-            { !bearer &&
-                <div className="mt-5 pt-5">
-                    <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
+                </Container>
+                :
+                <>
                     <Anonymous />
-                </div>
+                    <h1 className="display-5 mt-5">You must be signed in to register a player.</h1>
+                </>
             }
         </>
     );

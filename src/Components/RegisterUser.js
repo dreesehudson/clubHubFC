@@ -1,29 +1,39 @@
 import React, { useState } from 'react';
-import { axiosHelper } from '../utilities/axiosHelper';
-
+import axios from 'axios';
+import { useBearer } from '../utilities/BearerContext'
 import {
-    Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
-    ModalFooter
+    Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 
 function RegisterUser() {
+    const { saveBearer } = useBearer();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
 
-    function handleSubmit(event) {
+
+    function HandleSubmit(event) {
         console.log('User Submitted');
         event.preventDefault();
-
-        axiosHelper({
-            url: '/register',
+        axios({
             method: 'post',
+            url: 'http://localhost:8000/register',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': '*',
+                "Accept": "application/json"
+            },
             data: { name: userName, email: userEmail, password: userPassword }
-        })
 
-        toggle()
+        })
+            .then(res => {
+                console.log(res);
+                saveBearer(res.data.data.token);
+                toggle();
+            })
+            .catch(err => console.log('error: ', err));
     }
 
     return (
@@ -48,7 +58,7 @@ function RegisterUser() {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color="danger" onClick={handleSubmit}>Register</Button>{' '}
+                    <Button type="submit" color="danger" onClick={HandleSubmit}>Register</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>
