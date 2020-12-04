@@ -27,12 +27,12 @@ const Header = () => {
 
     return (
         <>
-            <Navbar className="mb-3 fixed-top" 
+            <Navbar className="mb-3 sticky-top" 
                     color="danger" 
                     expand="md"
                     light>
                 <NavbarBrand href="/">
-                    <h1><b>League Name</b></h1>
+                    <h1><b>ClubHubFC</b></h1>
                 </NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
@@ -49,10 +49,10 @@ const Header = () => {
                             <Button className="mx-2 my-1 btn-dark text-light" 
                                     href="/">Home</Button>
                         </NavItem>
-                        <NavItem>
+                        {/* <NavItem>
                             <Button className="mx-2 my-1 btn-dark text-light" 
                                     href="/about">About</Button>
-                        </NavItem>
+                        </NavItem> */}
                         {bearer &&
                             <NavItem>
                                 <Button className="mx-2 my-1 btn-dark text-light" 

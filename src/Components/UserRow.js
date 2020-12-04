@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper';
 import {
-    Button, Input, Form
+    Button, Input, Form, CustomInput, FormGroup, Label
 } from 'reactstrap';
 
 
@@ -12,7 +12,12 @@ const UserRow = (props) => {
     const [name, setName] = useState(props.user.name);
     const [email, setEmail] = useState(props.user.email);
     const [admin, setAdmin] = useState(props.user.isAdmin);
+    const [checked, setChecked] = useState(props.user.isAdmin);
     const { bearer } = useBearer();
+
+    const checkBoxHandler = () => { 
+        setChecked(!checked)
+        setAdmin(!admin.toString()) }
 
     function editUserRow({ name = `${props.user.name}`, email = `${props.user.email}`, admin = `${props.user.isAdmin}` }) {
         axiosHelper({
@@ -49,48 +54,44 @@ const UserRow = (props) => {
                     <th scope="row">{props.user.id}</th>
                     <td>{props.user.name}</td>
                     <td>{props.user.email}</td>
-                    {/* <FormGroup>
-                        <Label for="exampleCheckbox">Switches</Label>
-                        <div>
-                            <CustomInput type="switch" id="exampleCustomSwitch" name="customSwitch" label="Turn on this custom switch" />
-                            <CustomInput type="switch" id="exampleCustomSwitch2" name="customSwitch" label="Or this one" />
-                            <CustomInput type="switch" id="exampleCustomSwitch3" label="But not this disabled one" disabled />
-                            <CustomInput type="switch" id="exampleCustomSwitch4" label="Can't click this label to turn on!" htmlFor="exampleCustomSwitch4_X" disabled />
+                    <td>
+                        <div class="form-check">
+                            <Input disabled checked={admin} className="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
                         </div>
-                    </FormGroup> */}
-                    <td>{props.user.isAdmin}</td>
+                    </td>
+                    {/* <td><CustomInput checked={admin} disabled type="switch" id="exampleCustomSwitch" name="customSwitch" /></td> */}
                     <td><Button className="btn-warning"
-                        onClick={() => setEditMode(true)}
-                    >Edit</Button></td>
+                        onClick={() => setEditMode(true)}>Edit</Button></td>
                     <td><Button className="btn-danger"
-                        onClick={() => deleteUserRow(props.user.id)}
-                    >Delete</Button></td>
+                        onClick={() => deleteUserRow(props.user.id)}>Delete</Button></td>
                 </tr>
                 :
                 <>
-                    {/* <tr>
+                    <tr>
                         <th scope="row">{props.user.id}</th>
                         <td><Input defaultValue={props.user.name}
-                            onChange={e => setName(e.target.value)}
-                        ></Input></td>
+                            onChange={e => setName(e.target.value)}></Input></td>
                         <td><Input defaultValue={props.user.email}
-                            onChange={e => setEmail(e.target.value)}
-                        ></Input></td>
-                        <CustomInput defaultValue={props.user.isAdmin} type="switch" id="exampleCustomSwitch" name="customSwitch" label="Turn on this custom switch" />
+                            onChange={e => setEmail(e.target.value)}></Input></td>
                         <td>
-                            onChange={e => setAdmin(e.target.value)}
-                    >
-                    </td>
-                    <th><Button className="btn-success"
-                        onClick={() => {
-                            editUserRow({ name, email, admin })
-                            setEditMode(false)
-                        }}
-                    >Submit</Button></th>
-                    <th><Button className="btn-secondary"
-                        onClick={() => setEditMode(false)}
-                    >Cancel</Button></th>
-                </tr> */}
+                            <div class="form-check">
+                                <Input disabled checked={checked} class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
+                            </div>
+                        </td>
+                        {/* <td><CustomInput checked={admin} type="switch" id="exampleCustomSwitch" name="customSwitch"
+                            onChange={(e) => toggleAdmin(e.target.value)} /></td> */}
+                        <th><Button className="btn-success"
+                            onClick={() => {
+                                editUserRow({ name, email, admin })
+                                setEditMode(false)
+                            }}>Submit</Button></th>
+                        <th><Button className="btn-secondary"
+                            onClick={() => {setEditMode(false)
+                                    setName(props.user.name)
+                                    setEmail(props.user.email)
+                                    setAdmin(props.user.isAdmin)
+                            }}>Cancel</Button></th>
+                    </tr>
                 </>
             }
         </>

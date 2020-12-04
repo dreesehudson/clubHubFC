@@ -3,10 +3,24 @@ import {
     CardBody, Card, Table
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
+import { axiosHelper } from '../utilities/axiosHelper'
 
-function Schedule() {
+function Schedule(props) {
 
     const [schedule, setSchedule] = useState([]);
+    const [player, setPlayer] = useState(props.player);
+    //const [team, setTeam] = useState(props.player.team);
+    // const storeTeam = (response) => {
+    //     setTeam(response)
+    // }
+
+    // useEffect(() => {
+    //         axiosHelper({
+    //             url: `/getTeam/${team.id}`,
+    //             fun: setTeam
+    //         })
+        
+    // }, [player])
 
     return (
         <>
@@ -25,7 +39,7 @@ function Schedule() {
                             </tr>
                         </thead>
                         <tbody>
-                            {schedule ?
+                            {!schedule ?
                                 <tr>
                                     <td>
                                     <h3 className='mt-4'>

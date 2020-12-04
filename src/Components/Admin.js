@@ -6,7 +6,6 @@ import {
     Modal, ModalHeader, ModalBody, Label, Input, Form
 } from 'reactstrap';
 import classnames from 'classnames';
-import Anonymous from './Anonymous';
 import PlayerRow from './PlayerRow';
 import TeamRow from './TeamRow';
 import ScheduleRow from './ScheduleRow';
@@ -24,12 +23,7 @@ const Admin = (props) => {
     const [schedules, setSchedules] = useState([]);
     const { bearer } = useBearer();
     const [modal, setModal] = useState(false);
-
-
-
-    const {
-        className
-    } = props;
+    const { className } = props;
     const toggleModal = () => setModal(!modal);
     const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
     const [tabs, setTabs] = useState([{
@@ -47,35 +41,12 @@ const Admin = (props) => {
     {
         'name': 'Users',
         'num': '4'
-    }
-    ]);
-    const toggle = tab => {
-        if (activeTab !== tab) setActiveTab(tab);
-    }
-    const storeTeams = (data) => {
-        if (data !== teams) {
-            setTeams(data);
-            console.log(data);
-        }
-    }
-    const storePlayers = (data) => {
-        if (data !== players) {
-            setPlayers(data);
-            console.log(data);
-        }
-    }
-    const storeUsers = (data) => {
-        if (data !== users) {
-            setUsers(data);
-            console.log(data);
-        }
-    }
-    const storeSchedules = (data) => {
-        if (data !== schedules) {
-            setSchedules(data);
-            console.log(data);
-        }
-    }
+    }]);
+    const toggle = tab => { if (activeTab !== tab) setActiveTab(tab); }
+    const storeTeams = (data) => { setTeams(data); }
+    const storePlayers = (data) => { setPlayers(data); }
+    const storeUsers = (data) => { setUsers(data); }
+    const storeSchedules = (data) => { setSchedules(data) }
 
     useEffect(() => {
         if (bearer.length > 0) {
@@ -100,11 +71,14 @@ const Admin = (props) => {
                 bearer
             }
         )
-
-        axiosHelper({
-            url: '/getTeams',
-            fun: storeTeams
-        })
+            .then(
+                axiosHelper(
+                    {
+                        url: '/getTeams',
+                        fun: storeTeams
+                    }
+                )
+            )
         toggleModal();
     }
 
@@ -128,200 +102,187 @@ const Admin = (props) => {
     }, [bearer]);
 
     return (
-        <>
-            <div className="container-fluid mt-5 pt-5">
-                <Nav tabs>
-                    {tabs.map((item, idx) => {
-                        return (
-                            <NavItem key={idx}>
-                                <NavLink
-                                    className={classnames({ active: activeTab === item.num })}
-                                    onClick={() => { toggle(item.num); }}>
-                                    {item.name}
-                                </NavLink>
-                            </NavItem>
-                        )
-                    })}
-                </Nav>
-                <TabContent activeTab={activeTab}>
-                    <TabPane tabId="1">
-                        <Row>
-                            <Col sm="12">
-                                <Table size="sm" hover>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Team</th>
-                                            <th>Parent Name</th>
-                                            <th>Parent Acct</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {players.map((player, idx) => {
-                                            return (
-                                                <PlayerRow
-                                                    player={player}
-                                                    teams={teams}
-                                                    idx={idx}
-                                                    storePlayers={storePlayers}
-                                                />
-                                            )
-                                        })
-                                        }
-                                    </tbody>
-                                </Table>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                    <TabPane tabId="2">
-                        <Row>
-                            <Col sm="12">
-                                <Button color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
-                                <Modal isOpen={modal} toggle={toggleModal} className={className}>
-                                    <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
-                                    <ModalBody>
-                                        <Form>
-                                            <Row>
-                                                <Col className="col-12 mt-3">
-                                                    <Label for="teamName">Team Name</Label>
-                                                    <Input name="Team Name" id="teamName"
-                                                        onChange={e => setTeamName(e.target.value)}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="color">Color</Label>
-                                                    <Input name="color" id="color"
-                                                        onChange={e => setColor(e.target.value)}
-                                                    />
-                                                </Col>
-                                                <Col className="col-md-6 col-12 mt-3">
-                                                    <Label for="practiceNight">Practice Night</Label>
-                                                    <Input type="select" name="practiceNight" id="practiceNightSelect"
-                                                        onChange={e => setPracticeNight(e.target.value)}>
-                                                        <option>Choose One...</option>
-                                                        <option value='Monday'>Monday</option>
-                                                        <option value='Tuesday'>Tuesday</option>
-                                                        <option value='Wednesday'>Wednesday</option>
-                                                        <option value='Thursday'>Thursday</option>
-                                                        <option value='Friday'>Friday</option>
-                                                    </Input>
-                                                </Col>
-                                            </Row>
-                                            <Row check className="mt-3 text-center">
-                                                <Col >
-                                                    <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
-                                                </Col>
-                                            </Row>
-                                        </Form>
-                                    </ModalBody>
-                                </Modal>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm="12">
-                                <Table size="sm" hover>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Color</th>
-                                            <th>Practice Night</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {teams.map((team, idx) => {
-                                            return (
-                                                <TeamRow
-                                                    team={team}
-                                                    idx={idx}
-                                                    storeTeams={storeTeams}
-                                                />
-                                            )
-                                        })
-                                        }
-                                    </tbody>
-                                </Table>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                    <TabPane tabId="3">
-                        <Row>
-                            <Col sm="12">
-                                <Table size="sm" hover>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Type</th>
-                                            <th>Date</th>
-                                            <th>Home Team</th>
-                                            <th></th>
-                                            <th>Away Team</th>
-                                            <th>Time</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {schedules.map((schedule, idx) => {
-                                            return (
-                                                <ScheduleRow
-                                                    schedule={schedule}
-                                                    teams={teams}
-                                                    idx={idx}
-                                                    storeSchedules={storeSchedules}
-                                                />
-                                            )
-                                        })
-                                        }
-                                    </tbody>
-
-                                </Table>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                    <TabPane tabId="4">
-                        <Row>
-                            <Col sm="12">
-                                <Table size="sm" hover>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Parent Name</th>
-                                            <th>Email</th>
-                                            <th>Admin</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {users.map((user, idx) => {
-                                            return (
-                                                <UserRow
-                                                    user={user}
-                                                    idx={idx}
-                                                    storeUsers={storeUsers}
-                                                />
-                                            )
-                                        })}
-                                    </tbody>
-                                </Table>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                </TabContent>
-            </div>
-
-
-
-        </>
+        <div className="container-fluid">
+            <Nav tabs>
+                {tabs.map((item, idx) => {
+                    return (
+                        <NavItem key={idx}>
+                            <NavLink
+                                className={classnames({ active: activeTab === item.num })}
+                                onClick={() => { toggle(item.num); }}>
+                                {item.name}
+                            </NavLink>
+                        </NavItem>
+                    )
+                })}
+            </Nav>
+            <TabContent activeTab={activeTab}>
+                <TabPane tabId="1">
+                    <Row>
+                        <Col sm="12">
+                            <Table size="sm" hover>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Team</th>
+                                        <th>Parent Name</th>
+                                        <th>Parent Acct</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {players.map((player, idx) => {
+                                        return (
+                                            <PlayerRow
+                                                player={player}
+                                                teams={teams}
+                                                idx={idx}
+                                                storePlayers={storePlayers}/>
+                                        )
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </TabPane>
+                <TabPane tabId="2">
+                    <Row>
+                        <Col sm="12">
+                            <Button color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
+                            <Modal isOpen={modal} toggle={toggleModal} className={className}>
+                                <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
+                                <ModalBody>
+                                    <Form>
+                                        <Row>
+                                            <Col className="col-12 mt-3">
+                                                <Label for="teamName">Team Name</Label>
+                                                <Input name="Team Name" id="teamName"
+                                                    onChange={e => setTeamName(e.target.value)}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col className="col-md-6 col-12 mt-3">
+                                                <Label for="color">Color</Label>
+                                                <Input name="color" id="color"
+                                                    onChange={e => setColor(e.target.value)}/>
+                                            </Col>
+                                            <Col className="col-md-6 col-12 mt-3">
+                                                <Label for="practiceNight">Practice Night</Label>
+                                                <Input type="select" name="practiceNight" id="practiceNightSelect"
+                                                    onChange={e => setPracticeNight(e.target.value)}>
+                                                    <option>Choose One...</option>
+                                                    <option value='Monday'>Monday</option>
+                                                    <option value='Tuesday'>Tuesday</option>
+                                                    <option value='Wednesday'>Wednesday</option>
+                                                    <option value='Thursday'>Thursday</option>
+                                                    <option value='Friday'>Friday</option>
+                                                </Input>
+                                            </Col>
+                                        </Row>
+                                        <Row check className="mt-3 text-center">
+                                            <Col>
+                                                <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
+                                            </Col>
+                                        </Row>
+                                    </Form>
+                                </ModalBody>
+                            </Modal>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col sm="12">
+                            <Table size="sm" hover>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Color</th>
+                                        <th>Practice Night</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {teams.map((team, idx) => {
+                                        return (
+                                            <TeamRow
+                                                team={team}
+                                                idx={idx}
+                                                storeTeams={storeTeams}/>
+                                        )
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </TabPane>
+                <TabPane tabId="3">
+                    <Row>
+                        <Col sm="12">
+                            <Table size="sm" hover>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Home Team</th>
+                                        <th></th>
+                                        <th>Away Team</th>
+                                        <th>Time</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {schedules.map((schedule, idx) => {
+                                        return (
+                                            <ScheduleRow
+                                                schedule={schedule}
+                                                teams={teams}
+                                                idx={idx}
+                                                storeSchedules={storeSchedules}/>
+                                        )
+                                    })
+                                    }
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </TabPane>
+                <TabPane tabId="4">
+                    <Row>
+                        <Col sm="12">
+                            <Table size="sm" hover>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Parent Name</th>
+                                        <th>Email</th>
+                                        <th>Admin</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map((user, idx) => {
+                                        return (
+                                            <UserRow
+                                                user={user}
+                                                idx={idx}
+                                                storeUsers={storeUsers}
+                                            />
+                                        )
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </TabPane>
+            </TabContent>
+        </div>
     );
 }
 

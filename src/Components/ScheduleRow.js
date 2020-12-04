@@ -14,7 +14,7 @@ const ScheduleRow = (props) => {
     const [time, setTime] = useState(props.schedule.time);
     const { bearer } = useBearer();
 
-    function editScheduleRow({date = `${props.schedule.date}`, homeTeamID = `${props.schedule.home_team.id}`, awayTeamID = `${props.schedule.away_team.id}`, time = `${props.schedule.time}`}) {
+    function editScheduleRow({ date = `${props.schedule.date}`, homeTeamID = `${props.schedule.home_team.id}`, awayTeamID = `${props.schedule.away_team.id}`, time = `${props.schedule.time}` }) {
         axiosHelper({
             method: 'put',
             url: `/editSchedule/${id}`,
@@ -53,11 +53,9 @@ const ScheduleRow = (props) => {
                     <td>{props.schedule.away_team.name}</td>
                     <td>{props.schedule.time}</td>
                     <td><Button className="btn-warning"
-                        onClick={() => setEditMode(true)}
-                    >Edit</Button></td>
+                        onClick={() => setEditMode(true)}>Edit</Button></td>
                     <td><Button className="btn-danger"
-                        onClick={() => deleteScheduleRow(props.schedule.id)}
-                    >Delete</Button></td>
+                        onClick={() => deleteScheduleRow(props.schedule.id)}>Delete</Button></td>
                 </tr>
                 :
                 <>
@@ -65,15 +63,12 @@ const ScheduleRow = (props) => {
                         <th scope="row">{props.schedule.id}</th>
                         <td>{props.schedule.type}</td>
                         <td><Input defaultValue={props.schedule.date}
-                            onChange={e => setDate(e.target.value)}
-                        ></Input></td>
+                            onChange={e => setDate(e.target.value)}></Input></td>
                         <td>
                             <Input type="select" name="select" id="homeTeamSelect"
                                 onChange={(e) => {
                                     setHomeTeamID(e.target.value)
-                                    console.log(e.target.value)
-                                }}
-                            >
+                                }}>
                                 <option value={props.schedule.home_team.id}>{props.schedule.home_team.name}</option>
                                 {props.teams.map((team, idx) => {
                                     return (
@@ -85,27 +80,28 @@ const ScheduleRow = (props) => {
                         <td>vs.</td>
                         <td>
                             <Input type="select" name="select" id="awayTeamSelect"
-                                onChange={(e) => {setAwayTeamID(e.target.value)
-                                                    console.log(e.target.value)}}
-                            >
+                                onChange={(e) => { setAwayTeamID(e.target.value) }}>
                                 <option value={props.schedule.away_team.id}>{props.schedule.away_team.name}</option>
                                 {props.teams.map((team, idx) => {
-                                    return (
-                                        <option value={team.id} key={idx}>{team.name}</option>
-                                    )
+                                    return (<option value={team.id} key={idx}>{team.name}</option>)
                                 })}
                             </Input>
                         </td>
                         <td><Input value={props.schedule.time}
-                            onChange={e => setTime(e.target.value)}
-                        ></Input></td>
-
+                            onChange={e => setTime(e.target.value)}></Input></td>
                         <th><Button className="btn-success"
-                            onClick={() => editScheduleRow({ date, homeTeamID, awayTeamID, time })}
-                        >Submit</Button></th>
+                            onClick={() => {
+                                editScheduleRow({ date, homeTeamID, awayTeamID, time })
+                                setEditMode(false)
+                            }}>Submit</Button></th>
                         <th><Button className="btn-secondary"
-                            onClick={() => setEditMode(false)}
-                        >Cancel</Button></th>
+                            onClick={() => {
+                                setEditMode(false)
+                                setDate(props.schedule.date)
+                                setHomeTeamID(props.schedule.ref_home_team_id)
+                                setAwayTeamID(props.schedule.ref_away_team_id)
+                                setTime(props.schedule.time)
+                            }}>Cancel</Button></th>
                     </tr>
                 </>
             }

@@ -14,7 +14,7 @@ const TeamRow = (props) => {
     const [teamPracticeNight, setTeamPracticeNight] = useState(props.team.practice_night);
     const { bearer } = useBearer();
 
-    function editTeamRow({teamName = `${props.teams.name}`, teamColor = `${props.teams.color}`, teamPracticeNight = `${props.teams.practice_night}`, bearer}) {
+    function editTeamRow({ teamName = `${props.teams.name}`, teamColor = `${props.teams.color}`, teamPracticeNight = `${props.teams.practice_night}`, bearer }) {
         axiosHelper({
             method: 'put',
             url: `/editTeam/${id}`,
@@ -25,22 +25,22 @@ const TeamRow = (props) => {
                 bearer: bearer
             }
         })
-        .then(axiosHelper({
-            url:'/getTeams',
-            fun: props.storeTeams
-        }))
+            .then(axiosHelper({
+                url: '/getTeams',
+                fun: props.storeTeams
+            }))
     }
-    
+
     function deleteTeamRow(id) {
         axiosHelper({
             method: 'delete',
             url: `/deleteTeam/${id}`,
             bearer,
         })
-        .then(axiosHelper({
-            url:'/getTeams',
-            fun: props.storeTeams
-        }))
+            .then(axiosHelper({
+                url: '/getTeams',
+                fun: props.storeTeams
+            }))
     }
 
     return (
@@ -61,10 +61,10 @@ const TeamRow = (props) => {
                 <tr>
                     <th scope="row">{props.team.id}</th>
                     <td><Input defaultValue={props.team.name}
-                            onChange={e => setTeamName(e.target.value)}
+                        onChange={e => setTeamName(e.target.value)}
                     ></Input></td>
                     <td><Input defaultValue={props.team.color}
-                            onChange={e => setTeamColor(e.target.value)}
+                        onChange={e => setTeamColor(e.target.value)}
                     ></Input></td>
                     <td>
                         <Input type="select" defaultValue={props.team.practice_night} name="practiceNight" id="practiceNightSelect"
@@ -78,13 +78,17 @@ const TeamRow = (props) => {
                     </td>
                     <th><Button className="btn-success"
                         onClick={() => {
-                            editTeamRow({teamName, teamColor, teamPracticeNight})
+                            editTeamRow({ teamName, teamColor, teamPracticeNight })
                             setEditMode(false);
-                            }}
+                        }}
                     >Submit</Button></th>
                     <th><Button className="btn-secondary"
-                        onClick={() => setEditMode(false)}
-                    >Cancel</Button></th>
+                        onClick={() => {
+                            setEditMode(false)
+                            setTeamName(props.team.name)
+                            setTeamColor(props.team.color)
+                            setTeamPracticeNight(props.team.practice_night)
+                        }}>Cancel</Button></th>
                 </tr>
             }
         </>

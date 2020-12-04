@@ -1,29 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Container, Input, Row, Col
+    Container, Row, Col, Button, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
-import Schedule from '../Components/Schedule'
+import PlayerJumbotron from '../Components/PlayerJumbotron'
+import RegisterPlayer from '../Components/RegisterPlayer'
 
-function Dashboard() {
+function Dashboard(props) {
     const { bearer } = useBearer();
     const [user, setUser] = useState({})
     const [players, setPlayers] = useState({})
-    const [selectedPlayer, setSelectedPlayer] = useState({})
-    const [dropdownOpen, setOpen] = useState(false);
-    const toggle = () => setOpen(!dropdownOpen);
-
+    const [modal, setModal] = useState(false);
+    const { className } = props;
+    const toggleModal = () => setModal(!modal);
+    const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
 
     const storeUser = (response) => {
         setUser(response)
-        console.log(response)
-    }
-
-
-    const storePlayers = (response) => {
-        setPlayers(response)
-        console.log(response)
     }
 
     useEffect(() => {
@@ -34,49 +28,30 @@ function Dashboard() {
         })
     }, [bearer])
 
-    const getPlayer = () => {
-        axiosHelper({
-            url: `/player/{id}`,
-            fun: storePlayers,
-            bearer
-        })
-    }
-
     return (
         <>
             <Container className="mt-5">
-                {/* <Row>
-                    <Col className="col-12">
-                        <Input hidden value={} />
-                        <ButtonDropdown className="mt-5" isOpen={dropdownOpen} toggle={toggle}>
-                            <DropdownToggle className="mt-5" caret>
-                                Select Your Player
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {(Object.keys(user).length > 0) &&
-                                    user.players.map((item, idx) => {
-                                        return (
-                                            <DropdownItem key={idx}>
-                                                {item.first_name} {item.last_name}
-                                            </DropdownItem>
-                                        )
-                                    })}
-                            </DropdownMenu>
-                        </ButtonDropdown>
-                    </Col>
-                </Row> */}
                 <Row>
-                    {(Object.keys(user).length > 0) &&
+                    { user.hasOwnProperty('players') && user.players.hasOwnProperty(0) ?
                         user.players.map((item, idx) => {
                             return (
-                                <Col className="col-12 mt-3">
-                                    <Jumbotron className="mt-3 text-left">
-                                        <h1 className="display-4">{item.first_name} {item.last_name}</h1>
-                                        <Schedule />
-                                    </Jumbotron>
-                                </Col>
+                                <PlayerJumbotron
+                                    key={idx}
+                                    player={item}
+                                />
                             )
                         })
+                        :
+                        <Col className="col-12 mt-5">
+                            <h3 className=' display-3 mt-5'>No Players Registered.</h3>
+                            <Button color="danger" className="my-3" onClick={toggleModal}>Register New Player</Button>
+                            <Modal isOpen={modal} toggle={toggleModal} className={className}>
+                                <ModalHeader toggle={toggleModal} close={closeBtn} />
+                                <ModalBody>
+                                    <RegisterPlayer />
+                                </ModalBody>
+                            </Modal>
+                        </Col>
                     }
                 </Row>
             </Container>

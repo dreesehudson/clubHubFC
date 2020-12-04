@@ -9,12 +9,12 @@ const PlayerRow = (props) => {
     const [editMode, setEditMode] = useState(false);
     const [id, setID] = useState(props.player.id);
     const [firstName, setFirstName] = useState(props.player.first_name);
-    const [lastName, setLastName] = useState(props.player.last_lame);
+    const [lastName, setLastName] = useState(props.player.last_name);
     const [refTeamID, setTeamID] = useState(props.player.ref_team_id);
     const [refUserID, setRefUserID] = useState(props.player.ref_user_id);
     const { bearer } = useBearer();
 
-    function editPlayerRow({firstName = `${props.player.first_name}`, lastName = `${props.player.last_name}`, refTeamID = `${props.player.ref_team_id}`, refUserID = `${props.player.ref_user_id}`}) {
+    function editPlayerRow({ firstName = `${props.player.first_name}`, lastName = `${props.player.last_name}`, refTeamID = `${props.player.ref_team_id}`, refUserID = `${props.player.ref_user_id}` }) {
         axiosHelper({
             method: 'put',
             url: `/editPlayer/${id}`,
@@ -25,22 +25,22 @@ const PlayerRow = (props) => {
                 ref_user_id: refUserID,
             }
         })
-        .then(axiosHelper({
-            url:'/getPlayers',
-            fun: props.storePlayers
-        }))
+            .then(axiosHelper({
+                url: '/getPlayers',
+                fun: props.storePlayers
+            }))
     }
 
-    function deletePlayerRow(id) {
+    function deletePlayerRow() {
         axiosHelper({
             method: 'delete',
             url: `/deletePlayer/${id}`,
             bearer,
         })
-        .then(axiosHelper({
-            url:'/getPlayers',
-            fun: props.storePlayers
-        }))
+            .then(axiosHelper({
+                url: '/getPlayers',
+                fun: props.storePlayers
+            }))
     }
 
     return (
@@ -61,20 +61,17 @@ const PlayerRow = (props) => {
                     >Delete</Button></td>
                 </tr>
                 :
-                <tr>
+                <>
+                    <tr>
                         <th scope="row">{props.player.id}</th>
                         <td><Input defaultValue={props.player.first_name}
-                            onChange={e => setFirstName(e.target.value)}
-
-                        ></Input></td>
+                            onChange={e => setFirstName(e.target.value)}></Input></td>
                         <td><Input defaultValue={props.player.last_name}
-                            onChange={e => setLastName(e.target.value)}
-                        ></Input></td>
+                            onChange={e => setLastName(e.target.value)}></Input></td>
                         <td>
                             <Input type="select" name="select" id="teamSelect"
-                                onChange={e => setTeamID(e.target.value)}
-                            >
-                                <option value={props.player.ref_teamID} defaultValue={props.player.team.id}>{props.player.team.name} - {props.player.team.color} - Practice: {props.player.team.practice_night}</option>
+                                onChange={e => setTeamID(e.target.value)}>
+                                <option defaultValue={props.player.ref_team_id}> {props.player.team.name} - {props.player.team.color} - Practice: {props.player.team.practice_night}</option>
                                 {props.teams.map((team, idx) => {
                                     return (
                                         <option value={team.id} key={idx}>{team.name} - {team.color} - Practice: {team.practice_night}</option>
@@ -86,14 +83,18 @@ const PlayerRow = (props) => {
                         <td>{props.player.user.email}</td>
                         <th><Button className="btn-success"
                             onClick={() => {
-                                editPlayerRow({firstName, lastName, refTeamID, refUserID})
+                                editPlayerRow({ firstName, lastName, refTeamID, refUserID })
                                 setEditMode(false)
-                            }}
-                        >Submit</Button></th>
+                            }}>Submit</Button></th>
                         <th><Button className="btn-secondary"
-                            onClick={() => setEditMode(false)}
-                        >Cancel</Button></th>
-                </tr>
+                            onClick={() => {
+                            setEditMode(false)
+                            setFirstName(props.player.first_name)
+                            setLastName(props.player.last_name)
+                            setTeamID(props.player.ref_team_id)
+                            }}>Cancel</Button></th>
+                    </tr>
+                </>
             }
         </>
     )

@@ -52,7 +52,7 @@ function RegisterPlayer() {
         <>
             {bearer ?
                 <Container className="App text-left">
-                    <Jumbotron className="mt-5">
+                    <Jumbotron>
                         <h2 className="display-4" >New Player Sign-Up</h2>
                         <Form>
                             <Row>
