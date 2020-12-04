@@ -17,79 +17,42 @@ function RegisterPlayer() {
 
     const storeTeams = (response) => {
         setTeams(response)
-        console.log(response)
     }
     const storeUser = (response) => {
-        setUserObj(response.data)
-        console.log(response.data)
+        setUserObj(response)
     }
 
     useEffect(() => {
-        //axios call to get index of all teams
-        axiosHelper(
-            'get',
-            '/getTeams',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                //'Authorization': 'Bearer ' + bearer
-            },
-            {},
-        )
-            .then(res => {
-                console.log(res.data);
-                storeTeams(res.data)
-            })
-            .catch(err => {
-                console.log('error: ', err)
-            });
-    }, [bearer]);
+        axiosHelper({
+            url: '/api/user',
+            fun: storeUser,
+            bearer
+        })
+    }, [bearer])
 
     useEffect(() => {
-        axiosHelper(
-            'get',
-            '/api/user',
-            {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            },
-            {},
-        )
-            .then(res => {
-                console.log(res);
-                if (res.data) {
-                    storeUser(res);
-                }
-                //setLoading(false);
-            })
-            .catch(err => {
-                console.log('error: ', err)
-                //setLoading(false);
-
-            });
-
-    }, [bearer]);
+        axiosHelper({
+            url: '/getTeams',
+            fun: storeTeams
+        })
+    }, [user_obj]);
 
     function handleSubmit(event) {
         event.preventDefault();
-        axiosHelper(
-            'post',
-            '/PlayerRegistration',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
-            //TO DO: add element to page to tell user that player has been added.
-        );
+        axiosHelper({
+            method: 'post',
+            url: '/PlayerRegistration',
+            data: { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
+            bearer
+        });
+        window.location.href = '/';
     }
 
     return (
         <>
-            {bearer &&
+            {bearer ?
                 <Container className="App text-left">
-                    <Jumbotron className="mt-5">
+                    <Jumbotron>
                         <h2 className="display-4" >New Player Sign-Up</h2>
                         <Form>
                             <Row>
@@ -128,12 +91,12 @@ function RegisterPlayer() {
                             </Row>
                         </Form>
                     </Jumbotron>
-                </Container>}
-            { !bearer &&
-                <div className="mt-5 pt-5">
-                    <h1 className="display-5 pt-5 mt-5">You must be signed in to register a player.</h1>
+                </Container>
+                :
+                <>
                     <Anonymous />
-                </div>
+                    <h1 className="display-5 mt-5">You must be signed in to register a player.</h1>
+                </>
             }
         </>
     );

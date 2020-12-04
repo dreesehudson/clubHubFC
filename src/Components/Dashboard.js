@@ -1,53 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Jumbotron
+    Container, Row, Col, Button, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
-import Schedule from '../Components/Schedule'
-import axios from 'axios';
+import { axiosHelper } from '../utilities/axiosHelper'
+import PlayerJumbotron from '../Components/PlayerJumbotron'
+import RegisterPlayer from '../Components/RegisterPlayer'
 
-function Dashboard() {
+function Dashboard(props) {
     const { bearer } = useBearer();
     const [user, setUser] = useState({})
+    const [players, setPlayers] = useState({})
+    const [modal, setModal] = useState(false);
+    const { className } = props;
+    const toggleModal = () => setModal(!modal);
+    const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
+
+    const storeUser = (response) => {
+        setUser(response)
+    }
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/api/user',
-            data: {},
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            }
+        axiosHelper({
+            url: '/api/user',
+            fun: storeUser,
+            bearer
         })
-            .then(res => {
-                setUser(res.data)
-                //console.log(res)
-            })
-            .catch(err => console.log('error: ', err));
-
-            //console.log(user);
-    }, [bearer]);
-
-    console.log(user);
+    }, [bearer])
 
     return (
         <>
-            {/* if user.players.length = 0 then show instructions to register a player */}
-            {/* if user.players.length = 1 then show dashboard of players of team */}
-
-            <Jumbotron className="mt-3 text-left">
-                <h1 className="display-4">Team Name</h1>
-                <p>Parent: {user.email}</p>
-                <p>isAdmin: {user.isAdmin}</p>
-                <Schedule />
-                <hr className="my-2" />
-            </Jumbotron>
+            <Container className="mt-5">
+                <Row>
+                    { user.hasOwnProperty('players') && user.players.hasOwnProperty(0) ?
+                        user.players.map((item, idx) => {
+                            return (
+                                <PlayerJumbotron
+                                    key={idx}
+                                    player={item}
+                                />
+                            )
+                        })
+                        :
+                        <Col className="col-12 mt-5">
+                            <h3 className=' display-3 mt-5'>No Players Registered.</h3>
+                            <Button color="danger" className="my-3" onClick={toggleModal}>Register New Player</Button>
+                            <Modal isOpen={modal} toggle={toggleModal} className={className}>
+                                <ModalHeader toggle={toggleModal} close={closeBtn} />
+                                <ModalBody>
+                                    <RegisterPlayer />
+                                </ModalBody>
+                            </Modal>
+                        </Col>
+                    }
+                </Row>
+            </Container>
         </>
     );
-    //register link to add another child
-    //schedule accordion
-    //chat window
 };
 
 export default Dashboard;
+
+
+

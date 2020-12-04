@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useBearer } from '../utilities/BearerContext';
-import axios from 'axios';
+import { axiosHelper } from '../utilities/axiosHelper';
 import {
     Collapse,
     Navbar,
@@ -18,51 +18,41 @@ const Header = () => {
     const { bearer, logOut} = useBearer();
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/api/user',
-            data: {},
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            }
+        axiosHelper({
+            url: '/api/user',
+            bearer,
+            setUser
         })
-            .then(res => {
-                setUser(res.data)
-                console.log(user)
-            })
-            .catch(err => console.log('error: ', err));
-
     }, [bearer])
 
     return (
         <>
-            <Navbar className="mb-3 fixed-top" 
+            <Navbar className="mb-3 sticky-top" 
                     color="danger" 
                     expand="md"
                     light>
                 <NavbarBrand href="/">
-                    <h1><b>League Name</b></h1>
+                    <h1><b>ClubHubFC</b></h1>
                 </NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
-                        {/* {user.isAdmin &&
+                        {user.isAdmin &&
                             <>
                                 <NavItem>
                                     <Button className="mx-2 my-1 btn-dark" 
                                             href="/admin">Admin</Button>
                                 </NavItem>
                             </>
-                        } */}
+                        }
                         <NavItem>
                             <Button className="mx-2 my-1 btn-dark text-light" 
                                     href="/">Home</Button>
                         </NavItem>
-                        <NavItem>
+                        {/* <NavItem>
                             <Button className="mx-2 my-1 btn-dark text-light" 
                                     href="/about">About</Button>
-                        </NavItem>
+                        </NavItem> */}
                         {bearer &&
                             <NavItem>
                                 <Button className="mx-2 my-1 btn-dark text-light" 

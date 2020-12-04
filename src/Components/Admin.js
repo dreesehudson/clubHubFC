@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useBearer } from '../utilities/BearerContext';
-import { axiosHelper } from '../utilities/axiosHelper'
+import { axiosHelper } from '../utilities/axiosHelper';
 import {
     TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col,
     Modal, ModalHeader, ModalBody, Label, Input, Form
 } from 'reactstrap';
 import classnames from 'classnames';
-import Switch from './Switch'
-import axios from 'axios'
+import PlayerRow from './PlayerRow';
+import TeamRow from './TeamRow';
+import ScheduleRow from './ScheduleRow';
+import UserRow from './UserRow';
 
 const Admin = (props) => {
     const [user, setUser] = useState({});
@@ -21,9 +23,7 @@ const Admin = (props) => {
     const [schedules, setSchedules] = useState([]);
     const { bearer } = useBearer();
     const [modal, setModal] = useState(false);
-    const {
-        className
-    } = props;
+    const { className } = props;
     const toggleModal = () => setModal(!modal);
     const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
     const [tabs, setTabs] = useState([{
@@ -41,122 +41,71 @@ const Admin = (props) => {
     {
         'name': 'Users',
         'num': '4'
-    },
-    {
-        'name': 'Settings',
-        'num': '5'
     }]);
-    const toggle = tab => {
-        if (activeTab !== tab) setActiveTab(tab);
-    }
-    const storeTeams = (response) => {
-        setTeams(response.data)
-        console.log(response.data)
-    }
-    const storePlayers = (response) => {
-        setPlayers(response.data)
-        console.log(response.data)
-    }
-    const storeUsers = (response) => {
-        setUsers(response.data)
-        console.log(response.data)
-    }
-    const storeSchedules = (response) => {
-        console.log(response.data[0].date)
-        setSchedules(response.data)
-    }
+    const toggle = tab => { if (activeTab !== tab) setActiveTab(tab); }
+    const storeTeams = (data) => { setTeams(data); }
+    const storePlayers = (data) => { setPlayers(data); }
+    const storeUsers = (data) => { setUsers(data); }
+    const storeSchedules = (data) => { setSchedules(data) }
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/api/user',
-            data: {},
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${bearer}`
-            }
-        })
-            .then(res => {
-                setUser(res.data)
-                console.log(user)
+        if (bearer.length > 0) {
+            axiosHelper({
+                url: '/api/user',
+                bearer,
+                fun: setUser
             })
-            .catch(err => console.log('error: ', err));
-
+        }
     }, [bearer])
 
     function handleSubmit(event) {
         event.preventDefault();
         axiosHelper(
-            'post',
-            '/createTeam',
             {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {
-                name: teamName, color: color,
-                practice_night: practiceNight
-            },
-            //TO DO: add element to page to tell user that player has been added.
-        );
+                method: 'post',
+                url: '/createTeam',
+                data: {
+                    name: teamName, color: color,
+                    practice_night: practiceNight
+                },
+                bearer
+            }
+        )
+            .then(
+                axiosHelper(
+                    {
+                        url: '/getTeams',
+                        fun: storeTeams
+                    }
+                )
+            )
+        toggleModal();
     }
 
     useEffect(() => {
-        //axios call to get index of all teams
-
-        axiosHelper(
-            'get',
-            '/getTeams',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeTeams
-        )
-        axiosHelper(
-            'get',
-            '/getPlayers',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storePlayers
-        )
-        axiosHelper(
-            'get',
-            '/getUsers',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeUsers
-        )
-        axiosHelper(
-            'get',
-            '/getSchedules',
-            {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': 'Bearer ' + bearer
-            },
-            {},
-            storeSchedules
-        )
+        axiosHelper({
+            url: '/getTeams',
+            fun: storeTeams
+        })
+        axiosHelper({
+            url: '/getPlayers',
+            fun: storePlayers
+        })
+        axiosHelper({
+            url: '/getUsers',
+            fun: storeUsers
+        })
+        axiosHelper({
+            url: '/getSchedules',
+            fun: storeSchedules
+        })
     }, [bearer]);
 
     return (
-        <div className="mt-5 pt-5">
+        <div className="container-fluid">
             <Nav tabs>
                 {tabs.map((item, idx) => {
                     return (
-
                         <NavItem key={idx}>
                             <NavLink
                                 className={classnames({ active: activeTab === item.num })}
@@ -166,11 +115,8 @@ const Admin = (props) => {
                         </NavItem>
                     )
                 })}
-
             </Nav>
-
             <TabContent activeTab={activeTab}>
-
                 <TabPane tabId="1">
                     <Row>
                         <Col sm="12">
@@ -188,28 +134,20 @@ const Admin = (props) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/*map function*/}
-                                    {players.map((item, idx) => {
+                                    {players.map((player, idx) => {
                                         return (
-                                            <tr key={idx}>
-                                                <th scope="row">{item.id}</th>
-                                                <td>{item.first_name}</td>
-                                                <td>{item.last_name}</td>
-                                                <td>{item.team.name}</td>
-                                                <td>{item.user.name}</td>
-                                                <td>{item.user.email}</td>
-                                                <th><Button className="btn-warning">Edit</Button></th>
-                                                <th><Button className="btn-danger">Delete</Button></th>
-                                            </tr>
+                                            <PlayerRow
+                                                player={player}
+                                                teams={teams}
+                                                idx={idx}
+                                                storePlayers={storePlayers}/>
                                         )
-                                    })
-                                    }
+                                    })}
                                 </tbody>
                             </Table>
                         </Col>
                     </Row>
                 </TabPane>
-
                 <TabPane tabId="2">
                     <Row>
                         <Col sm="12">
@@ -222,32 +160,30 @@ const Admin = (props) => {
                                             <Col className="col-12 mt-3">
                                                 <Label for="teamName">Team Name</Label>
                                                 <Input name="Team Name" id="teamName"
-                                                    onChange={e => setTeamName(e.target.value)}
-                                                />
+                                                    onChange={e => setTeamName(e.target.value)}/>
                                             </Col>
-
                                         </Row>
                                         <Row>
                                             <Col className="col-md-6 col-12 mt-3">
                                                 <Label for="color">Color</Label>
                                                 <Input name="color" id="color"
-                                                    onChange={e => setColor(e.target.value)}
-                                                />
+                                                    onChange={e => setColor(e.target.value)}/>
                                             </Col>
                                             <Col className="col-md-6 col-12 mt-3">
                                                 <Label for="practiceNight">Practice Night</Label>
-                                                <Input type="select" name="practiceNight" id="practiceNightSelect">
+                                                <Input type="select" name="practiceNight" id="practiceNightSelect"
+                                                    onChange={e => setPracticeNight(e.target.value)}>
                                                     <option>Choose One...</option>
-                                                    <option>Monday</option>
-                                                    <option>Tuesday</option>
-                                                    <option>Wednesday</option>
-                                                    <option>Thursday</option>
-                                                    <option>Friday</option>
+                                                    <option value='Monday'>Monday</option>
+                                                    <option value='Tuesday'>Tuesday</option>
+                                                    <option value='Wednesday'>Wednesday</option>
+                                                    <option value='Thursday'>Thursday</option>
+                                                    <option value='Friday'>Friday</option>
                                                 </Input>
                                             </Col>
                                         </Row>
                                         <Row check className="mt-3 text-center">
-                                            <Col >
+                                            <Col>
                                                 <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
                                             </Col>
                                         </Row>
@@ -263,7 +199,6 @@ const Admin = (props) => {
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Coach</th>
                                         <th>Color</th>
                                         <th>Practice Night</th>
                                         <th></th>
@@ -271,30 +206,23 @@ const Admin = (props) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {teams.map((item, idx) => {
+                                    {teams.map((team, idx) => {
                                         return (
-                                            <tr key={idx}>
-                                                <th scope="row">{item.id}</th>
-                                                <td>{item.name}</td>
-                                                <td>{item.coach}</td>
-                                                <td>{item.color}</td>
-                                                <td>{item.practice_night}</td>
-                                                <td><Button className="btn-warning">Edit</Button></td>
-                                                <td><Button className="btn-danger">Delete</Button></td>
-                                            </tr>
+                                            <TeamRow
+                                                team={team}
+                                                idx={idx}
+                                                storeTeams={storeTeams}/>
                                         )
-                                    })
-                                    }
+                                    })}
                                 </tbody>
                             </Table>
                         </Col>
                     </Row>
                 </TabPane>
-
                 <TabPane tabId="3">
                     <Row>
                         <Col sm="12">
-                            <Table>
+                            <Table size="sm" hover>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -308,28 +236,22 @@ const Admin = (props) => {
                                         <th></th>
                                     </tr>
                                 </thead>
-                                {schedules.map((item, idx) => {
-                                    return (
-                                        <tr key={idx}>
-                                            <th scope="row">{item.id}</th>
-                                            <td>{item.type}</td>
-                                            <td>{item.date}</td>
-                                            <td>{item.ref_home_team_id}</td>
-                                            <td>vs.</td>
-                                            <td>{item.ref_away_team_id}</td>
-                                            <td>{item.time}</td>
-                                            <td><Button className="btn-warning">Edit</Button></td>
-                                            <td><Button className="btn-danger">Delete</Button></td>
-                                        </tr>
-                                    )
-                                })
-                                }
-
+                                <tbody>
+                                    {schedules.map((schedule, idx) => {
+                                        return (
+                                            <ScheduleRow
+                                                schedule={schedule}
+                                                teams={teams}
+                                                idx={idx}
+                                                storeSchedules={storeSchedules}/>
+                                        )
+                                    })
+                                    }
+                                </tbody>
                             </Table>
                         </Col>
                     </Row>
                 </TabPane>
-
                 <TabPane tabId="4">
                     <Row>
                         <Col sm="12">
@@ -339,37 +261,26 @@ const Admin = (props) => {
                                         <th>ID</th>
                                         <th>Parent Name</th>
                                         <th>Email</th>
+                                        <th>Admin</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {users.map((item, idx) => {
+                                    {users.map((user, idx) => {
                                         return (
-                                            <tr key={idx}>
-                                                <th scope="row">{item.id}</th>
-                                                <td>{item.name}</td>
-                                                <td>{item.email}</td>
-                                                <td><Button className="btn-warning">Edit</Button></td>
-                                                <td><Button className="btn-danger">Delete</Button></td>
-                                            </tr>
+                                            <UserRow
+                                                user={user}
+                                                idx={idx}
+                                                storeUsers={storeUsers}
+                                            />
                                         )
-                                    })
-                                    }
+                                    })}
                                 </tbody>
                             </Table>
                         </Col>
                     </Row>
                 </TabPane>
-
-                <TabPane tabId="5">
-                    <Row>
-                        <Col sm="12">
-                            <Switch />
-                        </Col>
-                    </Row>
-                </TabPane>
-
             </TabContent>
         </div>
     );
