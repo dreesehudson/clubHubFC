@@ -56,7 +56,7 @@ const UserRow = (props) => {
                     <td>{props.user.name}</td>
                     <td>{props.user.email}</td>
                     <td>
-                        <div class="form-check">
+                        <div className="form-check">
                             <Input disabled checked={admin} className="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
                         </div>
                     </td>
@@ -75,8 +75,8 @@ const UserRow = (props) => {
                         <td><Input defaultValue={props.user.email}
                             onChange={e => setEmail(e.target.value)}></Input></td>
                         <td>
-                            <div class="form-check">
-                                <Input disabled checked={checked} class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
+                            <div className="form-check">
+                                <Input disabled checked={checked} className="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
                             </div>
                         </td>
                         {/* <td><CustomInput checked={admin} type="switch" id="exampleCustomSwitch" name="customSwitch"

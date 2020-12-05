@@ -4,13 +4,15 @@ import { Row, Col } from 'reactstrap';
 function Footer() {
     return (
         <footer className="bg-danger mt-5 fixed-bottom">
-            <Row>
+            <Row className='p-2'>
                 <Col>
+                    <p>Github</p>
                 </Col>
                 <Col>
-                    <p>Footer</p>
+                    <p>LinkedIn</p>
                 </Col>
                 <Col>
+                    <p>Portfolio</p>
                 </Col>
             </Row>
         </footer>

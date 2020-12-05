@@ -26,7 +26,7 @@ function UserLogIn() {
             data: {
                 grant_type: "password",
                 client_id: 2,
-                client_secret: "7Rqf4yrGw6NnbTbgDxWS63zizAvTIzNGp456OlCd",
+                client_secret: "tvPgcMUI6FQ5BA0qbH76y7HKIprmYiNKTzgVcpqa",
                 password: password,
                 username: email,
                 scope: ""
