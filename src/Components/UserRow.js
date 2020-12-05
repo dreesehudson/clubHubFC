@@ -15,9 +15,10 @@ const UserRow = (props) => {
     const [checked, setChecked] = useState(props.user.isAdmin);
     const { bearer } = useBearer();
 
-    const checkBoxHandler = () => { 
+    const checkBoxHandler = () => {
         setChecked(!checked)
-        setAdmin(!admin.toString()) }
+        setAdmin(!admin.toString())
+    }
 
     function editUserRow({ name = `${props.user.name}`, email = `${props.user.email}`, admin = `${props.user.isAdmin}` }) {
         axiosHelper({
@@ -86,10 +87,11 @@ const UserRow = (props) => {
                                 setEditMode(false)
                             }}>Submit</Button></th>
                         <th><Button className="btn-secondary"
-                            onClick={() => {setEditMode(false)
-                                    setName(props.user.name)
-                                    setEmail(props.user.email)
-                                    setAdmin(props.user.isAdmin)
+                            onClick={() => {
+                                setEditMode(false)
+                                setName(props.user.name)
+                                setEmail(props.user.email)
+                                setAdmin(props.user.isAdmin)
                             }}>Cancel</Button></th>
                     </tr>
                 </>

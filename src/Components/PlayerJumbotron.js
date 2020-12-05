@@ -12,7 +12,7 @@ function PlayerJumbotron(props) {
     const { bearer } = useBearer();
     const [player, setPlayer] = useState(props.player);
     const [teams, setTeams] = useState({});
-    const [team_id, setTeamID] = useState(props.player.ref_team_id);
+    const [team_id, setTeamID] = useState(props.player.team_id);
 
     const storePlayers = (response) => {
         setTeams(response)

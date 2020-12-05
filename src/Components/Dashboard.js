@@ -32,7 +32,7 @@ function Dashboard(props) {
         <>
             <Container className="mt-5">
                 <Row>
-                    { user.hasOwnProperty('players') && user.players.hasOwnProperty(0) ?
+                    {user.hasOwnProperty('players') && user.players.hasOwnProperty(0) ?
                         user.players.map((item, idx) => {
                             return (
                                 <PlayerJumbotron

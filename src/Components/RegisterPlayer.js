@@ -17,6 +17,7 @@ function RegisterPlayer() {
 
     const storeTeams = (response) => {
         setTeams(response)
+        console.log(response)
     }
     const storeUser = (response) => {
         setUserObj(response)
@@ -42,10 +43,10 @@ function RegisterPlayer() {
         axiosHelper({
             method: 'post',
             url: '/PlayerRegistration',
-            data: { first_name: firstName, last_name: lastName, ref_team_id: team_id, ref_user_id: user_obj.id },
+            data: { first_name: firstName, last_name: lastName, team_id: team_id, user_id: user_obj.id },
             bearer
         });
-        window.location.href = '/';
+        //window.location.href = '/';
     }
 
     return (

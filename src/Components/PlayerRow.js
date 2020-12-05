@@ -10,19 +10,19 @@ const PlayerRow = (props) => {
     const [id, setID] = useState(props.player.id);
     const [firstName, setFirstName] = useState(props.player.first_name);
     const [lastName, setLastName] = useState(props.player.last_name);
-    const [refTeamID, setTeamID] = useState(props.player.ref_team_id);
-    const [refUserID, setRefUserID] = useState(props.player.ref_user_id);
+    const [refTeamID, setTeamID] = useState(props.player.team_id);
+    const [refUserID, setRefUserID] = useState(props.player.user_id);
     const { bearer } = useBearer();
 
-    function editPlayerRow({ firstName = `${props.player.first_name}`, lastName = `${props.player.last_name}`, refTeamID = `${props.player.ref_team_id}`, refUserID = `${props.player.ref_user_id}` }) {
+    function editPlayerRow({ firstName = `${props.player.first_name}`, lastName = `${props.player.last_name}`, refTeamID = `${props.player.team_id}`, refUserID = `${props.player.user_id}` }) {
         axiosHelper({
             method: 'put',
             url: `/editPlayer/${id}`,
             data: {
                 first_name: firstName,
                 last_name: lastName,
-                ref_team_id: refTeamID,
-                ref_user_id: refUserID,
+                team_id: refTeamID,
+                user_id: refUserID,
             }
         })
             .then(axiosHelper({
@@ -71,7 +71,7 @@ const PlayerRow = (props) => {
                         <td>
                             <Input type="select" name="select" id="teamSelect"
                                 onChange={e => setTeamID(e.target.value)}>
-                                <option defaultValue={props.player.ref_team_id}> {props.player.team.name} - {props.player.team.color} - Practice: {props.player.team.practice_night}</option>
+                                <option defaultValue={props.player.team_id}> {props.player.team.name} - {props.player.team.color} - Practice: {props.player.team.practice_night}</option>
                                 {props.teams.map((team, idx) => {
                                     return (
                                         <option value={team.id} key={idx}>{team.name} - {team.color} - Practice: {team.practice_night}</option>
@@ -88,10 +88,10 @@ const PlayerRow = (props) => {
                             }}>Submit</Button></th>
                         <th><Button className="btn-secondary"
                             onClick={() => {
-                            setEditMode(false)
-                            setFirstName(props.player.first_name)
-                            setLastName(props.player.last_name)
-                            setTeamID(props.player.ref_team_id)
+                                setEditMode(false)
+                                setFirstName(props.player.first_name)
+                                setLastName(props.player.last_name)
+                                setTeamID(props.player.team_id)
                             }}>Cancel</Button></th>
                     </tr>
                 </>

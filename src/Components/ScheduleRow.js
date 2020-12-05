@@ -20,8 +20,8 @@ const ScheduleRow = (props) => {
             url: `/editSchedule/${id}`,
             data: {
                 date: date,
-                ref_home_team_id: homeTeamID,
-                ref_away_team_id: awayTeamID,
+                home_team_id: homeTeamID,
+                away_team_id: awayTeamID,
                 time: time
             }
         })
@@ -98,8 +98,8 @@ const ScheduleRow = (props) => {
                             onClick={() => {
                                 setEditMode(false)
                                 setDate(props.schedule.date)
-                                setHomeTeamID(props.schedule.ref_home_team_id)
-                                setAwayTeamID(props.schedule.ref_away_team_id)
+                                setHomeTeamID(props.schedule.home_team_id)
+                                setAwayTeamID(props.schedule.away_team_id)
                                 setTime(props.schedule.time)
                             }}>Cancel</Button></th>
                     </tr>

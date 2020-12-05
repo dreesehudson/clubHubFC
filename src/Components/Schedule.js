@@ -19,7 +19,7 @@ function Schedule(props) {
     //             url: `/getTeam/${team.id}`,
     //             fun: setTeam
     //         })
-        
+
     // }, [player])
 
     return (
@@ -42,8 +42,8 @@ function Schedule(props) {
                             {!schedule ?
                                 <tr>
                                     <td>
-                                    <h3 className='mt-4'>
-                                        No Events Scheduled Yet
+                                        <h3 className='mt-4'>
+                                            No Events Scheduled Yet
                                     </h3>
                                     </td>
                                     <td></td>

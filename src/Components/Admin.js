@@ -140,7 +140,7 @@ const Admin = (props) => {
                                                 player={player}
                                                 teams={teams}
                                                 idx={idx}
-                                                storePlayers={storePlayers}/>
+                                                storePlayers={storePlayers} />
                                         )
                                     })}
                                 </tbody>
@@ -160,14 +160,14 @@ const Admin = (props) => {
                                             <Col className="col-12 mt-3">
                                                 <Label for="teamName">Team Name</Label>
                                                 <Input name="Team Name" id="teamName"
-                                                    onChange={e => setTeamName(e.target.value)}/>
+                                                    onChange={e => setTeamName(e.target.value)} />
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col className="col-md-6 col-12 mt-3">
                                                 <Label for="color">Color</Label>
                                                 <Input name="color" id="color"
-                                                    onChange={e => setColor(e.target.value)}/>
+                                                    onChange={e => setColor(e.target.value)} />
                                             </Col>
                                             <Col className="col-md-6 col-12 mt-3">
                                                 <Label for="practiceNight">Practice Night</Label>
@@ -211,7 +211,7 @@ const Admin = (props) => {
                                             <TeamRow
                                                 team={team}
                                                 idx={idx}
-                                                storeTeams={storeTeams}/>
+                                                storeTeams={storeTeams} />
                                         )
                                     })}
                                 </tbody>
@@ -243,7 +243,7 @@ const Admin = (props) => {
                                                 schedule={schedule}
                                                 teams={teams}
                                                 idx={idx}
-                                                storeSchedules={storeSchedules}/>
+                                                storeSchedules={storeSchedules} />
                                         )
                                     })
                                     }
