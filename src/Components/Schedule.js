@@ -1,26 +1,65 @@
 import React, { useState, useEffect } from 'react';
+import { useBearer } from '../utilities/BearerContext';
 import {
     CardBody, Card, Table
 } from 'reactstrap';
-import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 
 function Schedule(props) {
+    const { bearer } = useBearer();
 
-    const [schedule, setSchedule] = useState([]);
-    const [player, setPlayer] = useState(props.player);
-    //const [team, setTeam] = useState(props.player.team);
-    // const storeTeam = (response) => {
-    //     setTeam(response)
-    // }
+    const [allGames, setAllGames] = useState([]);
+    const [homeGames, setHomeGames] = useState([]);
+    const [awayGames, setAwayGames] = useState([]);
+    const [teamSchedule, setTeamSchedule] = useState([]);
+
+    function storeEveryGame(data) { setAllGames(data) }
+    function storeHomeGames(data) { setHomeGames(data) }
+    function storeAwayGames(data) { setAwayGames(data) }
+    function storeTeamSchedule(data) { setTeamSchedule(data) }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await axiosHelper({
+                url: '/getSchedules',
+                fun: storeEveryGame
+            });
+        }
+        fetchData();
+
+        storeHomeGames(allGames.filter((game) => {
+            return (game.home_team_id === props.team.id)
+        }))
+
+        storeAwayGames(allGames.filter((game) => {
+            return (game.away_team_id === props.team.id)
+        }))
+
+        storeTeamSchedule(
+            [...homeGames, ...awayGames]
+        )
+
+        console.log({ allGames }, { homeGames }, { awayGames }, { teamSchedule })
+
+
+    }, [allGames])
+
+    //get the entire game schedule
 
     // useEffect(() => {
-    //         axiosHelper({
-    //             url: `/getTeam/${team.id}`,
-    //             fun: setTeam
-    //         })
+    //     storeHomeGames(allGames.filter((game) => {
+    //         return (game.home_team_id === props.team.id)
+    //     }))
+    //     storeAwayGames(allGames.filter((game) => {
+    //         return (game.away_team_id === props.team.id)
+    //     }))
+    //     storeTeamSchedule(
+    //         [...homeGames, ...awayGames]
+    //     )
 
-    // }, [player])
+    //     console.log({ allGames }, { homeGames }, { awayGames }, { teamSchedule })
+
+    // },[allGames, homeGames]);
 
     return (
         <>
@@ -30,7 +69,6 @@ function Schedule(props) {
                     <Table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Type</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Home</th>
                                 <th scope="col"></th>
@@ -39,32 +77,16 @@ function Schedule(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {!schedule ?
-                                <tr>
-                                    <td>
-                                        <h3 className='mt-4'>
-                                            No Events Scheduled Yet
-                                    </h3>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+
+                            {teamSchedule.map((item, idx) =>
+                                <tr key={idx}>
+                                    <td>{item.date}</td>
+                                    <td>{item.home_team.name}</td>
+                                    <td>vs.</td>
+                                    <td>{item.away_team.name}</td>
+                                    <td>{item.time}</td>
                                 </tr>
-                                :
-                                schedule.map((item, idx) =>
-                                    <tr key={idx}>
-                                        <td>{item.type}</td>
-                                        <td>{item.date}</td>
-                                        <td>{item.home_team}</td>
-                                                if ({item.type} = 'Match')
-                                                    {<td>'vs.'</td>}
-                                                    else {<td></td>}
-                                        <td>{item.away_team}</td>
-                                        <td>{item.time}</td>
-                                    </tr>
-                                )}
+                            )}
                         </tbody>
                     </Table>
                 </CardBody>

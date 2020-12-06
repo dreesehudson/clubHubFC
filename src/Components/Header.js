@@ -56,7 +56,7 @@ const Header = () => {
                         {bearer &&
                             <NavItem>
                                 <Button className="mx-2 my-1 btn-dark text-light"
-                                    href='/playerRegistration'>Register</Button>
+                                    href=''>Register</Button>
                             </NavItem>}
                         <NavItem>
                             <Button target="_blank"

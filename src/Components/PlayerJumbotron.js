@@ -4,40 +4,39 @@ import {
 
 } from 'reactstrap';
 import Schedule from '../Components/Schedule'
-import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 
 
 function PlayerJumbotron(props) {
-    const { bearer } = useBearer();
     const [player, setPlayer] = useState(props.player);
     const [team, setTeam] = useState({});
-    const [team_id, setTeamID] = useState(props.player.team_id);
+    const [teamID, setTeamID] = useState(props.player.team_id);
 
-    const storeTeam = (response) => {
-        setTeam(response)
-    }
+    const storeTeam = (response) => { setTeam(response) }
 
-    useEffect((id) => {
-        if(id){
+    useEffect(() => {
+        if (player.team_id) {
             axiosHelper({
-                url: `/getTeam/${id}`,
+                url: `/getTeam/${player.team_id}`,
                 fun: storeTeam
             })
         }
-    }, [player.id])
+    }, [player])
 
-    return (
-        <Col className="col-12 mt-3">
-            <Jumbotron className="mt-3 text-left">
-                <h1 className="display-4">{player.first_name} {player.last_name}</h1>
-                <h1 className="display-5">{team.name}</h1>
-                <Schedule
-                />
-            </Jumbotron>
-        </Col>
+    //console.log({team})
 
-    )
+return (
+    <Col className="col-12 mt-3">
+        <Jumbotron className="mt-3 text-left">
+            <h2 className="display-4">{player.first_name} {player.last_name}</h2>
+            <h3 className="display-5">{team.name}</h3>
+            <Schedule
+                team={team}
+            />
+        </Jumbotron>
+    </Col>
+
+)
 }
 
 export default PlayerJumbotron
