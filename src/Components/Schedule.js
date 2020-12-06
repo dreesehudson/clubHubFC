@@ -13,53 +13,21 @@ function Schedule(props) {
     const [awayGames, setAwayGames] = useState([]);
     const [teamSchedule, setTeamSchedule] = useState([]);
 
-    function storeEveryGame(data) { setAllGames(data) }
-    function storeHomeGames(data) { setHomeGames(data) }
-    function storeAwayGames(data) { setAwayGames(data) }
-    function storeTeamSchedule(data) { setTeamSchedule(data) }
+    function storeAllData(data){
+        setAllGames(data)
+        const tempHomeGames = data.filter((game) =>  game.home_team_id === props.team.id )
+        const tempAwayGames = data.filter((game) =>  game.away_team_id === props.team.id )
+        setHomeGames(tempHomeGames)
+        setAwayGames(tempAwayGames)
+        setTeamSchedule([...tempHomeGames, ...tempAwayGames])
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            await axiosHelper({
-                url: '/getSchedules',
-                fun: storeEveryGame
-            });
-        }
-        fetchData();
-
-        storeHomeGames(allGames.filter((game) => {
-            return (game.home_team_id === props.team.id)
-        }))
-
-        storeAwayGames(allGames.filter((game) => {
-            return (game.away_team_id === props.team.id)
-        }))
-
-        storeTeamSchedule(
-            [...homeGames, ...awayGames]
-        )
-
-        console.log({ allGames }, { homeGames }, { awayGames }, { teamSchedule })
-
-
-    }, [allGames])
-
-    //get the entire game schedule
-
-    // useEffect(() => {
-    //     storeHomeGames(allGames.filter((game) => {
-    //         return (game.home_team_id === props.team.id)
-    //     }))
-    //     storeAwayGames(allGames.filter((game) => {
-    //         return (game.away_team_id === props.team.id)
-    //     }))
-    //     storeTeamSchedule(
-    //         [...homeGames, ...awayGames]
-    //     )
-
-    //     console.log({ allGames }, { homeGames }, { awayGames }, { teamSchedule })
-
-    // },[allGames, homeGames]);
+        axiosHelper({
+            url: '/getSchedules',
+            fun: storeAllData
+        });
+    }, [allGames.length])
 
     return (
         <>
