@@ -44,7 +44,7 @@ function Dashboard(props) {
                         :
                         <Col className="col-12 mt-5">
                             <h3 className=' display-3 mt-5'>No Players Registered.</h3>
-                            <Button color="danger" className="my-3" onClick={toggleModal}>Register New Player</Button>
+                            <Button color="primary" className="my-3" onClick={toggleModal}>Register New Player</Button>
                             <Modal isOpen={modal} toggle={toggleModal} className={className}>
                                 <ModalHeader toggle={toggleModal} close={closeBtn} />
                                 <ModalBody>

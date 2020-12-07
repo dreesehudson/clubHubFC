@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper';
+import RegisterPlayer from '../Components/RegisterPlayer'
 import {
     Collapse,
     Navbar,
@@ -8,14 +9,22 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    Button
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody
 } from 'reactstrap';
 
-const Header = () => {
+const Header = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState({});
     const toggle = () => setIsOpen(!isOpen);
     const { bearer, logOut } = useBearer();
+    const [modal, setModal] = useState(false);
+    const { className } = props;
+    const toggleModal = () => setModal(!modal);
+    const closeBtn = <button className="close" onClick={toggleModal}>&times;</button>;
+
 
     useEffect(() => {
         axiosHelper({
@@ -28,7 +37,7 @@ const Header = () => {
     return (
         <>
             <Navbar className="mb-3 sticky-top"
-                color="danger"
+                color="primary"
                 expand="md"
                 light>
                 <NavbarBrand href="/">
@@ -49,14 +58,15 @@ const Header = () => {
                             <Button className="mx-2 my-1 btn-dark text-light"
                                 href="/">Home</Button>
                         </NavItem>
-                        {/* <NavItem>
-                            <Button className="mx-2 my-1 btn-dark text-light" 
-                                    href="/about">About</Button>
-                        </NavItem> */}
                         {bearer &&
                             <NavItem>
-                                <Button className="mx-2 my-1 btn-dark text-light"
-                                    href=''>Register</Button>
+                                <Button className='mx-2 my-1 btn-dark text-light' onClick={toggleModal}>Register</Button>
+                                <Modal isOpen={modal} toggle={toggleModal} className={className}>
+                                    <ModalHeader toggle={toggleModal} close={closeBtn} />
+                                    <ModalBody>
+                                        <RegisterPlayer />
+                                    </ModalBody>
+                                </Modal>
                             </NavItem>}
                         <NavItem>
                             <Button target="_blank"

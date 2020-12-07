@@ -38,7 +38,7 @@ function RegisterUser() {
 
     return (
         <>
-            <Button className="btn-lg mt-3 ml-2" color="danger" onClick={toggle}>Sign Up</Button>
+            <Button className="btn-lg mt-3 ml-2" color="primary" onClick={toggle}>Sign Up</Button>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Register New User Account</ModalHeader>
                 <ModalBody>
@@ -58,7 +58,7 @@ function RegisterUser() {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color="danger" onClick={HandleSubmit}>Register</Button>{' '}
+                    <Button type="submit" color="primary" onClick={HandleSubmit}>Register</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>

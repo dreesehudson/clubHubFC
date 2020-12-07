@@ -12,3 +12,5 @@ export function mapOverATags(array, className) {
         return <a key={index} href={'url'} className={className}>{paragraph}</a>
     })
 }
+
+

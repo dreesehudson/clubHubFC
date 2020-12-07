@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import { Col, Row, Container, Button, Form, Label, Input, Jumbotron } from 'reactstrap';
-import Anonymous from './Anonymous';
 
 function RegisterPlayer() {
 
@@ -46,59 +45,52 @@ function RegisterPlayer() {
             data: { first_name: firstName, last_name: lastName, team_id: team_id, user_id: user_obj.id },
             bearer
         });
-        //window.location.href = '/';
+        window.location.href = '/';
     }
 
     return (
         <>
-            {bearer ?
-                <Container className="App text-left">
-                    <Jumbotron>
-                        <h2 className="display-4" >New Player Sign-Up</h2>
-                        <Form>
-                            <Row>
-                                <Col className="col-md-6 col-12 mt-3">
-                                    <Label for="firstName">First Name</Label>
-                                    <Input name="First Name" id="firstName"
-                                        onChange={e => setFirstName(e.target.value)}
-                                    />
-                                </Col>
-                                <Col className="col-md-6 col-12 mt-3">
-                                    <Label for="lastName">Last Name</Label>
-                                    <Input name="Last Name" id="lastName"
-                                        onChange={e => setLastName(e.target.value)}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col className="col-md-6 col-12 mt-3">
-                                    <Label for="teamSelect">Team</Label>
-                                    <Input type="select" name="select" id="teamSelect"
-                                        onChange={e => setTeamID(e.target.value)}
-                                    >
-                                        <option>Pick a team...</option>
-                                        {teams.map((item, idx) => {
-                                            return (
-                                                <option value={item.id} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
-                                            )
-                                        })}
-                                    </Input>
-                                </Col>
-                            </Row>
-                            <Row check className="mt-3 text-center">
-                                <Col >
-                                    <Button type="submit" className="btn btn-danger" onClick={handleSubmit}>Submit</Button>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Jumbotron>
-                </Container>
-                :
-                <>
-                    <Anonymous />
-                    <h1 className="display-5 mt-5">You must be signed in to register a player.</h1>
-                </>
-            }
+            <Container className="App text-left">
+                <Jumbotron>
+                    <h2 className="display-4" >New Player Sign-Up</h2>
+                    <Form>
+                        <Row>
+                            <Col className="col-md-6 col-12 mt-3">
+                                <Label for="firstName">First Name</Label>
+                                <Input name="First Name" id="firstName"
+                                    onChange={e => setFirstName(e.target.value)}
+                                />
+                            </Col>
+                            <Col className="col-md-6 col-12 mt-3">
+                                <Label for="lastName">Last Name</Label>
+                                <Input name="Last Name" id="lastName"
+                                    onChange={e => setLastName(e.target.value)}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="col-md-6 col-12 mt-3">
+                                <Label for="teamSelect">Team</Label>
+                                <Input type="select" name="select" id="teamSelect"
+                                    onChange={e => setTeamID(e.target.value)}
+                                >
+                                    <option>Pick a team...</option>
+                                    {teams.map((item, idx) => {
+                                        return (
+                                            <option value={item.id} key={idx}>{item.name} - {item.color} - Practice: {item.practice_night}</option>
+                                        )
+                                    })}
+                                </Input>
+                            </Col>
+                        </Row>
+                        <Row check className="mt-3 text-center">
+                            <Col >
+                                <Button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Jumbotron>
+            </Container>
         </>
     );
 }

@@ -3,7 +3,7 @@ import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper';
 import {
     TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col,
-    Modal, ModalHeader, ModalBody, Label, Input, Form
+    Modal, ModalHeader, ModalBody, Label, Input, Form, Container
 } from 'reactstrap';
 import classnames from 'classnames';
 import PlayerRow from './PlayerRow';
@@ -57,16 +57,6 @@ const Admin = (props) => {
     const storePlayers = (data) => { setPlayers(data); }
     const storeUsers = (data) => { setUsers(data); }
     const storeSchedules = (data) => { setSchedules(data) }
-
-    useEffect(() => {
-        if (bearer.length > 0) {
-            axiosHelper({
-                url: '/api/user',
-                bearer,
-                fun: setUser
-            })
-        }
-    }, [bearer])
 
     function handleTeamSubmit(event) {
         event.preventDefault();
@@ -140,10 +130,10 @@ const Admin = (props) => {
 
     return (
         <>
-            <div>
+            <Container>
                 <Row>
                     <Col>
-                        <Button className='btn btn-lg' color="danger" className="my-3" onClick={toggleModal}>Create New Team</Button>
+                        <Button className='btn btn-lg my-3' color="primary" onClick={toggleModal}>Create New Team</Button>
                         <Modal isOpen={modal} toggle={toggleModal} className={className}>
                             <ModalHeader toggle={toggleModal} close={closeBtn}>Create New Team</ModalHeader>
                             <ModalBody>
@@ -176,7 +166,7 @@ const Admin = (props) => {
                                     </Row>
                                     <Row check className="mt-3 text-center">
                                         <Col>
-                                            <Button type="submit" className="btn btn-danger" onClick={handleTeamSubmit}>Submit</Button>
+                                            <Button type="submit" className="btn btn-primary" onClick={handleTeamSubmit}>Submit</Button>
                                         </Col>
                                     </Row>
                                 </Form>
@@ -185,7 +175,7 @@ const Admin = (props) => {
                     </Col>
 
                     <Col>
-                        <Button color="danger" className="my-3" onClick={toggleMatchModal}>Create New Match</Button>
+                        <Button color="primary" className="btn btn-lg my-3" onClick={toggleMatchModal}>Create New Match</Button>
                         <Modal isOpen={matchModal} toggle={toggleMatchModal} className={className}>
                             <ModalHeader toggle={toggleMatchModal} close={closeMatchBtn}>Create New Match</ModalHeader>
                             <ModalBody>
@@ -242,7 +232,7 @@ const Admin = (props) => {
 
                                     <Row check className="mt-3 text-center">
                                         <Col>
-                                            <Button type="submit" className="btn btn-danger" onClick={handleMatchSubmit}>Submit</Button>
+                                            <Button type="submit" className="btn btn-primary" onClick={handleMatchSubmit}>Submit</Button>
                                         </Col>
                                     </Row>
                                 </Form>
@@ -250,9 +240,10 @@ const Admin = (props) => {
                         </Modal>
                     </Col>
                 </Row>
-            </div>
-            <div className="container-fluid">
-                <Nav tabs>
+            </Container>
+
+            <div className="container-fluid text-center">
+                <Nav className='nav-pills nav-justified mt-3'>
                     {tabs.map((item, idx) => {
                         return (
                             <NavItem key={idx}>

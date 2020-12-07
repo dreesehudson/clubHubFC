@@ -42,7 +42,7 @@ function UserLogIn() {
 
     return (
         <>
-            <Button className="btn-lg mt-3 mr-2" color="danger" onClick={toggle}>Log In</Button>
+            <Button className="btn-lg mt-3 mr-2" color="primary" onClick={toggle}>Log In</Button>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Welcome Back, Log In</ModalHeader>
                 <ModalBody>
@@ -60,7 +60,7 @@ function UserLogIn() {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color="danger" onClick={HandleSubmit}>Log In</Button>{' '}
+                    <Button type="submit" color="primary" onClick={HandleSubmit}>Log In</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>

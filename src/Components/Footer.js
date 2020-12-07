@@ -3,7 +3,7 @@ import { Row, Col } from 'reactstrap';
 
 function Footer() {
     return (
-        <footer className="bg-danger mt-5 fixed-bottom">
+        <footer className="bg-primary mt-5 fixed-bottom">
             <Row className='p-2'>
                 <Col>
                     <p>Github</p>
