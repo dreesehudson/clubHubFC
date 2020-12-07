@@ -15,7 +15,6 @@ const Admin = (props) => {
     const [user, setUser] = useState({});
     const [activeTab, setActiveTab] = useState('1');
     const [teamName, setTeamName] = useState("");
-    const [homeTeamName, setHomeTeamName] = useState("");
     const [color, setColor] = useState("");
     const [practiceNight, setPracticeNight] = useState("");
     const [teams, setTeams] = useState([]);
@@ -58,6 +57,21 @@ const Admin = (props) => {
     const storeUsers = (data) => { setUsers(data); }
     const storeSchedules = (data) => { setSchedules(data) }
 
+    useEffect(() => {
+        axiosHelper({
+            url: '/getSchedules',
+            fun: props.storeSchedules
+        })
+    }, [matchModal])
+
+    useEffect(() => {
+        axiosHelper({
+            url: '/getTeams',
+            fun: props.storeTeams
+        })
+    }, [modal])
+
+
     function handleTeamSubmit(event) {
         event.preventDefault();
         axiosHelper(
@@ -72,14 +86,10 @@ const Admin = (props) => {
                 bearer
             }
         )
-            .then(
-                axiosHelper(
-                    {
-                        url: '/getTeams',
-                        fun: storeTeams
-                    }
-                )
-            )
+        axiosHelper({
+            url: '/getTeams',
+            fun: storeTeams
+        })
         toggleModal();
     }
 
@@ -98,14 +108,10 @@ const Admin = (props) => {
                 bearer
             }
         )
-            .then(
-                axiosHelper(
-                    {
-                        url: '/getSchedules',
-                        fun: storeSchedules
-                    }
-                )
-            )
+        axiosHelper({
+            url: '/getSchedules',
+            fun: storeSchedules
+        })
         toggleMatchModal();
     }
 
@@ -130,7 +136,7 @@ const Admin = (props) => {
 
     return (
         <>
-            <Container>
+            <Container className='mt-4'>
                 <Row>
                     <Col>
                         <Button className='btn btn-lg my-3' color="primary" onClick={toggleModal}>Create New Team</Button>
@@ -166,7 +172,7 @@ const Admin = (props) => {
                                     </Row>
                                     <Row check className="mt-3 text-center">
                                         <Col>
-                                            <Button type="submit" className="btn btn-primary" onClick={handleTeamSubmit}>Submit</Button>
+                                            <Button className="btn-primary" onClick={handleTeamSubmit}>Submit</Button>
                                         </Col>
                                     </Row>
                                 </Form>

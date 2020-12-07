@@ -36,7 +36,7 @@ const Header = (props) => {
 
     return (
         <>
-            <Navbar className="mb-3 sticky-top"
+            <Navbar className="mb-3 fixed-top"
                 color="primary"
                 expand="md"
                 light>

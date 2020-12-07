@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { axiosHelper } from '../utilities/axiosHelper';
-import {
-    Button, Input
+import { Button, Input
 } from 'reactstrap';
 
 const PlayerRow = (props) => {
@@ -11,7 +10,6 @@ const PlayerRow = (props) => {
     const [firstName, setFirstName] = useState(props.player.first_name);
     const [lastName, setLastName] = useState(props.player.last_name);
     const [teamID, setTeamID] = useState(props.player.team_id);
-    //const [userID, setUserID] = useState(props.player.user_id);
 
     useEffect(() => {
         axiosHelper({
@@ -22,7 +20,7 @@ const PlayerRow = (props) => {
     }, [editMode, deleter])
 
 
-    function editPlayerRow({ firstName = `${props.player.first_name}`, lastName = `${props.player.last_name}`, teamID = `${props.player.team_id}`}) {
+    function editPlayerRow({ firstName = `${props.player.first_name}`, lastName = `${props.player.last_name}`, teamID = `${props.player.team_id}` }) {
         axiosHelper({
             method: 'put',
             url: `/editPlayer/${id}`,
@@ -30,9 +28,17 @@ const PlayerRow = (props) => {
                 first_name: firstName,
                 last_name: lastName,
                 team_id: teamID,
-                
+
             }
         })
+        setEditMode(false)
+    }
+
+    function cancelEdit() {
+        setEditMode(false)
+        setFirstName(props.player.first_name)
+        setLastName(props.player.last_name)
+        setTeamID(props.player.team_id)
     }
 
     function deletePlayerRow(id) {
@@ -78,13 +84,9 @@ const PlayerRow = (props) => {
                         <th><Button className="btn-success"
                             onClick={() => {
                                 editPlayerRow({ firstName, lastName, teamID })
-                                setEditMode(false)}}>Submit</Button></th>
+                            }}>Submit</Button></th>
                         <th><Button className="btn-secondary"
-                            onClick={() => {
-                                setEditMode(false)
-                                setFirstName(props.player.first_name)
-                                setLastName(props.player.last_name)
-                                setTeamID(props.player.team_id)}}>Cancel</Button></th>
+                            onClick={() => { cancelEdit() }}>Cancel</Button></th>
                     </tr>
                 </>
             }

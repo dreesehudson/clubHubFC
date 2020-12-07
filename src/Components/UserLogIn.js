@@ -17,6 +17,7 @@ function UserLogIn() {
     function HandleSubmit() {
         axios({
             method: 'post',
+            // url: 'https://clubhubfc.ue.r.appspot.com/v1/oauth/token',
             url: 'http://localhost:8000/v1/oauth/token',
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -26,7 +27,7 @@ function UserLogIn() {
             data: {
                 grant_type: "password",
                 client_id: 2,
-                client_secret: "tvPgcMUI6FQ5BA0qbH76y7HKIprmYiNKTzgVcpqa",
+                client_secret: "E55tW2FbAL2NMy2bs6ycmG4stTKyMHACqGKIF6Vm",
                 password: password,
                 username: email,
                 scope: ""

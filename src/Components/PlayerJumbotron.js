@@ -10,28 +10,37 @@ import { colors } from '../utilities/colors'
 function PlayerJumbotron(props) {
     const [player, setPlayer] = useState(props.player);
     const [team, setTeam] = useState({});
-    const bgColor = team.color;
-    //const textcolor = TEXTColor.findTextColor(bgColor);
-    const storeTeam = (response) => { setTeam(response) }
-    // const bgR = colors.bgColor[0]; //R value of team color
-    // const bgG = colors.bgColor[1]; //G value of team color
-    // const bgB = colors.bgColor[2]; //B value of team color
+    //const [bgColor, setBGColor] = useState("");
+    //const [textColor, setTextColor] = useState("");
+    const [canRender, setCanRender] = useState(false);
 
-    // if (colors.hasOwnProperty(bgColor)) {
-        
-    // }
-    //     //invert RGB values to give proper text contrasting color
-    //     const iR = (255 - bgR);
-    //     const iG = (255 - bgG);
-    //     const iB = (255 - bgB);
+    function storeTeam(response){
+        setTeam(response);
+        //const tempColor = team.color;
+        //setBGColor(tempColor);
+        //determineColors(tempColor);
+        //console.log('hello fasasadsfdf')
+    }
 
-
-    // const styles = {
-    //     color: `rgb(${iR}, ${iG}, ${iB})`,
-    //     background: `${team.color}`
+    // function determineColors(bg) {
+    //     const text = pickTextColor(colors[bg], 'white', 'black');
+    //     setTextColor(text);
+    //     setCanRender(true);
     // }
 
-    // $('#test').css('color', 'rgb(' + ir + ',' + ig + ',' + ib + ')');
+    // function pickTextColor(bg, lightColor, darkColor) {
+    //     let color = (bg.charAt(0) === '#') ? bg.substring(1, 7) : bgColor;
+    //     let r = parseInt(color.substring(0, 2), 16); // hexToR
+    //     let g = parseInt(color.substring(2, 4), 16); // hexToG
+    //     let b = parseInt(color.substring(4, 6), 16); // hexToB
+    //     return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
+    //         darkColor : lightColor;
+    // }
+    
+    useEffect(() => {
+        setCanRender(true)
+    }, [team]);
+
     useEffect(() => {
         if (player.team_id) {
             axiosHelper({
@@ -41,19 +50,27 @@ function PlayerJumbotron(props) {
         }
     }, [player.length])
 
-    return (
-        <Col className="col-12 mt-3">
-            <Jumbotron className="mt-3 text-left">
-                <h2 className="display-4">{player.first_name} {player.last_name}</h2>
-                <h3 className="display-5">{team.name}</h3>
-                {team.id &&
-                    <Schedule
-                        team={team}
-                    />
-                }
-            </Jumbotron>
-        </Col>
+    // const styles = {
+    //     color: `${textColor}`,
+    //     background: `${bgColor}`
+    // }
 
+    return (
+        <>
+            { canRender &&
+                <Col className="col-12 mt-3">
+                    <Jumbotron /*style={styles}*/ className="mt-3 text-left">
+                        <h2 className="display-4">{player.first_name} {player.last_name}</h2>
+                        <h3 className="display-5">{team.name}</h3>
+                        {team.id &&
+                            <Schedule
+                                team={team}
+                            />
+                        }
+                    </Jumbotron>
+                </Col>
+            }
+        </>
     )
 }
 

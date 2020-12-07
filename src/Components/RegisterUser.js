@@ -19,6 +19,7 @@ function RegisterUser() {
         event.preventDefault();
         axios({
             method: 'post',
+            // url: 'https://clubhubfc.ue.r.appspot.com/register',
             url: 'http://localhost:8000/register',
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',

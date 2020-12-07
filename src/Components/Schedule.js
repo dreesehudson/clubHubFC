@@ -7,15 +7,16 @@ import { axiosHelper } from '../utilities/axiosHelper'
 function Schedule(props) {
 
     const [team, setTeam] = useState(props.team);
-    const [allGames, setAllGames] = useState([]);
     const [teamSchedule, setTeamSchedule] = useState([]);
     const [canRender, setCanRender] = useState(false);
 
     function storeAllData(data) {
-        setAllGames(data)
         const tempHomeGames = data.filter((game) => game.home_team_id === props.team.id)
         const tempAwayGames = data.filter((game) => game.away_team_id === props.team.id)
         setTeamSchedule([...tempHomeGames, ...tempAwayGames])
+        console.log(teamSchedule)
+        teamSchedule.sort((a,b) => {return a.date - b.date});
+        console.log(teamSchedule)
     }
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export function axiosHelper({ method = 'get', url, data = {}, bearer, fun }) {
+    // const API_URL = 'https://clubhubfc.ue.r.appspot.com/';
     const API_URL = 'http://localhost:8000';
     return axios(
         {

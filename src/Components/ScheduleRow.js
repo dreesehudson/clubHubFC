@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useBearer } from '../utilities/BearerContext';
+import React, { useState, useEffect } from "react";
 import { axiosHelper } from '../utilities/axiosHelper';
 import {
     Button, Input
@@ -7,14 +6,22 @@ import {
 
 const ScheduleRow = (props) => {
     const [editMode, setEditMode] = useState(false);
+    const [deleter, setDeleter] = useState(false);
     const [id, setID] = useState(props.schedule.id);
     const [date, setDate] = useState(props.schedule.date);
     const [homeTeamID, setHomeTeamID] = useState(props.schedule.home_team.id);
     const [awayTeamID, setAwayTeamID] = useState(props.schedule.away_team.id);
     const [time, setTime] = useState(props.schedule.time);
-    const { bearer } = useBearer();
 
-    function editScheduleRow({ date = `${props.schedule.date}`, homeTeamID = `${props.schedule.home_team.id}`, awayTeamID = `${props.schedule.away_team.id}`, time = `${props.schedule.time}` }) {
+    useEffect(() => {
+        axiosHelper({
+            url: '/getSchedules',
+            fun: props.storeSchedules
+        })
+        setDeleter(false)
+    }, [editMode, deleter])
+
+    function editScheduleRow({ date = `${props.schedule.date}`, homeTeamID = `${props.schedule.home_team_id}`, awayTeamID = `${props.schedule.away_team_id}`, time = `${props.schedule.time}` }) {
         axiosHelper({
             method: 'put',
             url: `/editSchedule/${id}`,
@@ -25,22 +32,25 @@ const ScheduleRow = (props) => {
                 time: time
             }
         })
-            .then(axiosHelper({
-                url: '/getSchedules',
-                fun: props.storeSchedules
-            }))
+        setEditMode(false)
     }
+
+    function cancelEdit() {
+        setEditMode(false)
+        setDate(props.schedule.date)
+        setHomeTeamID(props.schedule.home_team_id)
+        setAwayTeamID(props.schedule.away_team_id)
+        setTime(props.schedule.time)
+    }
+
     function deleteScheduleRow(id) {
         axiosHelper({
             method: 'delete',
             url: `/deleteSchedule/${id}`,
-            bearer,
         })
-            .then(axiosHelper({
-                url: '/getSchedules',
-                fun: props.storeSchedules
-            }))
+        setDeleter(true)
     }
+
     return (
         <>
             {!editMode ?
@@ -66,9 +76,7 @@ const ScheduleRow = (props) => {
                             onChange={e => setDate(e.target.value)}></Input></td>
                         <td>
                             <Input type="select" name="select" id="homeTeamSelect"
-                                onChange={(e) => {
-                                    setHomeTeamID(e.target.value)
-                                }}>
+                                onChange={(e) => { setHomeTeamID(e.target.value) }}>
                                 <option value={props.schedule.home_team.id}>{props.schedule.home_team.name}</option>
                                 {props.teams.map((team, idx) => {
                                     return (
@@ -92,15 +100,10 @@ const ScheduleRow = (props) => {
                         <th><Button className="btn-success"
                             onClick={() => {
                                 editScheduleRow({ date, homeTeamID, awayTeamID, time })
-                                setEditMode(false)
                             }}>Submit</Button></th>
                         <th><Button className="btn-secondary"
                             onClick={() => {
-                                setEditMode(false)
-                                setDate(props.schedule.date)
-                                setHomeTeamID(props.schedule.home_team_id)
-                                setAwayTeamID(props.schedule.away_team_id)
-                                setTime(props.schedule.time)
+                                cancelEdit()
                             }}>Cancel</Button></th>
                     </tr>
                 </>
