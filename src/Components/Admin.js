@@ -52,10 +52,10 @@ const Admin = (props) => {
         'num': '4'
     }]);
     const toggle = tab => { if (activeTab !== tab) setActiveTab(tab); }
-    const storeTeams = (data) => { setTeams(data); }
-    const storePlayers = (data) => { setPlayers(data); }
-    const storeUsers = (data) => { setUsers(data); }
-    const storeSchedules = (data) => { setSchedules(data) }
+    const storeTeams = (data) => { setTeams([...data]); }
+    const storePlayers = (data) => { setPlayers([...data]); }
+    const storeUsers = (data) => { setUsers([...data]); }
+    const storeSchedules = (data) => { setSchedules([...data]) }
 
     useEffect(() => {
         axiosHelper({

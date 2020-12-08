@@ -6,13 +6,13 @@ function Footer() {
         <footer className="bg-primary mt-5 fixed-bottom">
             <Row className='p-2'>
                 <Col>
-                    <p>Github</p>
+                    <p><a href='https://github.com/dreesehudson' className='text-dark'>Github</a></p>
                 </Col>
                 <Col>
-                    <p>LinkedIn</p>
+                    <p><a href='https://www.linkedin.com/in/dreesehudson/' className='text-dark'>LinkedIn</a></p>
                 </Col>
                 <Col>
-                    <p>Portfolio</p>
+                    <p><a href='' className='text-dark'>Portfolio</a></p>
                 </Col>
             </Row>
         </footer>
