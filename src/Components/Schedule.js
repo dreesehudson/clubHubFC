@@ -14,9 +14,7 @@ function Schedule(props) {
         const tempHomeGames = data.filter((game) => game.home_team_id === props.team.id)
         const tempAwayGames = data.filter((game) => game.away_team_id === props.team.id)
         setTeamSchedule([...tempHomeGames, ...tempAwayGames])
-        console.log(teamSchedule)
-        teamSchedule.sort((a,b) => {return a.date - b.date});
-        console.log(teamSchedule)
+        teamSchedule.sort((a, b) => { return a.date - b.date });
     }
 
     useEffect(() => {
@@ -34,7 +32,8 @@ function Schedule(props) {
     return (
         <>
             {canRender &&
-                <>
+                <div style={{ opacity: .85 }}
+                >
                     <h3 className="mt-3 display-5" style={{ marginBottom: '1rem' }}>Schedule</h3>
                     <Card>
                         <CardBody>
@@ -62,7 +61,7 @@ function Schedule(props) {
                             </Table>
                         </CardBody>
                     </Card>
-                </>
+                </div>
             }
         </>
     )

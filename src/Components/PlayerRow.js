@@ -66,7 +66,7 @@ const PlayerRow = (props) => {
                 <>
                     <tr>
                         <th scope="row">{props.player.id}</th>
-                        <td><Input defaultValue={props.player.first_name}
+                        <td><Input defaultValue={props.player.first_name} value={firstName}
                             onChange={e => setFirstName(e.target.value)}></Input></td>
                         <td><Input defaultValue={props.player.last_name}
                             onChange={e => setLastName(e.target.value)}></Input></td>
