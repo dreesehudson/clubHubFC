@@ -7,12 +7,12 @@ function Anonymous() {
         <>
             <Container className="container-fluid">
                 <Row className="d-flex justify-content-center">
-                    <Col className='col-2'>
+                    <Col className='col-3'>
                     </Col>
-                    <Col className='col-8'>
+                    <Col className='col-6'>
                         <img className=" pt-5 img-fluid mt-5" alt="logo" src={shield} />
                     </Col>
-                    <Col className='col-2'>
+                    <Col className='col-3'>
                     </Col>
                 </Row>
             </Container>
