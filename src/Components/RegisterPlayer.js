@@ -38,7 +38,7 @@ function RegisterPlayer() {
     }, [user_obj]);
 
     function handleSubmit(event) {
-        event.preventDefault();
+        // event.preventDefault();
         axiosHelper({
             method: 'post',
             url: '/PlayerRegistration',
@@ -57,13 +57,13 @@ function RegisterPlayer() {
                         <Row>
                             <Col className="col-md-6 col-12 mt-3">
                                 <Label for="firstName">First Name</Label>
-                                <Input name="First Name" id="firstName"
+                                <Input minlength="2" name="First Name" id="firstName"
                                     onChange={e => setFirstName(e.target.value)}
                                 />
                             </Col>
                             <Col className="col-md-6 col-12 mt-3">
                                 <Label for="lastName">Last Name</Label>
-                                <Input name="Last Name" id="lastName"
+                                <Input placeholder="optional" name="Last Name" id="lastName"
                                     onChange={e => setLastName(e.target.value)}
                                 />
                             </Col>
@@ -85,7 +85,7 @@ function RegisterPlayer() {
                         </Row>
                         <Row check className="mt-3 text-center">
                             <Col >
-                                <Button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</Button>
+                                <Button className="btn btn-primary" onClick={handleSubmit}>Submit</Button>
                             </Col>
                         </Row>
                     </Form>

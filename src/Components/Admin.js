@@ -11,6 +11,7 @@ import TeamRow from './TeamRow';
 import ScheduleRow from './ScheduleRow';
 import UserRow from './UserRow';
 
+
 const Admin = (props) => {
     const [user, setUser] = useState({});
     const [activeTab, setActiveTab] = useState('1');
@@ -34,6 +35,8 @@ const Admin = (props) => {
     const [home_team_id, setHome_Team_ID] = useState('');
     const [away_team_id, setAway_Team_ID] = useState('');
     const [time, setTime] = useState('');
+
+    const [loading, setLoading] = useState(true);
 
     const [tabs, setTabs] = useState([{
         'name': 'Players',
@@ -132,6 +135,7 @@ const Admin = (props) => {
             url: '/getSchedules',
             fun: storeSchedules
         })
+        setLoading(false)
     }, [bearer]);
 
     return (
@@ -179,7 +183,6 @@ const Admin = (props) => {
                             </ModalBody>
                         </Modal>
                     </Col>
-
                     <Col>
                         <Button color="primary" className="btn btn-lg my-3" onClick={toggleMatchModal}>Create New Match</Button>
                         <Modal isOpen={matchModal} toggle={toggleMatchModal} className={className}>
@@ -247,7 +250,6 @@ const Admin = (props) => {
                     </Col>
                 </Row>
             </Container>
-
             <div className="container-fluid text-center">
                 <Nav className='nav-pills nav-justified mt-3'>
                     {tabs.map((item, idx) => {

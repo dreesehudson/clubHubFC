@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Col, Jumbotron
-
-} from 'reactstrap';
+import { Button, Col, Collapse, Jumbotron } from 'reactstrap';
 import Schedule from '../Components/Schedule'
 import { axiosHelper } from '../utilities/axiosHelper'
 import { colors } from '../utilities/colors'
@@ -13,8 +10,10 @@ function PlayerJumbotron(props) {
     const [bgColor, setBGColor] = useState("");
     const [textColor, setTextColor] = useState("");
     const [canRender, setCanRender] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const toggle = () => setIsOpen(!isOpen);
 
-    function storeTeam(data){
+    function storeTeam(data) {
         setTeam(data);
         setBGColor(data.color);
         determineColors(data.color.toLowerCase());
@@ -34,7 +33,7 @@ function PlayerJumbotron(props) {
         return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 100) ?
             darkColor : lightColor;
     }
-    
+
     useEffect(() => {
         setCanRender(true)
     }, [textColor]);
@@ -53,18 +52,22 @@ function PlayerJumbotron(props) {
         background: `${bgColor}`
     }
 
-
     return (
         <>
             { canRender &&
                 <Col className="col-12 mt-3">
-                    <Jumbotron style={dynamicStyles} className="mt-3 text-left">
+                    <Jumbotron style={dynamicStyles} className=" border mt-3 text-left">
                         <h2 className="display-4">{player.first_name} {player.last_name}</h2>
                         <h3 className="display-5">{team.name}</h3>
                         {team.id &&
-                            <Schedule
-                                team={team}
-                            />
+                            <div>
+                                <Button className="my-2 border" style={{ background: team.color, opacity: .85, color: textColor }} onClick={toggle}>Show Schedule</Button>
+                                <Collapse isOpen={isOpen}>
+                                    <Schedule
+                                        team={team}
+                                    />
+                                </Collapse>
+                            </div>
                         }
                     </Jumbotron>
                 </Col>

@@ -19,8 +19,8 @@ function RegisterUser() {
         event.preventDefault();
         axios({
             method: 'post',
-            // url: 'https://clubhubfc.ue.r.appspot.com/register',
-            url: 'http://localhost:8000/register',
+            url: 'https://cors-anywhere.herokuapp.com/https://clubhubfc.herokuapp.com/register',
+            // url: 'http://localhost:8000/register',
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'Access-Control-Allow-Origin': '*',
@@ -39,7 +39,7 @@ function RegisterUser() {
 
     return (
         <>
-            <Button className="btn-lg mt-3 ml-2" color="primary" onClick={toggle}>Sign Up</Button>
+            <Button className="mx-2 my-1 btn-dark text-light" onClick={toggle}>Sign Up</Button>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Register New User Account</ModalHeader>
                 <ModalBody>
@@ -59,7 +59,7 @@ function RegisterUser() {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color="primary" onClick={HandleSubmit}>Register</Button>{' '}
+                    <Button color="primary" onClick={HandleSubmit}>Register</Button>
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>

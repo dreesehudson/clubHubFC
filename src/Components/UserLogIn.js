@@ -3,7 +3,8 @@ import { useBearer } from '../utilities/BearerContext'
 import axios from 'axios'
 import {
     Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody,
-    ModalFooter
+    ModalFooter,
+    Form
 } from 'reactstrap';
 
 function UserLogIn() {
@@ -17,8 +18,8 @@ function UserLogIn() {
     function HandleSubmit() {
         axios({
             method: 'post',
-            // url: 'https://clubhubfc.ue.r.appspot.com/v1/oauth/token',
-            url: 'http://localhost:8000/v1/oauth/token',
+            url: 'https://cors-anywhere.herokuapp.com/https://clubhubfc.herokuapp.com/v1/oauth/token',
+            // url: 'http://localhost:8000/v1/oauth/token',
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'Access-Control-Allow-Origin': '*',
@@ -40,16 +41,16 @@ function UserLogIn() {
             .catch(err => console.log('error: ', err));
     }
 
-
     return (
         <>
-            <Button className="btn-lg mt-3 mr-2" color="primary" onClick={toggle}>Log In</Button>
+            <Button className="btn mx-2 my-1 btn-dark text-light" onClick={toggle}>Log In</Button>
             <Modal isOpen={modal} toggle={toggle}>
+                <Form>
                 <ModalHeader toggle={toggle}>Welcome Back, Log In</ModalHeader>
                 <ModalBody>
                     <Row>
                         <Col>
-                            <Label className='mt-4'>Email</Label>
+                            <Label aria-describedby="emailHelp" className='mt-4'>Email</Label>
                             <Input className='mb-2' type="email" name="email" id="email"
                                 onChange={e => setEmail(e.target.value)}
                             />
@@ -57,13 +58,15 @@ function UserLogIn() {
                             <Input className='mb-2' type="password" name="password" id="password"
                                 onChange={e => setPassword(e.target.value)}
                             />
+
                         </Col>
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button type="submit" color="primary" onClick={HandleSubmit}>Log In</Button>{' '}
+                    <Button color="primary" onClick={HandleSubmit}>Log In</Button>
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
+                </Form>
             </Modal>
         </>
     );

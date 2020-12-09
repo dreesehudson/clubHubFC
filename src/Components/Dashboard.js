@@ -10,7 +10,6 @@ import RegisterPlayer from '../Components/RegisterPlayer'
 function Dashboard(props) {
     const { bearer } = useBearer();
     const [user, setUser] = useState({})
-    const [players, setPlayers] = useState({})
     const [modal, setModal] = useState(false);
     const { className } = props;
     const toggleModal = () => setModal(!modal);
