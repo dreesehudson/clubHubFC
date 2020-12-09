@@ -11,28 +11,24 @@ function Authenticated() {
     const { bearer } = useBearer();
     const [user, setUser] = useState({})
 
-    const storeUser = (response) => {
-        setUser(response)
-        console.log(response)
-    }
-
     useEffect(() => {
         axiosHelper({
             url: '/api/user',
-            fun: storeUser,
+            fun: setUser,
             bearer
-        })
+        }).then()
+
+
     }, [bearer])
 
     return (
         <>
             {user.isAdmin ?
-                <Admin className="mt-5"/>
+                <Admin className="mt-5" />
                 :
                 <Dashboard className="mt-5" />
             }
         </>
-
     )
 }
 

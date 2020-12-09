@@ -8,13 +8,11 @@ import Authenticated from './Authenticated';
 
 function FrontPage() {
     const { bearer } = useBearer();
-    const [user, setUser] = useState();
 
     useEffect(() => {
         axiosHelper({
             url: '/api/user',
-            bearer,
-            setUser
+            bearer
         })
     }, [bearer])
 
@@ -23,7 +21,7 @@ function FrontPage() {
             {bearer ?
                 <>
                     <Row className="d-flex justify-content-center mb-5">
-                        <Authenticated />
+                        <Authenticated/>
                     </Row>
                 </>
                 :

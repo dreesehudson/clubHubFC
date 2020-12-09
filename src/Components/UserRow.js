@@ -1,23 +1,28 @@
-import React, { useState } from "react";
-import { useBearer } from '../utilities/BearerContext';
+import React, { useState, useEffect } from "react";
 import { axiosHelper } from '../utilities/axiosHelper';
 import {
-    Button, Input, Form, CustomInput, FormGroup, Label
+    Button, Input
 } from 'reactstrap';
 
 
 const UserRow = (props) => {
     const [editMode, setEditMode] = useState(false);
+    const [deleter, setDeleter] = useState(false);
     const [id, setID] = useState(props.user.id);
     const [name, setName] = useState(props.user.name);
     const [email, setEmail] = useState(props.user.email);
     const [admin, setAdmin] = useState(props.user.isAdmin);
     const [checked, setChecked] = useState(props.user.isAdmin);
-    const { bearer } = useBearer();
 
-    const checkBoxHandler = () => { 
-        setChecked(!checked)
-        setAdmin(!admin.toString()) }
+
+    useEffect(() => {
+        axiosHelper({
+            url: '/getUsers',
+            fun: props.storeUsers
+        })
+        setDeleter(false)
+    }, [editMode, deleter])
+
 
     function editUserRow({ name = `${props.user.name}`, email = `${props.user.email}`, admin = `${props.user.isAdmin}` }) {
         axiosHelper({
@@ -29,22 +34,14 @@ const UserRow = (props) => {
                 isAdmin: admin,
             }
         })
-            .then(axiosHelper({
-                url: '/getUsers',
-                fun: props.storeUsers
-            }))
     }
 
     function deleteUserRow(id) {
         axiosHelper({
             method: 'delete',
             url: `/deleteUser/${id}`,
-            bearer
         })
-            .then(axiosHelper({
-                url: '/getUsers',
-                fun: props.storeUsers
-            }))
+        setDeleter(true)
     }
 
     return (
@@ -55,11 +52,10 @@ const UserRow = (props) => {
                     <td>{props.user.name}</td>
                     <td>{props.user.email}</td>
                     <td>
-                        <div class="form-check">
+                        <div className="form-check">
                             <Input disabled checked={admin} className="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
                         </div>
                     </td>
-                    {/* <td><CustomInput checked={admin} disabled type="switch" id="exampleCustomSwitch" name="customSwitch" /></td> */}
                     <td><Button className="btn-warning"
                         onClick={() => setEditMode(true)}>Edit</Button></td>
                     <td><Button className="btn-danger"
@@ -74,23 +70,20 @@ const UserRow = (props) => {
                         <td><Input defaultValue={props.user.email}
                             onChange={e => setEmail(e.target.value)}></Input></td>
                         <td>
-                            <div class="form-check">
-                                <Input disabled checked={checked} class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
+                            <div className="form-check">
+                                <Input disabled checked={checked} className="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." />
                             </div>
                         </td>
-                        {/* <td><CustomInput checked={admin} type="switch" id="exampleCustomSwitch" name="customSwitch"
-                            onChange={(e) => toggleAdmin(e.target.value)} /></td> */}
                         <th><Button className="btn-success"
                             onClick={() => {
                                 editUserRow({ name, email, admin })
-                                setEditMode(false)
-                            }}>Submit</Button></th>
+                                setEditMode(false)}}>Submit</Button></th>
                         <th><Button className="btn-secondary"
-                            onClick={() => {setEditMode(false)
-                                    setName(props.user.name)
-                                    setEmail(props.user.email)
-                                    setAdmin(props.user.isAdmin)
-                            }}>Cancel</Button></th>
+                            onClick={() => {
+                                setEditMode(false)
+                                setName(props.user.name)
+                                setEmail(props.user.email)
+                                setAdmin(props.user.isAdmin)}}>Cancel</Button></th>
                     </tr>
                 </>
             }

@@ -1,7 +1,5 @@
 import React from 'react';
-import Admin from './Components/Admin'
 import Header from './Components/Header';
-import RegisterPlayer from './Components/RegisterPlayer';
 import FrontPage from './Components/FrontPage';
 import Footer from './Components/Footer';
 import { AppProvider } from './utilities/BearerContext'
@@ -9,8 +7,6 @@ import './App.css';
 
 import {
     BrowserRouter as Router,
-    Switch,
-    Route,
 } from "react-router-dom";
 
 
@@ -21,16 +17,7 @@ function App() {
             <AppProvider >
                 <Router>
                     <Header />
-
-                    <Switch>
-                        <Route path="/playerRegistration">
-                            <RegisterPlayer />
-                        </Route>
-                        <Route exact path="/">
-                            <FrontPage />
-                        </Route>
-                    </Switch>
-
+                    <FrontPage />
                     <Footer />
                 </Router>
             </AppProvider>

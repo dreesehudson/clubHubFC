@@ -10,7 +10,6 @@ import RegisterPlayer from '../Components/RegisterPlayer'
 function Dashboard(props) {
     const { bearer } = useBearer();
     const [user, setUser] = useState({})
-    const [players, setPlayers] = useState({})
     const [modal, setModal] = useState(false);
     const { className } = props;
     const toggleModal = () => setModal(!modal);
@@ -30,9 +29,9 @@ function Dashboard(props) {
 
     return (
         <>
-            <Container className="mt-5">
+            <Container className="">
                 <Row>
-                    { user.hasOwnProperty('players') && user.players.hasOwnProperty(0) ?
+                    {user.hasOwnProperty('players') && user.players.hasOwnProperty(0) ?
                         user.players.map((item, idx) => {
                             return (
                                 <PlayerJumbotron
@@ -44,7 +43,7 @@ function Dashboard(props) {
                         :
                         <Col className="col-12 mt-5">
                             <h3 className=' display-3 mt-5'>No Players Registered.</h3>
-                            <Button color="danger" className="my-3" onClick={toggleModal}>Register New Player</Button>
+                            <Button color="primary" className="my-3" onClick={toggleModal}>Register New Player</Button>
                             <Modal isOpen={modal} toggle={toggleModal} className={className}>
                                 <ModalHeader toggle={toggleModal} close={closeBtn} />
                                 <ModalBody>

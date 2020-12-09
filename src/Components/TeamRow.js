@@ -8,12 +8,21 @@ import {
 
 const TeamRow = (props) => {
     const [editMode, setEditMode] = useState(false);
+    const [deleter, setDeleter] = useState(false);
     const [id, setID] = useState(props.team.id);
     const [teamName, setTeamName] = useState(props.team.name);
     const [teamColor, setTeamColor] = useState(props.team.color);
     const [teamPracticeNight, setTeamPracticeNight] = useState(props.team.practice_night);
     const { bearer } = useBearer();
 
+    useEffect(() => {
+        axiosHelper({
+            url: '/getTeams',
+            fun: props.storeTeams
+        })
+        setDeleter(false)
+    }, [editMode, deleter])
+    
     function editTeamRow({ teamName = `${props.teams.name}`, teamColor = `${props.teams.color}`, teamPracticeNight = `${props.teams.practice_night}`, bearer }) {
         axiosHelper({
             method: 'put',
@@ -22,13 +31,16 @@ const TeamRow = (props) => {
                 name: teamName,
                 color: teamColor,
                 practice_night: teamPracticeNight,
-                bearer: bearer
             }
         })
-            .then(axiosHelper({
-                url: '/getTeams',
-                fun: props.storeTeams
-            }))
+        setEditMode(false)
+    }
+   
+    function cancelEdit() {
+        setEditMode(false)
+        setTeamName(props.team.name)
+        setTeamColor(props.team.color)
+        setTeamPracticeNight(props.team.practice_night)
     }
 
     function deleteTeamRow(id) {
@@ -37,10 +49,7 @@ const TeamRow = (props) => {
             url: `/deleteTeam/${id}`,
             bearer,
         })
-            .then(axiosHelper({
-                url: '/getTeams',
-                fun: props.storeTeams
-            }))
+        setDeleter(true)
     }
 
     return (
