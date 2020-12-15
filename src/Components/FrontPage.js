@@ -5,7 +5,6 @@ import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper';
 import Authenticated from './Authenticated';
 
-
 function FrontPage() {
     const { bearer } = useBearer();
 

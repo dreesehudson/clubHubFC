@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper';
-import {
-    TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col,
-    Modal, ModalHeader, ModalBody, Label, Input, Form, Container
-} from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Table, Button, Row, Col, Modal, ModalHeader, ModalBody, Label, Input, Form, Container } from 'reactstrap';
 import classnames from 'classnames';
 import PlayerRow from './PlayerRow';
 import TeamRow from './TeamRow';
 import ScheduleRow from './ScheduleRow';
 import UserRow from './UserRow';
 
-
 const Admin = (props) => {
-    const [user, setUser] = useState({});
     const [activeTab, setActiveTab] = useState('1');
     const [teamName, setTeamName] = useState("");
     const [color, setColor] = useState("");
@@ -35,8 +30,6 @@ const Admin = (props) => {
     const [home_team_id, setHome_Team_ID] = useState('');
     const [away_team_id, setAway_Team_ID] = useState('');
     const [time, setTime] = useState('');
-
-    const [loading, setLoading] = useState(true);
 
     const [tabs, setTabs] = useState([{
         'name': 'Players',
@@ -135,7 +128,6 @@ const Admin = (props) => {
             url: '/getSchedules',
             fun: storeSchedules
         })
-        setLoading(false)
     }, [bearer]);
 
     return (

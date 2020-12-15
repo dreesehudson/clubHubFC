@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    CardBody, Card, Table
-} from 'reactstrap';
+import { CardBody, Card, Table } from 'reactstrap';
 import { axiosHelper } from '../utilities/axiosHelper'
 
 function Schedule(props) {

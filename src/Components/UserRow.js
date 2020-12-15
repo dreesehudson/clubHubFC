@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { axiosHelper } from '../utilities/axiosHelper';
-import {
-    Button, Input
-} from 'reactstrap';
-
+import { Button, Input } from 'reactstrap';
 
 const UserRow = (props) => {
     const [editMode, setEditMode] = useState(false);

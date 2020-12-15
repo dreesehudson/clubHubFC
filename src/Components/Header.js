@@ -4,23 +4,8 @@ import { axiosHelper } from '../utilities/axiosHelper';
 import UserLogIn from './UserLogIn';
 import RegisterUser from './RegisterUser';
 import RegisterPlayer from '../Components/RegisterPlayer'
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    Container,
-    Row,
-    Col
-} from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button, Modal, ModalHeader, ModalBody, Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-//import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { faFutbol } from '@fortawesome/free-solid-svg-icons'
 
 const Header = (props) => {

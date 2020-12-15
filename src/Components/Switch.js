@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormGroup, Label, CustomInput } from 'reactstrap';
+import { FormGroup, CustomInput } from 'reactstrap';
 
 
 function Switch() {

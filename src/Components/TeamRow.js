@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useBearer } from '../utilities/BearerContext';
 import { axiosHelper } from '../utilities/axiosHelper';
-import {
-    Button, Input
-} from 'reactstrap';
-
+import { Button, Input } from 'reactstrap';
 
 const TeamRow = (props) => {
     const [editMode, setEditMode] = useState(false);

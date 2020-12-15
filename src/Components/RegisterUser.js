@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useBearer } from '../utilities/BearerContext'
-import {
-    Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter
-} from 'reactstrap';
+import { Col, Row, Button, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 function RegisterUser() {
     const { saveBearer } = useBearer();
@@ -19,8 +17,8 @@ function RegisterUser() {
         event.preventDefault();
         axios({
             method: 'post',
-            url: 'https://cors-anywhere.herokuapp.com/https://clubhubfc.herokuapp.com/register',
-            // url: 'http://localhost:8000/register',
+            // url: 'https://cors-anywhere.herokuapp.com/https://clubhubfc.herokuapp.com/register',
+            url: 'http://localhost:8000/register',
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'Access-Control-Allow-Origin': '*',

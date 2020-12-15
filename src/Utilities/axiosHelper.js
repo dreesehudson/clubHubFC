@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export function axiosHelper({ method = 'get', url, data = {}, bearer, fun }) {
-    const API_URL = 'https://cors-anywhere.herokuapp.com/https://clubhubfc.herokuapp.com/';
-    // const API_URL = 'http://localhost:8000';
+    // const API_URL = 'https://cors-anywhere.herokuapp.com/https://clubhubfc.herokuapp.com/';
+    const API_URL = 'http://localhost:8000';
     return axios(
         {
             method,

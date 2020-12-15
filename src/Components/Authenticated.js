@@ -16,9 +16,7 @@ function Authenticated() {
             url: '/api/user',
             fun: setUser,
             bearer
-        }).then()
-
-
+        })
     }, [bearer])
 
     return (

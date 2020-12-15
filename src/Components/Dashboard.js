@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Container, Row, Col, Button, Modal, ModalHeader, ModalBody
-} from 'reactstrap';
+import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useBearer } from '../utilities/BearerContext'
 import { axiosHelper } from '../utilities/axiosHelper'
 import PlayerJumbotron from '../Components/PlayerJumbotron'
